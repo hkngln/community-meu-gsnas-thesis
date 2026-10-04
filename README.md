@@ -28,9 +28,39 @@ Mersin Üniversitesi Fen Bilimleri Enstitüsü yüksek lisans ve doktora tezleri
 
 ## Kurulum
 
-Gerekenler:
-- [Typst](https://github.com/typst/typst) 0.15 veya üstü.
-- Times New Roman fontu. Windows ve macOS'ta hazır gelir. Linux'ta `ttf-mscorefonts-installer` paketiyle kurulur.
+### 1. Typst'ü kurun
+
+[Typst](https://typst.app), LaTeX'e benzer ama çok daha hızlı derlenen ve öğrenmesi kolay bir dizgi sistemidir. Bu şablon için **Typst 0.15 veya üstü** gerekir.
+
+| Sistem | Komut |
+|---|---|
+| macOS ([Homebrew](https://formulae.brew.sh/formula/typst)) | `brew install typst` |
+| Windows | `winget install --id Typst.Typst` |
+| Linux / diğer | [GitHub sürümler sayfasından](https://github.com/typst/typst/releases/latest) indirin ya da `cargo install --locked typst-cli` |
+
+Kurulumu doğrulayın:
+
+```sh
+typst --version   # typst 0.15.x
+```
+
+Typst'ü yeni tanıyorsanız [resmi eğitim](https://typst.app/docs/tutorial) ve [belgeler](https://typst.app/docs) iyi bir başlangıçtır.
+
+> **Web uygulaması hakkında:** [typst.app](https://typst.app) web editörü bilgisayara kurulan yerel paketleri göremez. Bu şablon bu yüzden şimdilik bilgisayara kurulan Typst ile kullanılır.
+
+### 2. Editör eklentisini kurun (önerilir)
+
+[Tinymist](https://github.com/Myriad-Dreamin/tinymist) eklentisi; canlı PDF önizleme, otomatik tamamlama ve satır üstünde hata gösterimi sağlar.
+
+- **VS Code:** [Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=myriad-dreamin.tinymist)
+- **VSCodium, Cursor ve diğer VS Code türevleri:** [Open VSX](https://open-vsx.org/extension/myriad-dreamin/tinymist)
+- **Neovim, Zed, Helix, Emacs ve diğerleri:** [Tinymist kurulum belgeleri](https://myriad-dreamin.github.io/tinymist/)
+
+### 3. Times New Roman fontu
+
+Windows ve macOS'ta hazır gelir. Linux'ta `ttf-mscorefonts-installer` paketiyle kurulur. `typst fonts` komutunun çıktısında "Times New Roman" görünmelidir.
+
+### 4. Şablonu kurun
 
 Paketi Typst'ün yerel paket dizinine klonlayın. Dizin adı sürüm numarasıyla aynı olmalı.
 
@@ -59,6 +89,8 @@ typst init @local/meu-fbe-tez:0.1.0 tezim
 cd tezim
 typst watch main.typ
 ```
+
+VS Code'da çalışmak için `tezim` klasörünü açın, `main.typ` dosyasını açın ve komut paletinden (`Ctrl/Cmd+Shift+P`) **Typst Preview: Preview Opened File** komutunu çalıştırın. Yazdıkça PDF önizlemesi güncellenir.
 
 `main.typ` içindeki bilgileri doldurun. Bölümleri `bolumler/` altındaki dosyalara yazın.
 
