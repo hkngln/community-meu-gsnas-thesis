@@ -12,7 +12,7 @@ Mersin Üniversitesi Fen Bilimleri Enstitüsü yüksek lisans ve doktora tezleri
 
 ![Önizleme: dış kapak, iç kapak ve bir bölüm sayfası](docs/onizleme.png)
 
-> **Not:** Bu proje enstitünün resmi bir ürünü değildir. Tezinizi teslim etmeden önce güncel [tez yazım yönergesini](https://www.mersin.edu.tr) kontrol edin. Bir kuralın uymadığını fark ederseniz [issue açın](https://github.com/hkngln/meu-fbe-tez/issues).
+> **Not:** Bu proje enstitünün resmi bir ürünü değildir. Logo ve görseller Mersin Üniversitesi'ne aittir ([Lisans](#lisans)). Tezinizi teslim etmeden önce güncel [tez yazım yönergesini](https://www.mersin.edu.tr) kontrol edin. Bir kuralın uymadığını fark ederseniz [issue açın](https://github.com/hkngln/meu-fbe-tez/issues).
 
 ## Özellikler
 
@@ -103,4 +103,11 @@ Dal yapısı, commit kuralları ve sürüm akışı [CONTRIBUTING.md](CONTRIBUTI
 
 ## Lisans
 
-Kod [MIT](LICENSE) lisanslıdır. `assets/` klasöründeki kapak görselleri ve Mersin Üniversitesi logosu üniversiteye aittir. Bu görseller yalnızca enstitünün resmi kapak tasarımını uygulamak için kullanılmıştır ve MIT lisansının kapsamında değildir.
+Kod [MIT](LICENSE) lisanslıdır.
+
+**Logo ve görseller Mersin Üniversitesi'ne aittir:**
+- Mersin Üniversitesi logosu.
+- `assets/` klasöründeki dış kapak görselleri.
+- `template/sekiller/` klasöründeki örnek fotoğraflar.
+
+Bu görseller enstitünün resmi tez şablonundan alınmıştır. Yalnızca resmi tasarımı uygulamak için kullanılırlar ve MIT lisansının kapsamında değildirler.
