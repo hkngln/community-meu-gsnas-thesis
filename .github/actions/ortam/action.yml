@@ -1,16 +1,23 @@
 name: Derleme ortamı
-description: Typst, Times New Roman, poppler kurar ve paketi @local olarak bağlar.
+description: Typst ve poppler kurar, paketi @local olarak bağlar. macOS runner gerektirir.
 
+# macOS: Times New Roman sistemle gelir. Linux'taki ttf-mscorefonts-installer
+# fontu kurulum anında SourceForge'dan indirir ve CI'da sessizce başarısız olur.
 runs:
   using: composite
   steps:
-    - name: Times New Roman ve poppler
+    - name: Times New Roman kontrolü
       shell: bash
       run: |
-        echo "ttf-mscorefonts-installer msttcorefonts/accept-mscorefonts-eula select true" | sudo debconf-set-selections
-        sudo apt-get update -qq
-        sudo apt-get install -y -qq ttf-mscorefonts-installer poppler-utils >/dev/null
-        grep -q "Times New Roman" <<<"$(fc-list)" || { echo "::error::Times New Roman kurulamadı"; exit 1; }
+        if [[ "$RUNNER_OS" != "macOS" ]]; then
+          echo "::error::Bu action macOS runner gerektirir (Times New Roman)."
+          exit 1
+        fi
+        ls "/System/Library/Fonts/Supplemental/Times New Roman.ttf"
+
+    - name: poppler (pdftotext)
+      shell: bash
+      run: brew install --quiet poppler
 
     - uses: typst-community/setup-typst@v5
       with:
@@ -20,7 +27,7 @@ runs:
       shell: bash
       run: |
         SURUM=$(sed -n 's/^version = "\(.*\)"/\1/p' typst.toml)
-        HEDEF="$HOME/.local/share/typst/packages/local/meu-fbe-tez"
+        HEDEF="$HOME/Library/Application Support/typst/packages/local/meu-fbe-tez"
         mkdir -p "$HEDEF"
         ln -sfn "$GITHUB_WORKSPACE" "$HEDEF/$SURUM"
         grep -q "Times New Roman" <<<"$(typst fonts)" || { echo "::error::Typst Times New Roman bulamadı"; exit 1; }
