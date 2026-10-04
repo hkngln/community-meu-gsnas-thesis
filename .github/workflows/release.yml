@@ -15,7 +15,8 @@ concurrency:
 
 jobs:
   yayinla:
-    runs-on: ubuntu-latest
+    # Times New Roman yalnızca macOS runner'da hazır gelir.
+    runs-on: macos-latest
     steps:
       - uses: actions/checkout@v7
         with:
