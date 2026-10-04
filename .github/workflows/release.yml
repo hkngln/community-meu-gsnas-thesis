@@ -1,0 +1,53 @@
+name: Sürüm
+
+# dev -> main birleşince typst.toml'daki sürüm yayınlanır: vX.Y.Z etiketi +
+# örnek tez PDF'li GitHub Release. Etiket zaten varsa hiçbir şey yapılmaz.
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: surum
+  cancel-in-progress: false
+
+jobs:
+  yayinla:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Sürümü oku
+        id: surum
+        run: |
+          SURUM=$(sed -n 's/^version = "\(.*\)"/\1/p' typst.toml)
+          echo "surum=$SURUM" >> "$GITHUB_OUTPUT"
+          if git rev-parse -q --verify "refs/tags/v$SURUM" >/dev/null; then
+            echo "v$SURUM zaten yayınlanmış, atlanıyor."
+            echo "yeni=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "yeni=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - if: steps.surum.outputs.yeni == 'true'
+        uses: ./.github/actions/ortam
+
+      - if: steps.surum.outputs.yeni == 'true'
+        env:
+          SURUM: ${{ steps.surum.outputs.surum }}
+        run: |
+          bash tests/dogrula.sh
+          cp tests/out/sablon.pdf "meu-fbe-tez-ornek-v$SURUM.pdf"
+
+      - if: steps.surum.outputs.yeni == 'true'
+        uses: softprops/action-gh-release@v3
+        with:
+          tag_name: v${{ steps.surum.outputs.surum }}
+          target_commitish: ${{ github.sha }}
+          name: v${{ steps.surum.outputs.surum }}
+          generate_release_notes: true
+          files: meu-fbe-tez-ornek-v${{ steps.surum.outputs.surum }}.pdf

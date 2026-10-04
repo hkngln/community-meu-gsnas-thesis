@@ -1,0 +1,26 @@
+name: Derleme ortamı
+description: Typst, Times New Roman, poppler kurar ve paketi @local olarak bağlar.
+
+runs:
+  using: composite
+  steps:
+    - name: Times New Roman ve poppler
+      shell: bash
+      run: |
+        echo "ttf-mscorefonts-installer msttcorefonts/accept-mscorefonts-eula select true" | sudo debconf-set-selections
+        sudo apt-get update -qq
+        sudo apt-get install -y -qq ttf-mscorefonts-installer poppler-utils >/dev/null
+        grep -q "Times New Roman" <<<"$(fc-list)" || { echo "::error::Times New Roman kurulamadı"; exit 1; }
+
+    - uses: typst-community/setup-typst@v5
+      with:
+        typst-version: 0.15.1
+
+    - name: Paketi @local/meu-fbe-tez olarak bağla
+      shell: bash
+      run: |
+        SURUM=$(sed -n 's/^version = "\(.*\)"/\1/p' typst.toml)
+        HEDEF="$HOME/.local/share/typst/packages/local/meu-fbe-tez"
+        mkdir -p "$HEDEF"
+        ln -sfn "$GITHUB_WORKSPACE" "$HEDEF/$SURUM"
+        grep -q "Times New Roman" <<<"$(typst fonts)" || { echo "::error::Typst Times New Roman bulamadı"; exit 1; }

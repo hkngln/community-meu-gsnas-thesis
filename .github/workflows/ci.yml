@@ -1,0 +1,62 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [dev, main]
+  push:
+    branches: [dev, main]
+
+permissions:
+  contents: read
+
+jobs:
+  dal-kurali:
+    name: Dal kuralı
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Kaynak ve hedef dalı denetle
+        env:
+          KAYNAK: ${{ github.head_ref }}
+          HEDEF: ${{ github.base_ref }}
+        run: |
+          echo "PR: $KAYNAK -> $HEDEF"
+          if [[ "$HEDEF" == "main" && "$KAYNAK" != "dev" ]]; then
+            echo "::error::main dalına yalnızca dev dalından PR açılabilir."
+            exit 1
+          fi
+          if [[ "$HEDEF" == "dev" && ! "$KAYNAK" =~ ^(feat|fix|docs|refactor|test|ci|chore|perf)/[a-z0-9._-]+$ ]]; then
+            echo "::error::dev dalına gelen PR'ın dal adı <tür>/<kısa-ad> olmalı (ör. feat/ek-numaralama). Bkz. CONTRIBUTING.md"
+            exit 1
+          fi
+
+  surum-kontrolu:
+    name: Sürüm kontrolü
+    if: github.event_name == 'pull_request' && github.base_ref == 'main'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - name: typst.toml sürümü yayınlanmamış olmalı
+        run: |
+          SURUM=$(sed -n 's/^version = "\(.*\)"/\1/p' typst.toml)
+          if git rev-parse -q --verify "refs/tags/v$SURUM" >/dev/null; then
+            echo "::error::v$SURUM zaten yayınlanmış. main'e birleştirmeden önce typst.toml sürümünü artırın."
+            exit 1
+          fi
+          echo "Yayınlanacak sürüm: v$SURUM"
+
+  derle:
+    name: Derle ve doğrula
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: ./.github/actions/ortam
+      - run: bash tests/dogrula.sh
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: pdf-ciktilari
+          path: tests/out/*.pdf
+          if-no-files-found: ignore
