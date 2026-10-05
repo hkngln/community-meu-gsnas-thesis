@@ -63,7 +63,7 @@ Gerekenler:
 - Typst 0.15.1, `pdftotext` (poppler) ve Times New Roman fontu.
 - Paket, [README > Kurulum](README.md#kurulum) bölümündeki dizine bağlı olmalı. Geliştirirken klonlamak yerine çalıştığınız klasöre symlink verebilirsiniz:
   ```sh
-  ln -sfn "$PWD" "$HOME/Library/Application Support/typst/packages/local/meu-fbe-tez/0.1.0"
+  ln -sfn "$PWD" "$HOME/Library/Application Support/typst/packages/local/meu-fbe-tez/$(sed -n 's/^version = "\(.*\)"/\1/p' typst.toml)"
   ```
 
 Betik şunları yapar:
