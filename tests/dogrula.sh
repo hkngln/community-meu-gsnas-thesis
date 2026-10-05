@@ -38,8 +38,9 @@ baslik_sayfasi() {
 }
 
 # Şablonda, README'de ve lib.typ'de geçen her paket sürümü typst.toml ile aynı olmalı.
-ESKI=$(grep -rhoE "meu-fbe-tez(:|/)[0-9]+\.[0-9]+\.[0-9]+|--branch v[0-9]+\.[0-9]+\.[0-9]+" \
-  template README.md lib.typ | grep -vE "(:|/|v)$SURUM\$" || true)
+# Ayırıcı ":" (import), "/" (macOS/Linux yolu) veya "\" (Windows yolu) olabilir.
+ESKI=$(grep -rhoE 'meu-fbe-tez[:/\\][0-9]+\.[0-9]+\.[0-9]+|--branch v[0-9]+\.[0-9]+\.[0-9]+' \
+  template README.md lib.typ | grep -vE "[:/\\\\v]$SURUM\$" || true)
 [[ -z "$ESKI" ]] || hata "typst.toml sürümü ($SURUM) ile uyuşmayan referanslar: $ESKI"
 
 # Şablon: çift taraflı, dış kapaklı.

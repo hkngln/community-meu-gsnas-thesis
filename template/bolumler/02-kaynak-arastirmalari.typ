@@ -1,4 +1,4 @@
-#import "@local/meu-fbe-tez:0.1.0": tanim, teorem, kanit
+#import "@local/meu-fbe-tez:0.1.1": tanim, teorem, kanit
 
 = KAYNAK ARAŞTIRMALARI
 

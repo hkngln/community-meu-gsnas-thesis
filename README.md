@@ -48,13 +48,22 @@ Typst'ü yeni tanıyorsanız [resmi eğitim](https://typst.app/docs/tutorial) ve
 
 > **Web uygulaması hakkında:** [typst.app](https://typst.app) web editörü bilgisayara kurulan yerel paketleri göremez. Bu şablon bu yüzden şimdilik bilgisayara kurulan Typst ile kullanılır.
 
-### 2. Editör eklentisini kurun (önerilir)
+### 2. Editör ve eklenti kurun (önerilir)
 
-[Tinymist](https://github.com/Myriad-Dreamin/tinymist) eklentisi; canlı PDF önizleme, otomatik tamamlama ve satır üstünde hata gösterimi sağlar.
+Typst dosyaları düz metindir; her editörde yazılabilir. Rahat çalışmak için bir editör ve [Tinymist](https://github.com/Myriad-Dreamin/tinymist) eklentisi önerilir. Tinymist yazdıkça güncellenen PDF önizleme, otomatik tamamlama ve satır üstünde hata gösterimi sağlar.
 
-- **VS Code:** [Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=myriad-dreamin.tinymist)
-- **VSCodium, Cursor ve diğer VS Code türevleri:** [Open VSX](https://open-vsx.org/extension/myriad-dreamin/tinymist)
-- **Neovim, Zed, Helix, Emacs ve diğerleri:** [Tinymist kurulum belgeleri](https://myriad-dreamin.github.io/tinymist/)
+**Önerilen: [Visual Studio Code](https://code.visualstudio.com/download) + [Tinymist](https://marketplace.visualstudio.com/items?itemName=myriad-dreamin.tinymist)**
+- Ücretsizdir; Windows, macOS ve Linux'ta çalışır.
+- Typst'e yeni başlayanlar için en kolay kurulum budur.
+- VS Code'u kurun. Eklentiler panelinde (`Ctrl/Cmd+Shift+X`) "Tinymist" aratıp kurun.
+
+Diğer seçenekler:
+
+| Editör | Typst desteği |
+|---|---|
+| [VSCodium](https://vscodium.com), Cursor ve diğer VS Code türevleri | Tinymist, [Open VSX](https://open-vsx.org/extension/myriad-dreamin/tinymist) üzerinden |
+| [Zed](https://zed.dev) | [Typst eklentisi](https://zed.dev/extensions/typst) |
+| Neovim, Helix, Emacs ve diğerleri | [Tinymist kurulum belgeleri](https://myriad-dreamin.github.io/tinymist/) |
 
 ### 3. Times New Roman fontu
 
@@ -66,18 +75,18 @@ Paketi Typst'ün yerel paket dizinine klonlayın. Dizin adı sürüm numarasıyl
 
 ```sh
 # macOS
-git clone --branch v0.1.0 https://github.com/hkngln/meu-fbe-tez \
-  "$HOME/Library/Application Support/typst/packages/local/meu-fbe-tez/0.1.0"
+git clone --branch v0.1.1 https://github.com/hkngln/meu-fbe-tez \
+  "$HOME/Library/Application Support/typst/packages/local/meu-fbe-tez/0.1.1"
 
 # Linux
-git clone --branch v0.1.0 https://github.com/hkngln/meu-fbe-tez \
-  "$HOME/.local/share/typst/packages/local/meu-fbe-tez/0.1.0"
+git clone --branch v0.1.1 https://github.com/hkngln/meu-fbe-tez \
+  "$HOME/.local/share/typst/packages/local/meu-fbe-tez/0.1.1"
 ```
 
 ```powershell
 # Windows (PowerShell)
-git clone --branch v0.1.0 https://github.com/hkngln/meu-fbe-tez `
-  "$env:APPDATA\typst\packages\local\meu-fbe-tez\0.1.0"
+git clone --branch v0.1.1 https://github.com/hkngln/meu-fbe-tez `
+  "$env:APPDATA\typst\packages\local\meu-fbe-tez\0.1.1"
 ```
 
 En güncel sürüm numarası [Releases](https://github.com/hkngln/meu-fbe-tez/releases) sayfasında.
@@ -85,7 +94,7 @@ En güncel sürüm numarası [Releases](https://github.com/hkngln/meu-fbe-tez/re
 ## Yeni tez başlatma
 
 ```sh
-typst init @local/meu-fbe-tez:0.1.0 tezim
+typst init @local/meu-fbe-tez:0.1.1 tezim
 cd tezim
 typst watch main.typ
 ```
@@ -114,7 +123,7 @@ VS Code'da çalışmak için `tezim` klasörünü açın, `main.typ` dosyasını
 | Dipnot | `#footnote[..]` → \*, †, ‡ |
 | Matematik ortamları | `#tanim[..]`, `#teorem[..]`, `#lemma[..]`, `#ornek[..]`, `#onerme[..]`, `#uyari[..]`, `#nott[..]`, `#sonuc[..]`, `#kanit[..]` → Tanım 2.1.1 |
 
-Bir bölüm dosyasında matematik ortamlarını kullanmak için dosyanın başına şunu ekleyin: `#import "@local/meu-fbe-tez:0.1.0": tanim, teorem, kanit`.
+Bir bölüm dosyasında matematik ortamlarını kullanmak için dosyanın başına şunu ekleyin: `#import "@local/meu-fbe-tez:0.1.1": tanim, teorem, kanit`.
 
 ## Ayarlar
 
