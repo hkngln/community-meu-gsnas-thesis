@@ -144,11 +144,17 @@ Dal yapısı, commit kuralları ve sürüm akışı [CONTRIBUTING.md](CONTRIBUTI
 
 ## Lisans
 
-Kod [MIT](LICENSE) lisanslıdır.
+| Dosyalar | Lisans |
+|---|---|
+| Şablonun kodu (`lib.typ`, `src/` ve diğerleri) | [MIT](LICENSE) |
+| `template/` klasörü: `typst init` ile tezinize kopyalanan dosyalar (görseller hariç) | [MIT-0](LICENSE-MIT-0) |
+| Logo ve görseller (aşağıya bakın) | Mersin Üniversitesi'ne aittir |
+
+`template/` klasörü MIT-0 lisanslıdır. Bu dosyalardan oluşan tezinizi dilediğiniz gibi değiştirebilir ve dağıtabilirsiniz; atıf yapmanız ya da lisans metnini eklemeniz gerekmez.
 
 **Logo ve görseller Mersin Üniversitesi'ne aittir:**
 - Mersin Üniversitesi logosu.
 - `assets/` klasöründeki dış kapak görselleri.
 - `template/sekiller/` klasöründeki örnek fotoğraflar.
 
-Bu görseller enstitünün resmi tez şablonundan alınmıştır. Yalnızca resmi tasarımı uygulamak için kullanılırlar ve MIT lisansının kapsamında değildirler.
+Bu görseller enstitünün resmi tez şablonundan alınmıştır. Yalnızca resmi tasarımı uygulamak için kullanılırlar ve MIT ya da MIT-0 lisansının kapsamında değildirler.
