@@ -1,15 +1,15 @@
 [package]
-name = "meu-fbe-tez"
-version = "0.1.1"
+name = "community-meu-gsnas-thesis"
+version = "0.2.0"
 entrypoint = "lib.typ"
 authors = ["Hakan GÜLEN <https://github.com/hkngln>"]
-license = "MIT"
-repository = "https://github.com/hkngln/meu-fbe-tez"
+license = "MIT AND MIT-0"
+repository = "https://github.com/hkngln/community-meu-gsnas-thesis"
 description = "Mersin Üniversitesi Fen Bilimleri Enstitüsü yüksek lisans / doktora tez şablonu."
 keywords = ["thesis", "tez", "mersin", "turkish"]
 categories = ["thesis"]
 compiler = "0.15.0"
-exclude = ["tests", "docs", ".github", "CONTRIBUTING.md"]
+exclude = ["tests", "docs", ".github", "CONTRIBUTING.md", "CONTRIBUTING.tr.md"]
 
 [template]
 path = "template"

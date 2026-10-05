@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Şablonu ve testleri derler, uyarıyı hata sayar, PDF metnini doğrular.
 # Gereken: typst, pdftotext (poppler), Times New Roman fontu ve paketin
-# @local/meu-fbe-tez:<sürüm> olarak kurulu olması (README > Kurulum).
+# @local/community-meu-gsnas-thesis:<sürüm> olarak kurulu olması (README > Kurulum).
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
@@ -39,12 +39,12 @@ baslik_sayfasi() {
 
 # Şablonda, README'de ve lib.typ'de geçen her paket sürümü typst.toml ile aynı olmalı.
 # Ayırıcı ":" (import), "/" (macOS/Linux yolu) veya "\" (Windows yolu) olabilir.
-ESKI=$(grep -rhoE 'meu-fbe-tez[:/\\][0-9]+\.[0-9]+\.[0-9]+|--branch v[0-9]+\.[0-9]+\.[0-9]+' \
-  template README.md lib.typ | grep -vE "[:/\\\\v]$SURUM\$" || true)
+ESKI=$(grep -rhoE 'community-meu-gsnas-thesis[:/\\][0-9]+\.[0-9]+\.[0-9]+|--branch v[0-9]+\.[0-9]+\.[0-9]+' \
+  template README.md README.tr.md docs lib.typ | grep -vE "[:/\\\\v]$SURUM\$" || true)
 [[ -z "$ESKI" ]] || hata "typst.toml sürümü ($SURUM) ile uyuşmayan referanslar: $ESKI"
 
 # Şablon: çift taraflı, dış kapaklı.
-SABLON="$OUT/sablon.pdf"
+SABLON="$OUT/template.pdf"
 derle template template/main.typ "$SABLON"
 icerir "$SABLON" "TEZİN BAŞLIĞI"
 [[ $(metin -f 3 -l 3 "$SABLON") == *"ORCID ID"* ]] || hata "iç kapak 3. sayfada değil"
@@ -56,8 +56,8 @@ icerir "$SABLON" "Eşitlik (2.1)"
 icerir "$SABLON" "(Grady vd., 2019)"
 
 # Kenar durumları.
-KENAR="$OUT/kenar-durumlar.pdf"
-derle . tests/kenar-durumlar.typ "$KENAR"
+KENAR="$OUT/edge-cases.pdf"
+derle . tests/edge-cases.typ "$KENAR"
 for beklenen in "DOKTORA TEZİ" "2. DANIŞMAN" "Şekil 1.1." "Şekil E.1." "Tablo E.1." "(E.1)" \
   "Tanım 1.1" "Teorem 1.1.1" "Şekil 1. Ön kısım şekli"; do
   icerir "$KENAR" "$beklenen"
@@ -66,8 +66,8 @@ icermez "$KENAR" "1.0.1"
 icermez "$KENAR" "Şekil 0."
 
 # Tek taraf + varsayılan kaynakça.
-TEK="$OUT/tek-taraf.pdf"
-derle . tests/tek-taraf.typ "$TEK"
+TEK="$OUT/one-sided.pdf"
+derle . tests/one-sided.typ "$TEK"
 icerir "$TEK" "(Grady vd., 2019)"
 icermez "$TEK" "[1]"
 icermez "$TEK" "Kaynakça"

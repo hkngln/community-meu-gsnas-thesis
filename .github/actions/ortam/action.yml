@@ -23,11 +23,11 @@ runs:
       with:
         typst-version: 0.15.1
 
-    - name: Paketi @local/meu-fbe-tez olarak bağla
+    - name: Paketi @local/community-meu-gsnas-thesis olarak bağla
       shell: bash
       run: |
         SURUM=$(sed -n 's/^version = "\(.*\)"/\1/p' typst.toml)
-        HEDEF="$HOME/Library/Application Support/typst/packages/local/meu-fbe-tez"
+        HEDEF="$HOME/Library/Application Support/typst/packages/local/community-meu-gsnas-thesis"
         mkdir -p "$HEDEF"
         ln -sfn "$GITHUB_WORKSPACE" "$HEDEF/$SURUM"
         grep -q "Times New Roman" <<<"$(typst fonts)" || { echo "::error::Typst Times New Roman bulamadı"; exit 1; }
