@@ -1,6 +1,6 @@
 // Mersin Üniversitesi Fen Bilimleri Enstitüsü tez şablonu (Typst).
 //
-//   #import "@local/meu-fbe-tez:0.1.0": *
+//   #import "@local/meu-fbe-tez:0.1.1": *
 //   #show: tez.with(baslik: "...", ogrenci: "Adı SOYADI", ...)
 
 #import "src/tez.typ": tez

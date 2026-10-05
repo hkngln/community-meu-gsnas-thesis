@@ -75,18 +75,18 @@ Paketi Typst'ün yerel paket dizinine klonlayın. Dizin adı sürüm numarasıyl
 
 ```sh
 # macOS
-git clone --branch v0.1.0 https://github.com/hkngln/meu-fbe-tez \
-  "$HOME/Library/Application Support/typst/packages/local/meu-fbe-tez/0.1.0"
+git clone --branch v0.1.1 https://github.com/hkngln/meu-fbe-tez \
+  "$HOME/Library/Application Support/typst/packages/local/meu-fbe-tez/0.1.1"
 
 # Linux
-git clone --branch v0.1.0 https://github.com/hkngln/meu-fbe-tez \
-  "$HOME/.local/share/typst/packages/local/meu-fbe-tez/0.1.0"
+git clone --branch v0.1.1 https://github.com/hkngln/meu-fbe-tez \
+  "$HOME/.local/share/typst/packages/local/meu-fbe-tez/0.1.1"
 ```
 
 ```powershell
 # Windows (PowerShell)
-git clone --branch v0.1.0 https://github.com/hkngln/meu-fbe-tez `
-  "$env:APPDATA\typst\packages\local\meu-fbe-tez\0.1.0"
+git clone --branch v0.1.1 https://github.com/hkngln/meu-fbe-tez `
+  "$env:APPDATA\typst\packages\local\meu-fbe-tez\0.1.1"
 ```
 
 En güncel sürüm numarası [Releases](https://github.com/hkngln/meu-fbe-tez/releases) sayfasında.
@@ -94,7 +94,7 @@ En güncel sürüm numarası [Releases](https://github.com/hkngln/meu-fbe-tez/re
 ## Yeni tez başlatma
 
 ```sh
-typst init @local/meu-fbe-tez:0.1.0 tezim
+typst init @local/meu-fbe-tez:0.1.1 tezim
 cd tezim
 typst watch main.typ
 ```
@@ -123,7 +123,7 @@ VS Code'da çalışmak için `tezim` klasörünü açın, `main.typ` dosyasını
 | Dipnot | `#footnote[..]` → \*, †, ‡ |
 | Matematik ortamları | `#tanim[..]`, `#teorem[..]`, `#lemma[..]`, `#ornek[..]`, `#onerme[..]`, `#uyari[..]`, `#nott[..]`, `#sonuc[..]`, `#kanit[..]` → Tanım 2.1.1 |
 
-Bir bölüm dosyasında matematik ortamlarını kullanmak için dosyanın başına şunu ekleyin: `#import "@local/meu-fbe-tez:0.1.0": tanim, teorem, kanit`.
+Bir bölüm dosyasında matematik ortamlarını kullanmak için dosyanın başına şunu ekleyin: `#import "@local/meu-fbe-tez:0.1.1": tanim, teorem, kanit`.
 
 ## Ayarlar
 

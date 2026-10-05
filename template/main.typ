@@ -1,4 +1,4 @@
-#import "@local/meu-fbe-tez:0.1.0": *
+#import "@local/meu-fbe-tez:0.1.1": *
 
 // Kırmızı görünen her şey doldurulmamış alandır.
 #show: tez.with(
