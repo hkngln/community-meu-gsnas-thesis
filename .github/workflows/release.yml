@@ -42,7 +42,7 @@ jobs:
           SURUM: ${{ steps.surum.outputs.surum }}
         run: |
           bash tests/verify.sh
-          cp tests/out/template.pdf "meu-fbe-tez-ornek-v$SURUM.pdf"
+          cp tests/out/template.pdf "community-meu-gsnas-thesis-example-v$SURUM.pdf"
 
       - if: steps.surum.outputs.yeni == 'true'
         uses: softprops/action-gh-release@v3
@@ -51,4 +51,4 @@ jobs:
           target_commitish: ${{ github.sha }}
           name: v${{ steps.surum.outputs.surum }}
           generate_release_notes: true
-          files: meu-fbe-tez-ornek-v${{ steps.surum.outputs.surum }}.pdf
+          files: community-meu-gsnas-thesis-example-v${{ steps.surum.outputs.surum }}.pdf

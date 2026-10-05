@@ -1,7 +1,7 @@
-# meu-fbe-tez
+# community-meu-gsnas-thesis
 
-[![CI](https://github.com/hkngln/meu-fbe-tez/actions/workflows/ci.yml/badge.svg?branch=dev)](https://github.com/hkngln/meu-fbe-tez/actions/workflows/ci.yml)
-[![Sürüm](https://img.shields.io/github/v/release/hkngln/meu-fbe-tez)](https://github.com/hkngln/meu-fbe-tez/releases/latest)
+[![CI](https://github.com/hkngln/community-meu-gsnas-thesis/actions/workflows/ci.yml/badge.svg?branch=dev)](https://github.com/hkngln/community-meu-gsnas-thesis/actions/workflows/ci.yml)
+[![Sürüm](https://img.shields.io/github/v/release/hkngln/community-meu-gsnas-thesis)](https://github.com/hkngln/community-meu-gsnas-thesis/releases/latest)
 
 Mersin Üniversitesi Fen Bilimleri Enstitüsü yüksek lisans ve doktora tezleri için [Typst](https://typst.app) şablonu.
 
@@ -12,7 +12,7 @@ Mersin Üniversitesi Fen Bilimleri Enstitüsü yüksek lisans ve doktora tezleri
 
 ![Önizleme: dış kapak, iç kapak ve bir bölüm sayfası](docs/onizleme.png)
 
-> **Not:** Bu proje enstitünün resmi bir ürünü değildir. Logo ve görseller Mersin Üniversitesi'ne aittir ([Lisans](#lisans)). Tezinizi teslim etmeden önce güncel [tez yazım yönergesini](https://www.mersin.edu.tr) kontrol edin. Bir kuralın uymadığını fark ederseniz [issue açın](https://github.com/hkngln/meu-fbe-tez/issues).
+> **Not:** Bu proje enstitünün resmi bir ürünü değildir. Logo ve görseller Mersin Üniversitesi'ne aittir ([Lisans](#lisans)). Tezinizi teslim etmeden önce güncel [tez yazım yönergesini](https://www.mersin.edu.tr) kontrol edin. Bir kuralın uymadığını fark ederseniz [issue açın](https://github.com/hkngln/community-meu-gsnas-thesis/issues).
 
 ## Özellikler
 
@@ -75,26 +75,26 @@ Paketi Typst'ün yerel paket dizinine klonlayın. Dizin adı sürüm numarasıyl
 
 ```sh
 # macOS
-git clone --branch v0.2.0 https://github.com/hkngln/meu-fbe-tez \
-  "$HOME/Library/Application Support/typst/packages/local/meu-fbe-tez/0.2.0"
+git clone --branch v0.2.0 https://github.com/hkngln/community-meu-gsnas-thesis \
+  "$HOME/Library/Application Support/typst/packages/local/community-meu-gsnas-thesis/0.2.0"
 
 # Linux
-git clone --branch v0.2.0 https://github.com/hkngln/meu-fbe-tez \
-  "$HOME/.local/share/typst/packages/local/meu-fbe-tez/0.2.0"
+git clone --branch v0.2.0 https://github.com/hkngln/community-meu-gsnas-thesis \
+  "$HOME/.local/share/typst/packages/local/community-meu-gsnas-thesis/0.2.0"
 ```
 
 ```powershell
 # Windows (PowerShell)
-git clone --branch v0.2.0 https://github.com/hkngln/meu-fbe-tez `
-  "$env:APPDATA\typst\packages\local\meu-fbe-tez\0.2.0"
+git clone --branch v0.2.0 https://github.com/hkngln/community-meu-gsnas-thesis `
+  "$env:APPDATA\typst\packages\local\community-meu-gsnas-thesis\0.2.0"
 ```
 
-En güncel sürüm numarası [Releases](https://github.com/hkngln/meu-fbe-tez/releases) sayfasında.
+En güncel sürüm numarası [Releases](https://github.com/hkngln/community-meu-gsnas-thesis/releases) sayfasında.
 
 ## Yeni tez başlatma
 
 ```sh
-typst init @local/meu-fbe-tez:0.2.0 tezim
+typst init @local/community-meu-gsnas-thesis:0.2.0 tezim
 cd tezim
 typst watch main.typ
 ```
@@ -141,7 +141,7 @@ En sık kullanılanlar:
 
 Ek yoksa `#appendices[..]` satırını silin. Hiç tablo ya da şekil yoksa ilgili dizin sayfası basılmaz.
 
-> **v0.1.x kullanıyorsanız:** v0.2.0'da adlar İngilizceye çevrildi, PDF çıktısı değişmedi. Geçiş tablosu kılavuzun [v0.1.x'ten geçiş](docs/kullanim-kilavuzu.md#v01xten-geçiş) bölümünde.
+> **v0.1.x kullanıyorsanız:** v0.2.0'da paketin adı `meu-fbe-tez` yerine `community-meu-gsnas-thesis` oldu ve adlar İngilizceye çevrildi; PDF çıktısı değişmedi. Geçiş tablosu kılavuzun [v0.1.x'ten geçiş](docs/kullanim-kilavuzu.md#v01xten-geçiş) bölümünde.
 
 ## Katkı
 

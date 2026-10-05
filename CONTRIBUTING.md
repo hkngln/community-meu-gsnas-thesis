@@ -1,6 +1,6 @@
 # Katkı Rehberi
 
-Katkılarınız memnuniyetle karşılanır: hata bildirimi, yönergeye uymayan bir kural, yeni bir özellik ya da belge düzeltmesi. Büyük bir değişikliğe başlamadan önce bir [issue](https://github.com/hkngln/meu-fbe-tez/issues) açıp tartışmanız önerilir.
+Katkılarınız memnuniyetle karşılanır: hata bildirimi, yönergeye uymayan bir kural, yeni bir özellik ya da belge düzeltmesi. Büyük bir değişikliğe başlamadan önce bir [issue](https://github.com/hkngln/community-meu-gsnas-thesis/issues) açıp tartışmanız önerilir.
 
 ## Dal yapısı
 
@@ -63,7 +63,7 @@ Gerekenler:
 - Typst 0.15.1, `pdftotext` (poppler) ve Times New Roman fontu.
 - Paket, [README > Kurulum](README.md#kurulum) bölümündeki dizine bağlı olmalı. Geliştirirken klonlamak yerine çalıştığınız klasöre symlink verebilirsiniz:
   ```sh
-  ln -sfn "$PWD" "$HOME/Library/Application Support/typst/packages/local/meu-fbe-tez/$(sed -n 's/^version = "\(.*\)"/\1/p' typst.toml)"
+  ln -sfn "$PWD" "$HOME/Library/Application Support/typst/packages/local/community-meu-gsnas-thesis/$(sed -n 's/^version = "\(.*\)"/\1/p' typst.toml)"
   ```
 
 Betik şunları yapar:
@@ -85,7 +85,7 @@ Yayın adımları:
 1. `dev` üzerinde bir `chore/surum-X.Y.Z` dalı açın.
 2. Sürüm numarasını şu dosyaların hepsinde güncelleyin; CI biri unutulursa hata verir:
    - `typst.toml` → `version`
-   - `template/main.typ` ve `template/chapters/*.typ` → `@local/meu-fbe-tez:X.Y.Z`
+   - `template/main.typ` ve `template/chapters/*.typ` → `@local/community-meu-gsnas-thesis:X.Y.Z`
    - `README.md` ve `lib.typ` → kurulum ve import örnekleri
 3. Bu dalı PR ile `dev`'e birleştirin.
 4. **`dev` → `main`** PR'ı açın. CI, sürümün daha önce yayınlanmadığını denetler.

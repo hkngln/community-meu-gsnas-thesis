@@ -1,4 +1,4 @@
-#import "@local/meu-fbe-tez:0.2.0": *
+#import "@local/community-meu-gsnas-thesis:0.2.0": *
 
 // Kırmızı görünen her şey doldurulmamış alandır.
 // Ayarların Türkçe karşılıkları: kullanım kılavuzu (docs/kullanim-kilavuzu.md).

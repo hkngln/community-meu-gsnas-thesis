@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Şablonu ve testleri derler, uyarıyı hata sayar, PDF metnini doğrular.
 # Gereken: typst, pdftotext (poppler), Times New Roman fontu ve paketin
-# @local/meu-fbe-tez:<sürüm> olarak kurulu olması (README > Kurulum).
+# @local/community-meu-gsnas-thesis:<sürüm> olarak kurulu olması (README > Kurulum).
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
@@ -39,7 +39,7 @@ baslik_sayfasi() {
 
 # Şablonda, README'de ve lib.typ'de geçen her paket sürümü typst.toml ile aynı olmalı.
 # Ayırıcı ":" (import), "/" (macOS/Linux yolu) veya "\" (Windows yolu) olabilir.
-ESKI=$(grep -rhoE 'meu-fbe-tez[:/\\][0-9]+\.[0-9]+\.[0-9]+|--branch v[0-9]+\.[0-9]+\.[0-9]+' \
+ESKI=$(grep -rhoE 'community-meu-gsnas-thesis[:/\\][0-9]+\.[0-9]+\.[0-9]+|--branch v[0-9]+\.[0-9]+\.[0-9]+' \
   template README.md lib.typ | grep -vE "[:/\\\\v]$SURUM\$" || true)
 [[ -z "$ESKI" ]] || hata "typst.toml sürümü ($SURUM) ile uyuşmayan referanslar: $ESKI"
 
