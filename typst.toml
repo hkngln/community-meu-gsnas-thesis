@@ -9,7 +9,7 @@ description = "Mersin Üniversitesi Fen Bilimleri Enstitüsü yüksek lisans / d
 keywords = ["thesis", "tez", "mersin", "turkish"]
 categories = ["thesis"]
 compiler = "0.15.0"
-exclude = ["tests", "docs", ".github", "CONTRIBUTING.md"]
+exclude = ["tests", "docs", ".github", "CONTRIBUTING.md", "CONTRIBUTING.tr.md"]
 
 [template]
 path = "template"

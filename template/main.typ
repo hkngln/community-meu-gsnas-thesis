@@ -1,7 +1,7 @@
 #import "@local/community-meu-gsnas-thesis:0.2.0": *
 
 // Kırmızı görünen her şey doldurulmamış alandır.
-// Ayarların Türkçe karşılıkları: kullanım kılavuzu (docs/kullanim-kilavuzu.md).
+// Ayarların Türkçe karşılıkları: docs/kullanim-kilavuzu.md (English: docs/user-guide.md).
 #show: thesis.with(
   title: "Tezin Başlığı",
   title-en: "Title of the Thesis",

@@ -4,6 +4,7 @@
 //   #show: thesis.with(title: "...", student: "Adı SOYADI", ...)
 //
 // İngilizce adların Türkçe karşılıkları: docs/kullanim-kilavuzu.md
+// User guide (English): docs/user-guide.md
 
 #import "src/thesis.typ": thesis
 #import "src/back-matter.typ": appendices, cv, references

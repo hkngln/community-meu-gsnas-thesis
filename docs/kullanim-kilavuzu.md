@@ -1,10 +1,12 @@
 # Kullanım Kılavuzu
 
+[🇬🇧 English](user-guide.md) | 🇹🇷 **Türkçe**
+
 Bu kılavuz şablonun bütün ayarlarını ve fonksiyonlarını Türkçe karşılıklarıyla anlatır.
 
 Şablonun kodundaki adlar **İngilizcedir**; böylece Typst'ün kendi adlarıyla (`figure`, `table`, `heading`…) uyumlu ve herkes için okunaklı olur. **PDF'e basılan her şey Türkçedir:** başlıklar (ÖZET, ONAY, KAYNAKLAR…), etiketler (Tablo, Şekil, Tanım…) ve kapak metinleri enstitünün yazım kurallarına uygun şekilde Türkçe kalır.
 
-Kurulum için [README](../README.md#kurulum) dosyasına bakın.
+Kurulum için [README](../README.tr.md#kurulum) dosyasına bakın.
 
 ## İçindekiler
 
@@ -186,7 +188,7 @@ Etiket adları (`<tbl-ornek>` gibi) serbesttir; `tbl-`, `fig-`, `eq-` önekleri 
 
 ## v0.1.x'ten geçiş
 
-v0.2.0 ile paketin adı `meu-fbe-tez` yerine `community-meu-gsnas-thesis` oldu ve bütün adlar İngilizceye çevrildi. PDF çıktısı değişmedi. Eski bir tezi taşımak için önce paketi yeni adıyla kurun ([README > Kurulum](../README.md#kurulum)). Sonra `main.typ` ve bölüm dosyalarındaki import satırlarını `@local/community-meu-gsnas-thesis:0.2.0` yapın ve adları aşağıdaki tabloya göre değiştirin. Eski sürümü kullanmaya devam etmek de mümkündür; o sürümün klasörü kurulu kaldığı sürece eski tezler derlenmeye devam eder.
+v0.2.0 ile paketin adı `meu-fbe-tez` yerine `community-meu-gsnas-thesis` oldu ve bütün adlar İngilizceye çevrildi. PDF çıktısı değişmedi. Eski bir tezi taşımak için önce paketi yeni adıyla kurun ([README > Kurulum](../README.tr.md#kurulum)). Sonra `main.typ` ve bölüm dosyalarındaki import satırlarını `@local/community-meu-gsnas-thesis:0.2.0` yapın ve adları aşağıdaki tabloya göre değiştirin. Eski sürümü kullanmaya devam etmek de mümkündür; o sürümün klasörü kurulu kaldığı sürece eski tezler derlenmeye devam eder.
 
 | v0.1.x (Türkçe) | v0.2.0 (İngilizce) |
 |---|---|
