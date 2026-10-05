@@ -1,69 +1,70 @@
-#import "@local/meu-fbe-tez:0.1.1": *
+#import "@local/meu-fbe-tez:0.2.0": *
 
 // Kırmızı görünen her şey doldurulmamış alandır.
-#show: tez.with(
-  baslik: "Tezin Başlığı",
-  baslik-en: "Title of the Thesis",
-  tur: "yl", // "yl" = Yüksek Lisans, "dr" = Doktora
-  ogrenci: "Adı SOYADI",
+// Ayarların Türkçe karşılıkları: kullanım kılavuzu (docs/kullanim-kilavuzu.md).
+#show: thesis.with(
+  title: "Tezin Başlığı",
+  title-en: "Title of the Thesis",
+  degree: "master", // "master" = Yüksek Lisans, "phd" = Doktora
+  student: "Adı SOYADI",
   orcid: "0000-0000-0000-0000",
-  anabilim-dali: "Elektrik-Elektronik Mühendisliği",
-  department: "Electrical and Electronics Engineering",
-  danisman: (ad: "Prof. Dr. Adı SOYADI", orcid: "0000-0000-0000-0000"),
-  // ikinci-danisman: (ad: "Doç. Dr. Adı SOYADI", orcid: "0000-0000-0000-0000"),
+  department: "Elektrik-Elektronik Mühendisliği",
+  department-en: "Electrical and Electronics Engineering",
+  advisor: (name: "Prof. Dr. Adı SOYADI", orcid: "0000-0000-0000-0000"),
+  // co-advisor: (name: "Doç. Dr. Adı SOYADI", orcid: "0000-0000-0000-0000"),
   // ONAY sayfasındaki tam jüri (danışman dahil); ilk üye jüri başkanıdır.
   // Kapakta danışman ayrıca yazıldığı için jüri satırlarında tekrar edilmez.
   // Kullanılmayan üyeleri silin.
-  juri: (
+  jury: (
     "Prof. Dr. Adı SOYADI",
     "Prof. Dr. Birinci ÜYE",
     "Doç. Dr. İkinci ÜYE",
     "Dr. Öğr. Üyesi Üçüncü ÜYE",
     "Dr. Öğr. Üyesi Dördüncü ÜYE",
   ),
-  tarih: "OCAK - 2026",
+  date: "OCAK - 2026",
+  year: 2026,
   // Logolu dış ön/arka kapak (EK-5, EK-6). Basımda dış kapak ayrı
   // basılacaksa false yapın; YÖK'e yüklenen PDF'te arka kapak bulunmalıdır.
-  dis-kapak: true,
-  arka-kapak: true,
-  yil: 2026,
-  savunma-tarihi: none, // "15/01/2026"
-  karar: none, // "oybirliği" veya "oyçokluğu"
-  ozet: include "on/ozet.typ",
-  anahtar-kelimeler: ("Kelime1", "Kelime2", "Kelime3", "Kelime4", "Kelime5"),
-  abstract: include "on/abstract.typ",
-  keywords: ("Keyword1", "Keyword2", "Keyword3", "Keyword4", "Keyword5"),
-  tesekkur: include "on/tesekkur.typ",
-  kisaltmalar: (
+  front-cover: true,
+  back-cover: true,
+  defense-date: none, // "15/01/2026"
+  decision: none, // "unanimous" = oybirliği, "majority" = oyçokluğu
+  abstract-tr: include "front/abstract-tr.typ",
+  keywords-tr: ("Kelime1", "Kelime2", "Kelime3", "Kelime4", "Kelime5"),
+  abstract-en: include "front/abstract-en.typ",
+  keywords-en: ("Keyword1", "Keyword2", "Keyword3", "Keyword4", "Keyword5"),
+  acknowledgements: include "front/acknowledgements.typ",
+  abbreviations: (
     ("T.C.", "Türkiye Cumhuriyeti"),
     ("YÖK", "Yükseköğretim Kurulu"),
     ("MEÜ", "Mersin Üniversitesi"),
     ("FBE", "Fen Bilimleri Enstitüsü"),
   ),
   // Tek taraflı baskı için false yapın.
-  tek-sayfa-basla: true,
+  two-sided: true,
 )
 
-#include "bolumler/01-giris.typ"
-#include "bolumler/02-kaynak-arastirmalari.typ"
-#include "bolumler/03-materyal-yontem.typ"
-#include "bolumler/04-bulgular-tartisma.typ"
-#include "bolumler/05-sonuclar-oneriler.typ"
+#include "chapters/01-introduction.typ"
+#include "chapters/02-literature-review.typ"
+#include "chapters/03-materials-methods.typ"
+#include "chapters/04-results-discussion.typ"
+#include "chapters/05-conclusions.typ"
 
-#kaynaklar(bibliography("kaynaklar.bib", style: "apa", full: true, title: none))
+#references(bibliography("references.bib", style: "apa", full: true, title: none))
 
 // Ek yoksa aşağıdaki satırı silin.
-#ekler[Ekler buraya yazılır.]
+#appendices[Ekler buraya yazılır.]
 
-#ozgecmis(
-  ad-soyad: "Adı SOYADI",
-  dogum-tarihi: "",
-  eposta: "",
-  ogrenim: (
+#cv(
+  name: "Adı SOYADI",
+  birth-date: "",
+  email: "",
+  education: (
     ("Lisans", "", "", ""),
     ("Yüksek Lisans", "", "", ""),
     ("Doktora", "", "", ""),
   ),
-  gorevler: (("", "", ""),),
-  eserler: ([], [], []),
+  positions: (("", "", ""),),
+  publications: ([], [], []),
 )

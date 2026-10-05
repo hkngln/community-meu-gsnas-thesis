@@ -56,7 +56,7 @@ Türler dal türleriyle aynıdır: `feat`, `fix`, `docs`, `refactor`, `test`, `c
 ## Testler
 
 ```sh
-bash tests/dogrula.sh
+bash tests/verify.sh
 ```
 
 Gerekenler:
@@ -67,11 +67,11 @@ Gerekenler:
   ```
 
 Betik şunları yapar:
-- `template/main.typ`, `tests/kenar-durumlar.typ` ve `tests/tek-taraf.typ` dosyalarını derler. **Her uyarı hata sayılır.**
+- `template/main.typ`, `tests/edge-cases.typ` ve `tests/one-sided.typ` dosyalarını derler. **Her uyarı hata sayılır.**
 - PDF metnini denetler: sayfa sırası, numaralar, atıflar ve sürüm referansları.
 - Çıktıları `tests/out/` klasörüne yazar.
 
-Yeni bir davranış eklerken `tests/` altına bir durum ve `dogrula.sh` içine bir kontrol ekleyin. Görünümü etkileyen değişikliklerde PR'a önce/sonra ekran görüntüsü koyun.
+Kodda İngilizce adlar kullanılır; yeni bir ayar ya da fonksiyon eklerken [kullanım kılavuzundaki](docs/kullanim-kilavuzu.md) Türkçe karşılık tablosunu da güncelleyin. Yeni bir davranış eklerken `tests/` altına bir durum ve `verify.sh` içine bir kontrol ekleyin. Görünümü etkileyen değişikliklerde PR'a önce/sonra ekran görüntüsü koyun.
 
 ## Sürüm yayınlama
 
@@ -85,7 +85,7 @@ Yayın adımları:
 1. `dev` üzerinde bir `chore/surum-X.Y.Z` dalı açın.
 2. Sürüm numarasını şu dosyaların hepsinde güncelleyin; CI biri unutulursa hata verir:
    - `typst.toml` → `version`
-   - `template/main.typ` ve `template/bolumler/*.typ` → `@local/meu-fbe-tez:X.Y.Z`
+   - `template/main.typ` ve `template/chapters/*.typ` → `@local/meu-fbe-tez:X.Y.Z`
    - `README.md` ve `lib.typ` → kurulum ve import örnekleri
 3. Bu dalı PR ile `dev`'e birleştirin.
 4. **`dev` → `main`** PR'ı açın. CI, sürümün daha önce yayınlanmadığını denetler.
@@ -94,4 +94,4 @@ Yayın adımları:
 
 ## Kurallarla ilgili değişiklikler
 
-Bir kural yönergeye uymuyorsa issue'ya veya PR'a kaynağını ekleyin: yönergenin ilgili maddesi ya da enstitünün güncel şablonundan bir alıntı. Ölçüler `src/ayarlar.typ` dosyasında toplanmıştır; mümkünse yalnızca oradan değiştirin.
+Bir kural yönergeye uymuyorsa issue'ya veya PR'a kaynağını ekleyin: yönergenin ilgili maddesi ya da enstitünün güncel şablonundan bir alıntı. Ölçüler `src/settings.typ` dosyasında toplanmıştır; mümkünse yalnızca oradan değiştirin.

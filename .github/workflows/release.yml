@@ -41,8 +41,8 @@ jobs:
         env:
           SURUM: ${{ steps.surum.outputs.surum }}
         run: |
-          bash tests/dogrula.sh
-          cp tests/out/sablon.pdf "meu-fbe-tez-ornek-v$SURUM.pdf"
+          bash tests/verify.sh
+          cp tests/out/template.pdf "meu-fbe-tez-ornek-v$SURUM.pdf"
 
       - if: steps.surum.outputs.yeni == 'true'
         uses: softprops/action-gh-release@v3

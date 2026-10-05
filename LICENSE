@@ -21,9 +21,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 The files in the template/ directory (the project scaffold copied by
-`typst init`), except the images in template/sekiller/, are licensed under
+`typst init`), except the images in template/figures/, are licensed under
 the MIT No Attribution license instead; see LICENSE-MIT-0.
 
 The Mersin University logo and all images in this repository (the cover
-images in assets/ and the example photographs in template/sekiller/) are the
+images in assets/ and the example photographs in template/figures/) are the
 property of Mersin University and are not covered by either license.

@@ -1,52 +1,52 @@
-#import "ayarlar.typ": ARALIK-1
+#import "settings.typ": SPACING-1
 
 // Doldurulmamış alanı kırmızı yer tutucu olarak gösterir; PDF'e bakınca eksik
 // bilgi hemen göze çarpar (LaTeX şablonundaki \color{red} alanların karşılığı).
-#let alan(deger, yer-tutucu) = if deger == none {
-  text(fill: red, yer-tutucu)
+#let field(value, placeholder) = if value == none {
+  text(fill: red, placeholder)
 } else {
-  deger
+  value
 }
 
 // Typst'ün upper() fonksiyonu dile duyarlı değil: "i" -> "I" yapar.
 // Türkçede "i" -> "İ" olmalı; "ı" -> "I" zaten doğru.
-#let buyuk-harf(metin) = if type(metin) == str {
-  upper(metin.replace("i", "İ"))
+#let tr-upper(body) = if type(body) == str {
+  upper(body.replace("i", "İ"))
 } else {
-  upper(metin)
+  upper(body)
 }
 
 // EKLER bölümüne girildi mi? Ekteki şekil/tablo/eşitlikler "E.1" diye
 // numaralanır; aksi halde son bölümün numarasını tekrar kullanırlar.
-#let EK-DURUMU = state("meu-ekler", false)
+#let APPENDIX-STATE = state("meu-appendix", false)
 
 // Bir konumdaki (verilmezse bulunulan yerdeki) bölüm numarası: "2" veya "E".
-#let bolum-no(konum: none) = {
-  let ek-mi = if konum == none { EK-DURUMU.get() } else { EK-DURUMU.at(konum) }
-  if ek-mi { return "E" }
-  let basliklar = if konum == none { counter(heading).get() } else { counter(heading).at(konum) }
-  str(basliklar.first())
+#let chapter-no(loc: none) = {
+  let in-appendix = if loc == none { APPENDIX-STATE.get() } else { APPENDIX-STATE.at(loc) }
+  if in-appendix { return "E" }
+  let headings = if loc == none { counter(heading).get() } else { counter(heading).at(loc) }
+  str(headings.first())
 }
 
 // Şekil/tablo/eşitlik numarası: "2.1", ekte "E.1". Context içinde çağrılır.
 // İlk bölümden önce (ön kısım) bölüm öneki olmadan: "1".
-#let bolume-gore(..n) = {
-  let bolum = bolum-no()
-  let onek = if bolum == "0" { () } else { (bolum,) }
-  (onek + n.pos().map(str)).join(".")
+#let by-chapter(..n) = {
+  let chapter = chapter-no()
+  let prefix = if chapter == "0" { () } else { (chapter,) }
+  (prefix + n.pos().map(str)).join(".")
 }
 
 // Ön kısım başlığı: ortalı, numarasız, içindekilerde listelenir.
-#let on-baslik(metin) = {
+#let front-heading(body) = {
   pagebreak(weak: true)
-  align(center, heading(level: 1, numbering: none, metin))
+  align(center, heading(level: 1, numbering: none, body))
 }
 
 // Ortalı, kalın ama içindekilerde yer almayan ara başlık (ör. ETHICAL DECLARATION).
-#let ortali-kalin(metin) = align(center, strong(metin))
+#let centered-bold(body) = align(center, strong(body))
 
 // Tek satır aralıklı içerik (tablolar, dizinler, başlık sayfası tabloları).
-#let tek-aralik(icerik) = {
-  set par(leading: ARALIK-1, spacing: ARALIK-1, first-line-indent: 0pt, justify: false)
-  icerik
+#let single-spaced(body) = {
+  set par(leading: SPACING-1, spacing: SPACING-1, first-line-indent: 0pt, justify: false)
+  body
 }

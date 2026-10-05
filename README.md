@@ -75,18 +75,18 @@ Paketi Typst'ün yerel paket dizinine klonlayın. Dizin adı sürüm numarasıyl
 
 ```sh
 # macOS
-git clone --branch v0.1.1 https://github.com/hkngln/meu-fbe-tez \
-  "$HOME/Library/Application Support/typst/packages/local/meu-fbe-tez/0.1.1"
+git clone --branch v0.2.0 https://github.com/hkngln/meu-fbe-tez \
+  "$HOME/Library/Application Support/typst/packages/local/meu-fbe-tez/0.2.0"
 
 # Linux
-git clone --branch v0.1.1 https://github.com/hkngln/meu-fbe-tez \
-  "$HOME/.local/share/typst/packages/local/meu-fbe-tez/0.1.1"
+git clone --branch v0.2.0 https://github.com/hkngln/meu-fbe-tez \
+  "$HOME/.local/share/typst/packages/local/meu-fbe-tez/0.2.0"
 ```
 
 ```powershell
 # Windows (PowerShell)
-git clone --branch v0.1.1 https://github.com/hkngln/meu-fbe-tez `
-  "$env:APPDATA\typst\packages\local\meu-fbe-tez\0.1.1"
+git clone --branch v0.2.0 https://github.com/hkngln/meu-fbe-tez `
+  "$env:APPDATA\typst\packages\local\meu-fbe-tez\0.2.0"
 ```
 
 En güncel sürüm numarası [Releases](https://github.com/hkngln/meu-fbe-tez/releases) sayfasında.
@@ -94,22 +94,39 @@ En güncel sürüm numarası [Releases](https://github.com/hkngln/meu-fbe-tez/re
 ## Yeni tez başlatma
 
 ```sh
-typst init @local/meu-fbe-tez:0.1.1 tezim
+typst init @local/meu-fbe-tez:0.2.0 tezim
 cd tezim
 typst watch main.typ
 ```
 
 VS Code'da çalışmak için `tezim` klasörünü açın, `main.typ` dosyasını açın ve komut paletinden (`Ctrl/Cmd+Shift+P`) **Typst Preview: Preview Opened File** komutunu çalıştırın. Yazdıkça PDF önizlemesi güncellenir.
 
-`main.typ` içindeki bilgileri doldurun. Bölümleri `bolumler/` altındaki dosyalara yazın.
+`main.typ` içindeki bilgileri doldurun. Bölümleri `chapters/` altındaki dosyalara yazın.
 
 | Dosya | İçerik |
 |---|---|
-| `main.typ` | Kapak ve onay bilgileri, bölümlerin eklenmesi, kaynaklar, özgeçmiş |
-| `on/ozet.typ`, `on/abstract.typ`, `on/tesekkur.typ` | Ön kısım metinleri |
-| `bolumler/*.typ` | Her bölüm ayrı dosyada; `= BAŞLIK` yeni ve tek numaralı sayfadan başlar |
-| `kaynaklar.bib` | BibTeX kaynakları; metin içinde `@anahtar` → (Yazar vd., 2019) |
-| `sekiller/` | Görseller |
+| `main.typ` | Tez ayarları, bölümlerin eklenmesi, kaynaklar, ekler, özgeçmiş |
+| `front/abstract-tr.typ`, `front/abstract-en.typ`, `front/acknowledgements.typ` | Özet, abstract ve teşekkür metinleri |
+| `chapters/*.typ` | Her bölüm ayrı dosyada; `= BAŞLIK` yeni ve tek numaralı sayfadan başlar |
+| `references.bib` | BibTeX kaynakları; metin içinde `@anahtar` → (Yazar vd., 2019) |
+| `figures/` | Görseller |
+
+## Kullanım kılavuzu
+
+Şablonun kodundaki adlar İngilizcedir (`thesis`, `student`, `advisor`, `#definition`…); PDF'e basılan her şey Türkçedir. **Bütün ayarların ve fonksiyonların Türkçe karşılıkları, örneklerle birlikte [kullanım kılavuzunda](docs/kullanim-kilavuzu.md).**
+
+En sık kullanılanlar:
+
+| Ayar / fonksiyon | Türkçe karşılığı |
+|---|---|
+| `title`, `student`, `advisor`, `jury` | Tez başlığı, öğrenci, danışman, jüri |
+| `degree: "master"` / `"phd"` | Yüksek Lisans / Doktora |
+| `decision: "unanimous"` / `"majority"` | oybirliği / oyçokluğu |
+| `abstract-tr`, `abstract-en`, `acknowledgements` | Özet, Abstract, Teşekkür |
+| `two-sided` | Çift taraflı baskı (bölümler sağ sayfadan başlar) |
+| `front-cover`, `back-cover` | Dış ön kapak (EK-5), arka kapak (EK-6) |
+| `#references`, `#appendices`, `#cv` | Kaynaklar, Ekler, Özgeçmiş |
+| `#definition`, `#theorem`, `#proof`, `#note`… | Tanım, Teorem, Kanıt, Not… |
 
 ## Yazım kısa yolları
 
@@ -117,26 +134,14 @@ VS Code'da çalışmak için `tezim` klasörünü açın, `main.typ` dosyasını
 |---|---|
 | Bölüm ve alt başlıklar | `=`, `==`, `===`, `====` → 1., 2.1., 2.1.1., 2.1.1.1. |
 | Tablo (başlık üstte) | `#figure(table(..), caption: [..]) <tbl-x>` → **Tablo 2.1.** |
-| Şekil | `#figure(image("../sekiller/a.png"), caption: [..]) <sekil-x>` → **Şekil 2.1.** |
-| Numaralı eşitlik | `$ F = sigma dot A $ <esitlik-x>` → (2.1); `@esitlik-x` → Eşitlik (2.1) |
+| Şekil | `#figure(image("../figures/a.png"), caption: [..]) <fig-x>` → **Şekil 2.1.** |
+| Numaralı eşitlik | `$ F = sigma dot A $ <eq-x>` → (2.1); `@eq-x` → Eşitlik (2.1) |
 | Atıf | `@grady2019` → (Grady vd., 2019); `#cite(<grady2019>, form: "prose")` → Grady vd. (2019) |
 | Dipnot | `#footnote[..]` → \*, †, ‡ |
-| Matematik ortamları | `#tanim[..]`, `#teorem[..]`, `#lemma[..]`, `#ornek[..]`, `#onerme[..]`, `#uyari[..]`, `#nott[..]`, `#sonuc[..]`, `#kanit[..]` → Tanım 2.1.1 |
 
-Bir bölüm dosyasında matematik ortamlarını kullanmak için dosyanın başına şunu ekleyin: `#import "@local/meu-fbe-tez:0.1.1": tanim, teorem, kanit`.
+Ek yoksa `#appendices[..]` satırını silin. Hiç tablo ya da şekil yoksa ilgili dizin sayfası basılmaz.
 
-## Ayarlar
-
-| Ayar | Açıklama |
-|---|---|
-| `tur` | `"yl"` (Yüksek Lisans) veya `"dr"` (Doktora). Kapak, onay ve üst bilgi buna göre değişir. |
-| `juri` | ONAY sayfasındaki tam jüri, danışman dahil. İlk isim jüri başkanıdır; en fazla 5 kişi. Kapakta danışman jüri satırlarında tekrar edilmez. |
-| `ikinci-danisman` | `(ad: .., orcid: ..)`. Kapağa "2. DANIŞMAN" olarak eklenir. |
-| `dis-kapak`, `arka-kapak` | Logolu dış kapaklar (varsayılan `true`). Sayfa numarasına dahil değildir; iç kapak "i" olur. YÖK Tez Merkezi'ne yüklenen PDF'te arka kapak bulunmalıdır. |
-| `tek-sayfa-basla` | `true` (varsayılan): çift taraflı baskı. Bölümler sağ sayfadan başlar, gerekirse araya boş sayfa eklenir; dış kapağın arkası da boş kalır. `false`: tek taraflı baskı, boş sayfa eklenmez. |
-| `enstitu-muduru` | ONAY sayfasındaki imza. Varsayılan değeri `src/ayarlar.typ` dosyasında. |
-
-Ek yoksa `#ekler[..]` satırını silin. Hiç tablo ya da şekil yoksa ilgili dizin sayfası basılmaz.
+> **v0.1.x kullanıyorsanız:** v0.2.0'da adlar İngilizceye çevrildi, PDF çıktısı değişmedi. Geçiş tablosu kılavuzun [v0.1.x'ten geçiş](docs/kullanim-kilavuzu.md#v01xten-geçiş) bölümünde.
 
 ## Katkı
 
@@ -155,6 +160,6 @@ Dal yapısı, commit kuralları ve sürüm akışı [CONTRIBUTING.md](CONTRIBUTI
 **Logo ve görseller Mersin Üniversitesi'ne aittir:**
 - Mersin Üniversitesi logosu.
 - `assets/` klasöründeki dış kapak görselleri.
-- `template/sekiller/` klasöründeki örnek fotoğraflar.
+- `template/figures/` klasöründeki örnek fotoğraflar.
 
 Bu görseller enstitünün resmi tez şablonundan alınmıştır. Yalnızca resmi tasarımı uygulamak için kullanılırlar ve MIT ya da MIT-0 lisansının kapsamında değildirler.
