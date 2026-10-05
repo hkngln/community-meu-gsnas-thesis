@@ -1,8 +1,11 @@
 // Mersin Üniversitesi Fen Bilimleri Enstitüsü tez şablonu (Typst).
 //
-//   #import "@local/meu-fbe-tez:0.1.1": *
-//   #show: tez.with(baslik: "...", ogrenci: "Adı SOYADI", ...)
+//   #import "@local/community-meu-gsnas-thesis:0.2.0": *
+//   #show: thesis.with(title: "...", student: "Adı SOYADI", ...)
+//
+// İngilizce adların Türkçe karşılıkları: docs/kullanim-kilavuzu.md
+// User guide (English): docs/user-guide.md
 
-#import "src/tez.typ": tez
-#import "src/arka-kisim.typ": ekler, kaynaklar, ozgecmis
-#import "src/teorem.typ": kanit, lemma, nott, ornek, onerme, sonuc, tanim, teorem, teorem-ortami, uyari
+#import "src/thesis.typ": thesis
+#import "src/back-matter.typ": appendices, cv, references
+#import "src/theorems.typ": corollary, definition, example, lemma, note, proof, proposition, remark, theorem, theorem-env

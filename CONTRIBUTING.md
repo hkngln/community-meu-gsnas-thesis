@@ -1,97 +1,101 @@
-# Katkı Rehberi
+# Contributing
 
-Katkılarınız memnuniyetle karşılanır: hata bildirimi, yönergeye uymayan bir kural, yeni bir özellik ya da belge düzeltmesi. Büyük bir değişikliğe başlamadan önce bir [issue](https://github.com/hkngln/meu-fbe-tez/issues) açıp tartışmanız önerilir.
+🇬🇧 **English** | [🇹🇷 Türkçe](CONTRIBUTING.tr.md)
 
-## Dal yapısı
+Contributions are welcome: bug reports, a rule that does not match the guidelines, new features or documentation fixes. Before starting a large change, please open an [issue](https://github.com/hkngln/community-meu-gsnas-thesis/issues) to discuss it.
+
+## Branching model
 
 ```
-feat/… fix/… docs/…  ──PR (squash)──▶  dev  ──PR (merge commit)──▶  main  ──▶  vX.Y.Z sürümü
+feat/… fix/… docs/…  ──PR (squash)──▶  dev  ──PR (merge commit)──▶  main  ──▶  vX.Y.Z release
 ```
 
-- **`dev`** varsayılan ve geliştirme dalıdır. Bütün dallar `dev`'den açılır ve `dev`'e geri birleşir.
-- **`main`** yalnızca yayınlanmış sürümleri içerir. `main`'e yalnızca `dev`'den PR açılabilir.
-- `main` ve `dev`'e doğrudan push kapalıdır. Her değişiklik PR ile ve CI yeşilken birleşir.
-- `main`'e birleşen her PR, `typst.toml` içindeki sürümü otomatik olarak yayınlar: `vX.Y.Z` etiketi ve örnek tez PDF'li bir GitHub Release oluşur.
+- **`dev`** is the default and development branch. Every branch starts from `dev` and merges back into `dev`.
+- **`main`** contains released versions only. Pull requests into `main` may only come from `dev`.
+- Direct pushes to `main` and `dev` are blocked. Every change is merged through a PR with green CI.
+- Every PR merged into `main` releases the version in `typst.toml` automatically: a `vX.Y.Z` tag and a GitHub Release with the example thesis PDF.
 
-### Dal adları
+### Branch names
 
-`dev`'e açılan PR'ların dal adı `<tür>/<kısa-ad>` biçiminde olmalıdır. Küçük harf, rakam, `.`, `_` ve `-` kullanılabilir. CI başka adları reddeder.
+Branches for PRs into `dev` must be named `<type>/<short-name>`, using lowercase letters, digits, `.`, `_` and `-`. CI rejects other names.
 
-| Tür | Ne için |
+| Type | Used for |
 |---|---|
-| `feat/` | Yeni özellik |
-| `fix/` | Hata düzeltme, yönergeye uyum |
-| `docs/` | Belgeler |
-| `refactor/` | Davranışı değiştirmeyen kod düzenlemesi |
-| `test/` | Testler |
-| `ci/` | CI ve workflow'lar |
-| `chore/` | Bakım işleri |
-| `perf/` | Performans |
+| `feat/` | New feature |
+| `fix/` | Bug fix, compliance with the guidelines |
+| `docs/` | Documentation |
+| `refactor/` | Code changes that do not change behavior |
+| `test/` | Tests |
+| `ci/` | CI and workflows |
+| `chore/` | Maintenance |
+| `perf/` | Performance |
 
-Örnek: `fix/ek-numaralama`, `feat/ingilizce-tez`.
+Example: `fix/appendix-numbering`, `feat/english-thesis`.
 
-## Geliştirme akışı
+## Development workflow
 
-1. `dev` dalından yeni bir dal açın:
+1. Create a branch from `dev`:
    ```sh
    git switch dev && git pull
-   git switch -c fix/kisa-aciklama
+   git switch -c fix/short-description
    ```
-2. Değişikliği yapın ve testleri yerelde çalıştırın (aşağıya bakın).
-3. Commit atın ve push edin. Ardından **`dev`'e** PR açın.
-4. CI yeşil olunca PR **squash merge** ile birleştirilir.
+2. Make your change and run the tests locally (see below).
+3. Commit, push and open a PR **into `dev`**.
+4. Once CI is green, the PR is merged with **squash merge**.
 
-## Commit mesajları
+## Commit messages
 
-[Conventional Commits](https://www.conventionalcommits.org/) biçimi kullanılır:
+We use [Conventional Commits](https://www.conventionalcommits.org/):
 
 ```
-<tür>: <kısa açıklama>
+<type>: <short description>
 
-<isteğe bağlı ayrıntı>
+<optional details>
 ```
 
-Türler dal türleriyle aynıdır: `feat`, `fix`, `docs`, `refactor`, `test`, `ci`, `chore`, `perf`. Örnek: `fix: ekteki şekiller E.1 diye numaralansın`.
+The types are the same as the branch types: `feat`, `fix`, `docs`, `refactor`, `test`, `ci`, `chore`, `perf`. Example: `fix: number appendix figures as E.1`.
 
-## Testler
+## Tests
 
 ```sh
-bash tests/dogrula.sh
+bash tests/verify.sh
 ```
 
-Gerekenler:
-- Typst 0.15.1, `pdftotext` (poppler) ve Times New Roman fontu.
-- Paket, [README > Kurulum](README.md#kurulum) bölümündeki dizine bağlı olmalı. Geliştirirken klonlamak yerine çalıştığınız klasöre symlink verebilirsiniz:
+Requirements:
+- Typst 0.15.1, `pdftotext` (poppler) and the Times New Roman font.
+- The package must be linked into the directory described in [README > Installation](README.md#installation). While developing, you can symlink your working copy instead of cloning:
   ```sh
-  ln -sfn "$PWD" "$HOME/Library/Application Support/typst/packages/local/meu-fbe-tez/$(sed -n 's/^version = "\(.*\)"/\1/p' typst.toml)"
+  ln -sfn "$PWD" "$HOME/Library/Application Support/typst/packages/local/community-meu-gsnas-thesis/$(sed -n 's/^version = "\(.*\)"/\1/p' typst.toml)"
   ```
 
-Betik şunları yapar:
-- `template/main.typ`, `tests/kenar-durumlar.typ` ve `tests/tek-taraf.typ` dosyalarını derler. **Her uyarı hata sayılır.**
-- PDF metnini denetler: sayfa sırası, numaralar, atıflar ve sürüm referansları.
-- Çıktıları `tests/out/` klasörüne yazar.
+The script:
+- Compiles `template/main.typ`, `tests/edge-cases.typ` and `tests/one-sided.typ`. **Every warning counts as a failure.**
+- Checks the PDF text: page order, numbering, citations and version references.
+- Writes its output to `tests/out/`.
 
-Yeni bir davranış eklerken `tests/` altına bir durum ve `dogrula.sh` içine bir kontrol ekleyin. Görünümü etkileyen değişikliklerde PR'a önce/sonra ekran görüntüsü koyun.
+The code uses English names. When you add a setting or function, also update the Turkish equivalents table in both user guides ([English](docs/user-guide.md), [Türkçe](docs/kullanim-kilavuzu.md)). When you add new behavior, add a case under `tests/` and a check to `verify.sh`. For changes that affect the layout, attach before/after screenshots to the PR.
 
-## Sürüm yayınlama
+Documentation is kept in English and Turkish: when you change `README.md`, `CONTRIBUTING.md` or a user guide, update its counterpart (`*.tr.md`, `kullanim-kilavuzu.md`) in the same PR.
 
-Sürümler [SemVer](https://semver.org/lang/tr/)'e uyar:
-- **Yama** (0.1.0 → 0.1.1): hata düzeltmeleri.
-- **Küçük** (0.1.0 → 0.2.0): yeni özellikler.
-- **Büyük** (0.1.0 → 1.0.0): `main.typ` dosyasında kullanıcının değişiklik yapmasını gerektiren değişiklikler.
+## Releasing
 
-Yayın adımları:
+Versions follow [SemVer](https://semver.org/):
+- **Patch** (0.2.0 → 0.2.1): bug fixes.
+- **Minor** (0.2.0 → 0.3.0): new features.
+- **Major** (0.2.0 → 1.0.0): changes that require users to edit their `main.typ`.
 
-1. `dev` üzerinde bir `chore/surum-X.Y.Z` dalı açın.
-2. Sürüm numarasını şu dosyaların hepsinde güncelleyin; CI biri unutulursa hata verir:
+Release steps:
+
+1. Create a `chore/release-X.Y.Z` branch from `dev`.
+2. Update the version number in all of these files; CI fails if one is missed:
    - `typst.toml` → `version`
-   - `template/main.typ` ve `template/bolumler/*.typ` → `@local/meu-fbe-tez:X.Y.Z`
-   - `README.md` ve `lib.typ` → kurulum ve import örnekleri
-3. Bu dalı PR ile `dev`'e birleştirin.
-4. **`dev` → `main`** PR'ı açın. CI, sürümün daha önce yayınlanmadığını denetler.
-5. PR'ı **merge commit** ile birleştirin; squash kullanmayın, yoksa `dev` ile `main` ayrışır.
-6. `Sürüm` workflow'u `vX.Y.Z` etiketini ve Release'i otomatik oluşturur.
+   - `template/main.typ` and `template/chapters/*.typ` → `@local/community-meu-gsnas-thesis:X.Y.Z`
+   - `README.md`, `README.tr.md`, `docs/` and `lib.typ` → installation and import examples
+3. Merge this branch into `dev` with a PR.
+4. Open a **`dev` → `main`** PR. CI checks that the version has not been released before.
+5. Merge the PR with a **merge commit**, not squash; otherwise `dev` and `main` diverge.
+6. The `Sürüm` (release) workflow creates the `vX.Y.Z` tag and the Release automatically.
 
-## Kurallarla ilgili değişiklikler
+## Changes to the rules
 
-Bir kural yönergeye uymuyorsa issue'ya veya PR'a kaynağını ekleyin: yönergenin ilgili maddesi ya da enstitünün güncel şablonundan bir alıntı. Ölçüler `src/ayarlar.typ` dosyasında toplanmıştır; mümkünse yalnızca oradan değiştirin.
+If a rule does not match the guidelines, cite your source in the issue or PR: the relevant article of the guidelines or a quote from the institute's current template. All measurements are collected in `src/settings.typ`; change them there if possible.
