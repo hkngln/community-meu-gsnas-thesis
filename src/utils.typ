@@ -10,9 +10,12 @@
 
 // Typst'ün upper() fonksiyonu dile duyarlı değil: "i" -> "I" yapar.
 // Türkçede "i" -> "İ" olmalı; "ı" -> "I" zaten doğru.
+// İçerik (ör. italik tür adı içeren başlık) verilirse metin düğümlerindeki
+// "i" harfleri bir show kuralıyla önce "İ" yapılır, sonra büyütülür.
 #let tr-upper(body) = if type(body) == str {
   upper(body.replace("i", "İ"))
 } else {
+  show "i": "İ"
   upper(body)
 }
 

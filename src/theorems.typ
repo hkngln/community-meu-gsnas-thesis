@@ -3,10 +3,14 @@
 // kurulduğu için <etiket> + @etiket ile atıf yapılabilir. PDF'e basılan
 // etiketler Türkçedir; fonksiyon adları İngilizcedir.
 
+#import "utils.typ": chapter-no
+
 #let THEOREM-KIND = "meu-theorem"
 
-// Alt bölümde: 2.1.3; ilk "==" başlığından önce: 2.3 (".0." çıkmasın).
+// Alt bölümde: 2.1.3; ilk "==" başlığından önce: 2.3 (".0." çıkmasın);
+// eklerde: E.1 (şekil/tablo/eşitlik numaralarıyla aynı kural).
 #let _theorem-number(..n) = {
+  if chapter-no() == "E" { return (("E",) + n.pos().map(str)).join(".") }
   let h = counter(heading).get()
   let parents = (h.at(0, default: 0), h.at(1, default: 0)).filter(x => x != 0)
   (parents + n.pos()).map(str).join(".")

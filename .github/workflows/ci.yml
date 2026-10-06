@@ -19,10 +19,13 @@ jobs:
         env:
           SOURCE: ${{ github.head_ref }}
           TARGET: ${{ github.base_ref }}
+          SOURCE_REPO: ${{ github.event.pull_request.head.repo.full_name }}
+          THIS_REPO: ${{ github.repository }}
         run: |
-          echo "PR: $SOURCE -> $TARGET"
-          if [[ "$TARGET" == "main" && "$SOURCE" != "dev" ]]; then
-            echo "::error::Pull requests into main may only come from dev."
+          echo "PR: $SOURCE_REPO:$SOURCE -> $TARGET"
+          # head_ref is only the branch name: a fork's own "dev" must not pass.
+          if [[ "$TARGET" == "main" && ( "$SOURCE" != "dev" || "$SOURCE_REPO" != "$THIS_REPO" ) ]]; then
+            echo "::error::Pull requests into main may only come from this repository's dev branch."
             exit 1
           fi
           if [[ "$TARGET" == "dev" && ! "$SOURCE" =~ ^(feat|fix|docs|refactor|test|ci|chore|perf)/[a-z0-9._-]+$ ]]; then
