@@ -26,6 +26,8 @@ pdf_text() { pdftotext -layout "$@" - ; }
 # fails even on a match because grep closes the pipe early (SIGPIPE).
 contains() { local t; t=$(pdf_text "$1"); grep -qF -- "$2" <<<"$t" || fail "'$2' not found in $1"; }
 not_contains() { local t; t=$(pdf_text "$1"); if grep -qF -- "$2" <<<"$t"; then fail "'$2' must not appear in $1"; fi; }
+# Like contains, but ignores line breaks (for text that wraps across lines).
+contains_flat() { local t; t=$(pdftotext "$1" - | tr '\n' ' ' | tr -s ' '); grep -qF -- "$2" <<<"$t" || fail "'$2' not found in $1"; }
 
 # Physical page number of the first page with a line that is exactly <heading>.
 heading_page() {
@@ -92,6 +94,35 @@ contains "$REG" "Teorem 2.1."
 contains "$REG" "Teorem E.1."
 [[ $(heading_page "$REG" "EK-1 Appendix heading") -gt 0 ]] || fail "appendix heading missing"
 not_contains "$REG" "2.1. EK-1"
+
+# Turkish APA (v0.4.0): "ve" in citations, "&" kept in the reference list,
+# Turkish thesis type label, 1.25 cm hanging indent.
+contains "$REG" "(Engin ve Özçimen, 2016)"
+contains "$REG" "Engin, A., & Özçimen, D. (2016)"
+contains "$REG" "[Yayımlanmamış doktora tezi]"
+# @incollection: book title printed once (APA 7 chapter format); @misc year-only
+# date without a trailing comma.
+contains_flat "$REG" "(ed.), Learning and intelligent optimization (ss. 225-240)"
+not_contains "$REG" "optimization: Learning"
+contains "$REG" "Standardization. (2018)."
+not_contains "$REG" "(2018,)"
+contains_flat "$REG" "İçinde R. Battiti"
+REF_PAGE=$(heading_page "$REG" "KAYNAKLAR")
+indent_cm=$(pdftotext -f "$REF_PAGE" -l "$REF_PAGE" -bbox "$REG" - | python3 -c '
+import re, sys
+lines = {}
+for m in re.finditer(r"<word xMin=\"([\d.]+)\" yMin=\"([\d.]+)\"", sys.stdin.read()):
+    x, y = float(m.group(1)), round(float(m.group(2)))
+    lines[y] = min(lines.get(y, 9e9), x)
+xs = sorted({round(v, 1) for v in lines.values()})
+print(f"{(xs[1] - xs[0]) / 72 * 2.54:.2f}" if len(xs) > 1 else "0")')
+[[ "$indent_cm" == "1.25" ]] || fail "bibliography hanging indent is $indent_cm cm, expected 1.25 cm"
+
+# English thesis: "&" in citations, "et al." (v0.4.0).
+en_log=$(printf '%s\n' '#import "/lib.typ": *' '#show: thesis.with(language: "en", front-cover: false, back-cover: false, two-sided: false)' \
+  '= INTRODUCTION' '@engin2016' '#references(bibliography("/tests/regressions.bib"))' \
+  | typst compile --root . - "$OUT/english.pdf" 2>&1) || { echo "$en_log"; fail "English thesis did not compile"; }
+contains "$OUT/english.pdf" "(Engin & Özçimen, 2016)"
 
 # Wrong argument types must give a clear message, not an internal error.
 # (Read from stdin, so no temporary file is needed inside the project root.)

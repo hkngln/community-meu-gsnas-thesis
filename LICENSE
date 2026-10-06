@@ -24,6 +24,9 @@ The files in the template/ directory (the project scaffold copied by
 `typst init`), except the images in template/figures/, are licensed under
 the MIT No Attribution license instead; see LICENSE-MIT-0.
 
+The APA citation styles in assets/csl/ are modified from the Citation Style Language
+project and are licensed under CC BY-SA 3.0 (see the notice in each file).
+
 The Mersin University logo and all images in this repository (the cover
 images in assets/ and the example photographs in template/figures/) are the
 property of Mersin University and are not covered by either license.

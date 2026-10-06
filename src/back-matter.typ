@@ -1,21 +1,40 @@
 // Kaynaklar, ekler ve özgeçmiş. Ana metinden sonra kullanılır; başlıklar
 // numarasızdır, yeni (ve two-sided açıksa tek numaralı) sayfadan başlar.
-#import "settings.typ": BLANK-LINE
+#import "settings.typ": BLANK-LINE, PAR-INDENT
 #import "utils.typ": APPENDIX-STATE, single-spaced
 
 // bib: bibliography("references.bib") — yol çağıran dosyaya göre çözülsün
 // diye bibliography öğesi kullanıcı dosyasında oluşturulur.
+// Tezin diline göre APA stili (assets/csl/, CC BY-SA 3.0):
+// tr: metin içi atıflarda iki yazar "ve" ile; en: "&" ile. İkisinde de kaynakça
+// listesinde "&" kullanılır (docx örnekleriyle aynı).
+#let _APA-STYLES = (tr: "../assets/csl/apa-tr.csl", en: "../assets/csl/apa-en.csl")
+
 #let references(bib) = {
   heading(level: 1, numbering: none)[KAYNAKLAR]
-  set par(first-line-indent: 0pt)
+  // Kurala göre "her eser arasında birer satır boşluk"; docx asılı girinti 1,25 cm.
+  // Typst kaynakça kayıtlarını paragraf olarak üretmez (par ayarları uygulanmaz)
+  // ve kendi asılı girintisini 1,5em'de sabitler. Bu yüzden CSL'de girinti
+  // kapalıdır ve her kayıt bloğu burada asılı girintili bir paragrafa çevrilir.
+  show bibliography: it => {
+    show block: entry => par(
+      hanging-indent: PAR-INDENT,
+      first-line-indent: 0pt,
+      justify: false,
+      entry.body,
+    )
+    it
+  }
+  show bibliography: set par(spacing: BLANK-LINE)
+  // CSL'nin büyük harf dönüşümü Türkçeyi bilmez: "in" terimi "Içinde" çıkar.
+  show bibliography: it => { show "Içinde": "İçinde"; it }
   // Kullanıcı stil/başlık vermeyi unutursa: IEEE "[1]" ve ikinci bir
   // "Kaynakça" başlığı çıkmasın. Açıkça verilen değerler yine geçerlidir.
-  set bibliography(style: "apa", title: none)
-  // Kurala göre "her eser arasında birer satır boşluk". Not: docx asılı girinti
-  // 1,25 cm ister; Typst 0.15 kaynakça girintisini 1,5em olarak sabit uygular ve
-  // set/show kurallarıyla değiştirilemiyor (ölçüldü). Bilinen sınırlama.
-  show bibliography: set par(spacing: BLANK-LINE)
-  bib
+  context {
+    let lang = if text.lang == "en" { "en" } else { "tr" }
+    set bibliography(style: _APA-STYLES.at(lang), title: none)
+    bib
+  }
 }
 
 #let appendices(body) = {

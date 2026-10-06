@@ -84,6 +84,7 @@ Doldurulmamış her alan PDF'te **kırmızı** görünür.
 
 | Ayar (İngilizce) | Türkçe karşılığı | Varsayılan | Açıklama |
 |---|---|---|---|
+| `language` | Tez dili | `"tr"` | `"tr"` ya da `"en"`: ana metnin heceleme dili ve iki yazarlı atıflardaki bağlaç ("ve" / "&"). Basılı başlıklar ve etiketler Türkçe kalır. |
 | `two-sided` | Çift taraflı baskı | `true` | Bölümler tek numaralı (sağ) sayfadan başlar; gerekirse araya numarasız boş sayfa eklenir. `false`: tek taraflı, boş sayfa yok. |
 | `front-cover` | Dış ön kapak (EK-5) | `true` | Logolu dış kapak; sayfa numarasına dahil değildir. |
 | `back-cover` | Arka kapak (EK-6) | `true` | YÖK Tez Merkezi'ne yüklenen PDF'te bulunmalıdır. |
