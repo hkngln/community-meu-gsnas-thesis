@@ -26,6 +26,8 @@ pdf_text() { pdftotext -layout "$@" - ; }
 # fails even on a match because grep closes the pipe early (SIGPIPE).
 contains() { local t; t=$(pdf_text "$1"); grep -qF -- "$2" <<<"$t" || fail "'$2' not found in $1"; }
 not_contains() { local t; t=$(pdf_text "$1"); if grep -qF -- "$2" <<<"$t"; then fail "'$2' must not appear in $1"; fi; }
+# Like contains, but ignores line breaks (for text that wraps across lines).
+contains_flat() { local t; t=$(pdftotext "$1" - | tr '\n' ' ' | tr -s ' '); grep -qF -- "$2" <<<"$t" || fail "'$2' not found in $1"; }
 
 # Physical page number of the first page with a line that is exactly <heading>.
 heading_page() {
@@ -98,6 +100,13 @@ not_contains "$REG" "2.1. EK-1"
 contains "$REG" "(Engin ve Özçimen, 2016)"
 contains "$REG" "Engin, A., & Özçimen, D. (2016)"
 contains "$REG" "[Yayımlanmamış doktora tezi]"
+# @incollection: book title printed once (APA 7 chapter format); @misc year-only
+# date without a trailing comma.
+contains_flat "$REG" "(ed.), Learning and intelligent optimization (ss. 225-240)"
+not_contains "$REG" "optimization: Learning"
+contains "$REG" "Standardization. (2018)."
+not_contains "$REG" "(2018,)"
+contains_flat "$REG" "İçinde R. Battiti"
 REF_PAGE=$(heading_page "$REG" "KAYNAKLAR")
 indent_cm=$(pdftotext -f "$REF_PAGE" -l "$REF_PAGE" -bbox "$REG" - | python3 -c '
 import re, sys
