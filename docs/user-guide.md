@@ -74,11 +74,13 @@ Settings passed to `#show: thesis.with(...)`. All are optional; a missing value 
 | Setting | Turkish equivalent | Example |
 |---|---|---|
 | `abstract-tr` | Özet (Turkish abstract) | `include "front/abstract-tr.typ"` |
-| `keywords-tr` | Anahtar kelimeler | `("Kelime1", "Kelime2")` |
+| `keywords-tr` | Anahtar kelimeler (at most 5) | `("Kelime1", "Kelime2")` |
 | `abstract-en` | Abstract (English) | `include "front/abstract-en.typ"` |
-| `keywords-en` | Keywords | `("Keyword1", "Keyword2")` |
+| `keywords-en` | Keywords (at most 5) | `("Keyword1", "Keyword2")` |
 | `acknowledgements` | Teşekkür | `include "front/acknowledgements.typ"` |
 | `abbreviations` | Simgeler ve kısaltmalar: `(abbreviation, meaning)` pairs | `(("MEÜ", "Mersin Üniversitesi"),)` |
+
+Article 15/2 of the directive allows at most 5 keywords and at most 300 words in ÖZET and ABSTRACT. More than 5 keywords stops the compilation with an error; the word count is not checked by the template, count it yourself.
 
 ### Printing
 
@@ -88,6 +90,7 @@ Settings passed to `#show: thesis.with(...)`. All are optional; a missing value 
 | `two-sided` | Çift taraflı baskı | `true` | Chapters start on an odd (right-hand) page; unnumbered blank pages are inserted when needed. `false`: one-sided, no blank pages. |
 | `front-cover` | Dış ön kapak (EK-5) | `true` | Outer cover with the logo; not counted in page numbering. |
 | `back-cover` | Arka kapak (EK-6) | `true` | Must be included in the PDF uploaded to the YÖK Thesis Center. |
+| `yok-copy` | YÖK Tez Merkezi kopyası | `false` | `true`: the electronic copy for the YÖK Thesis Center (article 18/4). The ONAY and ETİK BEYAN pages are left out, `#cv(...)` prints nothing, and the back cover is always included regardless of `back-cover`. Page numbers and the table of contents adjust. Compile the printed copy for the jury with `false`. |
 | `font` | Yazı tipi (font) | `("Times New Roman", "Libertinus Serif")` | The first installed font in the list is used. Libertinus Serif ships with Typst and is the fallback. Add `"TeX Gyre Termes"` if you installed it ([README](../README.md#3-font-times-new-roman)). Submit with Times New Roman. |
 
 ## Values
@@ -185,7 +188,9 @@ You may rename these files; update the `#include` lines in `main.typ` accordingl
 | Equation reference | `@eq-force` | Eşitlik (2.1) |
 | Citation | `@grady2019` | (Grady vd., 2019) |
 | Narrative citation | `#cite(<grady2019>, form: "prose")` | Grady vd. (2019) |
-| Footnote | `#footnote[..]` | \*, †, ‡ (restarts on every page) |
+| Footnote | `#footnote[..]` | \*, †, ‡ (restarts on every page); 10 pt, italic, single-spaced, separated by a line a quarter of the text width (article 12) |
+| Quotation over 40 words | `#quote(block: true)[..]` | Own paragraph, 10 pt, no quotation marks, indented 1.25 cm on both sides (article 11/2). `#quote(block: true, attribution: [Author])` adds "— Author" |
+| Short quotation | `#quote[..]` | “..” in the body size |
 
 Label names (such as `<tbl-example>`) are free-form; the `tbl-`, `fig-` and `eq-` prefixes are only for readability.
 

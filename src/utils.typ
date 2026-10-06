@@ -23,6 +23,10 @@
 // numaralanır; aksi halde son bölümün numarasını tekrar kullanırlar.
 #let APPENDIX-STATE = state("meu-appendix", false)
 
+// YÖK Tez Merkezi kopyası mı (thesis(yok-copy: true))? thesis() ayarlar;
+// ayrı çağrılan cv() özgeçmişi basıp basmayacağını buradan okur (Madde 18/4).
+#let YOK-COPY-STATE = state("meu-yok-copy", false)
+
 // Bir konumdaki (verilmezse bulunulan yerdeki) bölüm numarası: "2" veya "E".
 #let chapter-no(loc: none) = {
   let in-appendix = if loc == none { APPENDIX-STATE.get() } else { APPENDIX-STATE.at(loc) }

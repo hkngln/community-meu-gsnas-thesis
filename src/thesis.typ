@@ -1,6 +1,6 @@
 // Ana şablon fonksiyonu: #show: thesis.with(...)
 #import "settings.typ": *
-#import "utils.typ": by-chapter, field
+#import "utils.typ": YOK-COPY-STATE, by-chapter, field
 #import "title-page.typ": title-page
 #import "covers.typ" as covers
 #import "front-matter.typ" as fm
@@ -122,8 +122,24 @@
     link(el.location(), [#supplement~#numbering(el.numbering, ..counter(math.equation).at(el.location()))])
   }
 
+  // Yönerge Madde 12: dipnotlar 10 punto, italik, tek satır aralığı; metinden
+  // 1/4 satır uzunluğunda bir çizgiyle ayrılır. İşaret her sayfada * ile
+  // yeniden başlar (sayaç _header içinde sıfırlanır).
   set footnote(numbering: "*")
-  show footnote.entry: set text(FOOTNOTE-SIZE)
+  set footnote.entry(separator: line(length: FOOTNOTE-RULE-LENGTH, stroke: 0.5pt))
+  show footnote.entry: set text(FOOTNOTE-SIZE, style: "italic")
+  show footnote.entry: set par(leading: SPACING-1, spacing: SPACING-1)
+
+  // Yönerge Madde 8ç ve 11/2: 40 sözcüğü aşan alıntılar (#quote(block: true))
+  // ayrı bir paragraf, 10 punto, tırnaksız. Blok iki yandan paragraf girintisi
+  // kadar içeride; öteki 10 puntolu öğeler (dipnot, tablo/şekil başlığı) gibi
+  // tek satır aralıklı. Satır içi #quote[..] gövde puntosunda, tırnak içinde kalır.
+  // Blok içindeki em 10 puntoya göre çözülür; gövdenin paragraf aralığı mutlak verilir.
+  let par-spacing = SPACING-1-5.em * FONT-SIZE
+  show quote.where(block: true): set text(QUOTE-SIZE)
+  show quote.where(block: true): set par(leading: SPACING-1, spacing: SPACING-1, first-line-indent: 0pt)
+  show quote.where(block: true): set pad(left: PAR-INDENT, right: PAR-INDENT)
+  show quote.where(block: true): set block(above: par-spacing, below: par-spacing)
   doc
 }
 
@@ -179,6 +195,10 @@
   // YÖK Tez Merkezi'ne yüklenen elektronik kopyada arka kapak bulunmalıdır.
   front-cover: true,
   back-cover: true,
+  // YÖK Tez Merkezi'ne yüklenen elektronik kopya (Yönerge Madde 18/4): ONAY,
+  // ETİK BEYAN ve ÖZGEÇMİŞ sayfaları çıkarılır; arka kapak (EK-6) back-cover
+  // değerinden bağımsız olarak basılır. Jüri onaylı basılı nüsha için false.
+  yok-copy: false,
   // Onay / etik beyan
   defense-date: none,
   decision: none, // "unanimous" | "majority"
@@ -229,12 +249,22 @@
     message: "decision \"unanimous\" veya \"majority\" olmalı, verilen: " + repr(decision),
   )
   assert(jury.len() <= 5, message: "jüri en fazla 5 üye (başkan dahil) olabilir")
+  // Yönerge Madde 15/2. Özetin 300 sözcük sınırı denetlenmez: içerikte sözcük
+  // saymak güvenilir değildir.
+  for (name, value) in (("keywords-tr", keywords-tr), ("keywords-en", keywords-en)) {
+    assert(
+      value.len() <= MAX-KEYWORDS,
+      message: name + " en fazla " + str(MAX-KEYWORDS) + " anahtar kelime olabilir (Yönerge Madde 15/2), verilen: " + str(value.len()),
+    )
+  }
   assert(language in ("tr", "en"), message: "language \"tr\" veya \"en\" olmalı, verilen: " + repr(language))
 
   set document(title: field(title, "Tez"), author: if student == none { () } else { student })
   show: _base-style.with(font)
   show: _figure-style.with(font)
   show: theorem-style
+  // cv() ayrı çağrılır; YÖK kopyasında özgeçmiş basmayacağını buradan öğrenir.
+  YOK-COPY-STATE.update(yok-copy)
 
   // Dış kapak sayfa sayısına girmez; çift taraflı baskıda iç yüzü boş kalır.
   if front-cover {
@@ -263,17 +293,19 @@
       jury: jury,
       date: date,
     )
-    fm.approval(
-      student: student,
-      advisor-name: advisor.name,
-      title: title,
-      defense-date: defense-date,
-      decision: decision,
-      degree: degree,
-      jury: jury,
-      institute-director: institute-director,
-    )
-    fm.ethics(student: student, defense-date: defense-date)
+    if not yok-copy {
+      fm.approval(
+        student: student,
+        advisor-name: advisor.name,
+        title: title,
+        defense-date: defense-date,
+        decision: decision,
+        degree: degree,
+        jury: jury,
+        institute-director: institute-director,
+      )
+      fm.ethics(student: student, defense-date: defense-date)
+    }
     fm.abstract-tr(
       title: title,
       body: abstract-tr,
@@ -300,5 +332,5 @@
 
   let header-text = [#field(student, "Adı SOYADI"), #DEGREES.at(degree).text Tezi, Fen Bilimleri Enstitüsü, Mersin Üniversitesi, #field(year, "YIL")]
   _main-matter(header-text, two-sided, language, body)
-  if back-cover { covers.back-cover() }
+  if back-cover or yok-copy { covers.back-cover() }
 }

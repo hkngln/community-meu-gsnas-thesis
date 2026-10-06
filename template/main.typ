@@ -28,6 +28,9 @@
   // basılacaksa false yapın; YÖK'e yüklenen PDF'te arka kapak bulunmalıdır.
   front-cover: true,
   back-cover: true,
+  // YÖK Tez Merkezi'ne yüklenecek elektronik kopya için true yapın: ONAY, ETİK
+  // BEYAN ve ÖZGEÇMİŞ sayfaları çıkarılır, arka kapak her zaman basılır (Madde 18/4).
+  // yok-copy: true,
   defense-date: none, // "15/01/2026"
   decision: none, // "unanimous" = oybirliği, "majority" = oyçokluğu
   abstract-tr: include "front/abstract-tr.typ",

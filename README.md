@@ -154,6 +154,7 @@ The most common ones:
 | `abstract-tr`, `abstract-en`, `acknowledgements` | Özet, Abstract, Teşekkür |
 | `two-sided` | Çift taraflı baskı (chapters start on a right-hand page) |
 | `front-cover`, `back-cover` | Dış ön kapak (EK-5), arka kapak (EK-6) |
+| `yok-copy` | YÖK Tez Merkezi kopyası: ONAY, ETİK BEYAN and ÖZGEÇMİŞ pages left out (article 18/4) |
 | `#references`, `#appendices`, `#cv` | Kaynaklar, Ekler, Özgeçmiş |
 | `#definition`, `#theorem`, `#proof`, `#note`… | Tanım, Teorem, Kanıt, Not… |
 
@@ -167,7 +168,8 @@ The most common ones:
 | Numbered equation | `$ F = sigma dot A $ <eq-x>` → (2.1); `@eq-x` → Eşitlik (2.1) |
 | Citation | `@grady2019` → (Grady vd., 2019); `#cite(<grady2019>, form: "prose")` → Grady vd. (2019) |
 | Secondary source | `#secondary-cite(<ozturk2012>, year: 2012)[Singh, 2007]` → (Singh, 2007: Öztürk vd. 2012’den) |
-| Footnote | `#footnote[..]` → \*, †, ‡ |
+| Footnote | `#footnote[..]` → \*, †, ‡; 10 pt, italic, single-spaced (article 12) |
+| Quotation over 40 words | `#quote(block: true)[..]` → own paragraph, 10 pt, no quotation marks (article 11/2); `#quote(block: true, attribution: [Author])` adds "— Author". Short quotations: `#quote[..]` → “..” in the body size |
 
 If you have no appendices, delete the `#appendices[..]` line. Inside `#appendices`, write appendix sections as `== EK-1: Title`; they are not numbered, and figures, tables, equations and theorems there are numbered E.1, E.2… Lists of tables and figures are omitted when there are no tables or figures.
 

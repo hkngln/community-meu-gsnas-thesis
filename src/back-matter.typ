@@ -1,7 +1,7 @@
 // Kaynaklar, ekler ve özgeçmiş. Ana metinden sonra kullanılır; başlıklar
 // numarasızdır, yeni (ve two-sided açıksa tek numaralı) sayfadan başlar.
 #import "settings.typ": BLANK-LINE, PAR-INDENT
-#import "utils.typ": APPENDIX-STATE, single-spaced
+#import "utils.typ": APPENDIX-STATE, YOK-COPY-STATE, single-spaced
 
 // bib: bibliography("references.bib") — yol çağıran dosyaya göre çözülsün
 // diye bibliography öğesi kullanıcı dosyasında oluşturulur.
@@ -118,7 +118,10 @@
   education: (("Lisans", "", "", ""), ("Yüksek Lisans", "", "", ""), ("Doktora", "", "", "")),
   positions: (("", "", ""),),
   publications: (),
-) = {
+) = context {
+  // YÖK Tez Merkezi kopyasında (thesis(yok-copy: true)) özgeçmiş yer almaz
+  // (Yönerge Madde 18/4); main.typ'deki çağrı değişmeden hiçbir şey basılmaz.
+  if YOK-COPY-STATE.get() { return }
   heading(level: 1, numbering: none)[ÖZGEÇMİŞ]
   set par(first-line-indent: 0pt)
   single-spaced(grid(
