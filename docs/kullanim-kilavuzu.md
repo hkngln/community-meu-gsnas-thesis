@@ -22,7 +22,7 @@ Kurulum için [README](../README.tr.md#kurulum) dosyasına bakın.
 ## Hızlı başlangıç
 
 ```typ
-#import "@local/community-meu-gsnas-thesis:0.3.1": *
+#import "@local/community-meu-gsnas-thesis:0.4.0": *
 
 #show: thesis.with(
   title: "Tezin Başlığı",
@@ -84,6 +84,7 @@ Doldurulmamış her alan PDF'te **kırmızı** görünür.
 
 | Ayar (İngilizce) | Türkçe karşılığı | Varsayılan | Açıklama |
 |---|---|---|---|
+| `language` | Tez dili | `"tr"` | `"tr"` ya da `"en"`: ana metnin heceleme dili ve iki yazarlı atıflardaki bağlaç ("ve" / "&"). Basılı başlıklar ve etiketler Türkçe kalır. |
 | `two-sided` | Çift taraflı baskı | `true` | Bölümler tek numaralı (sağ) sayfadan başlar; gerekirse araya numarasız boş sayfa eklenir. `false`: tek taraflı, boş sayfa yok. |
 | `front-cover` | Dış ön kapak (EK-5) | `true` | Logolu dış kapak; sayfa numarasına dahil değildir. |
 | `back-cover` | Arka kapak (EK-6) | `true` | YÖK Tez Merkezi'ne yüklenen PDF'te bulunmalıdır. |
@@ -126,7 +127,7 @@ Bazı ayarlar sabit değerler alır. PDF'e Türkçe karşılıkları basılır.
 Hepsi tek sayaç paylaşır ve alt bölüme göre numaralanır (Tanım 2.1.1, Teorem 2.1.2…). Bir bölüm dosyasında kullanmak için dosyanın başına ekleyin:
 
 ```typ
-#import "@local/community-meu-gsnas-thesis:0.3.1": definition, theorem, proof
+#import "@local/community-meu-gsnas-thesis:0.4.0": definition, theorem, proof
 ```
 
 | Fonksiyon (İngilizce) | PDF'e basılan |
@@ -189,11 +190,11 @@ Etiket adları (`<tbl-ornek>` gibi) serbesttir; `tbl-`, `fig-`, `eq-` önekleri 
 
 ## v0.1.x'ten geçiş
 
-v0.2.0 ile paketin adı `meu-fbe-tez` yerine `community-meu-gsnas-thesis` oldu ve bütün adlar İngilizceye çevrildi. Ad değişikliği PDF çıktısını değiştirmedi. Eski bir tezi taşımak için önce paketi yeni adıyla kurun ([README > Kurulum](../README.tr.md#kurulum)). Sonra `main.typ` ve bölüm dosyalarındaki import satırlarını `@local/community-meu-gsnas-thesis:0.3.1` yapın ve adları aşağıdaki tabloya göre değiştirin. Eski sürümü kullanmaya devam etmek de mümkündür; o sürümün klasörü kurulu kaldığı sürece eski tezler derlenmeye devam eder.
+v0.2.0 ile paketin adı `meu-fbe-tez` yerine `community-meu-gsnas-thesis` oldu ve bütün adlar İngilizceye çevrildi. Ad değişikliği PDF çıktısını değiştirmedi. Eski bir tezi taşımak için önce paketi yeni adıyla kurun ([README > Kurulum](../README.tr.md#kurulum)). Sonra `main.typ` ve bölüm dosyalarındaki import satırlarını `@local/community-meu-gsnas-thesis:0.4.0` yapın ve adları aşağıdaki tabloya göre değiştirin. Eski sürümü kullanmaya devam etmek de mümkündür; o sürümün klasörü kurulu kaldığı sürece eski tezler derlenmeye devam eder.
 
 | v0.1.x (Türkçe) | v0.2.0 (İngilizce) |
 |---|---|
-| `#import "@local/meu-fbe-tez:0.1.1"` | `#import "@local/community-meu-gsnas-thesis:0.3.1"` |
+| `#import "@local/meu-fbe-tez:0.1.1"` | `#import "@local/community-meu-gsnas-thesis:0.4.0"` |
 | `tez` | `thesis` |
 | `baslik` / `baslik-en` | `title` / `title-en` |
 | `tur: "yl"` / `tur: "dr"` | `degree: "master"` / `degree: "phd"` |

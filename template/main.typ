@@ -1,4 +1,4 @@
-#import "@local/community-meu-gsnas-thesis:0.3.1": *
+#import "@local/community-meu-gsnas-thesis:0.4.0": *
 
 // Kırmızı görünen her şey doldurulmamış alandır.
 // Ayarların Türkçe karşılıkları: docs/kullanim-kilavuzu.md (English: docs/user-guide.md).
@@ -41,6 +41,8 @@
     ("MEÜ", "Mersin Üniversitesi"),
     ("FBE", "Fen Bilimleri Enstitüsü"),
   ),
+  // Tezin dili: "tr" (atıflarda "ve") ya da "en" (atıflarda "&").
+  language: "tr",
   // Tek taraflı baskı için false yapın.
   two-sided: true,
 )
@@ -51,7 +53,8 @@
 #include "chapters/04-results-discussion.typ"
 #include "chapters/05-conclusions.typ"
 
-#references(bibliography("references.bib", style: "apa", full: true, title: none))
+// APA stili şablondan gelir (Türkçede iki yazar "ve" ile); style vermeyin.
+#references(bibliography("references.bib", full: true))
 
 // Ek yoksa aşağıdaki satırı silin.
 #appendices[Ekler buraya yazılır.]
