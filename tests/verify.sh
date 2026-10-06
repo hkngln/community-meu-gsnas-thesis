@@ -74,4 +74,15 @@ icermez "$TEK" "Kaynakça"
 [[ $(baslik_sayfasi "$TEK" "2. SONUÇ") -eq $(($(baslik_sayfasi "$TEK" "1. GİRİŞ") + 1)) ]] \
   || hata "tek taraflı modda bölümler arasında boş sayfa var"
 
+# Yedek font: Times New Roman yokken gömülü Libertinus Serif kullanılmalı.
+# Beklenen tek uyarı Times New Roman'ın bulunamadığıdır.
+YEDEK="$OUT/fallback-font.pdf"
+log=$(typst compile --ignore-system-fonts --root . tests/one-sided.typ "$YEDEK" 2>&1) \
+  || { echo "$log"; hata "yedek fontla derlenemedi"; }
+beklenmeyen=$(grep "^warning" <<<"$log" | grep -v "unknown font family: times new roman" || true)
+[[ -z "$beklenmeyen" ]] || { echo "$log"; hata "yedek fontla beklenmeyen uyarı"; }
+fontlar=$(pdffonts "$YEDEK")
+grep -q "LibertinusSerif" <<<"$fontlar" || hata "yedek font (Libertinus Serif) kullanılmadı"
+echo "derlendi: yedek font (Libertinus Serif)"
+
 echo "Tüm kontroller geçti (sürüm $SURUM)."

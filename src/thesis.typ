@@ -26,10 +26,10 @@
 }
 
 // Sayfa, yazı, paragraf, liste: her yerde geçerli temel ayarlar.
-#let _base-style(doc) = {
+#let _base-style(font, doc) = {
   set page(paper: "a4", margin: MARGIN, header-ascent: HEADER-ASCENT)
   set text(
-    font: FONT,
+    font: font,
     size: FONT-SIZE,
     lang: "tr",
     // "ascender" OS/2 typo değerini (0.693em) kullanır; Word ise hhea
@@ -140,8 +140,15 @@
   abbreviations: (),
   // Bölümler yeni ve tek numaralı sayfadan başlar (çift taraflı baskı).
   two-sided: true,
+  // Yazı tipi; listede bulunan ilk font kullanılır. Resmi teslim: Times New Roman.
+  // Ör. ("Times New Roman", "TeX Gyre Termes", "Libertinus Serif")
+  font: FONTS,
   body,
 ) = {
+  assert(
+    type(font) in (str, array),
+    message: "font bir yazı tipi adı ya da ad listesi olmalı, verilen: " + repr(font),
+  )
   assert(degree in DEGREES, message: "degree \"master\" veya \"phd\" olmalı, verilen: " + repr(degree))
   assert(
     decision == none or decision in DECISIONS,
@@ -150,7 +157,7 @@
   assert(jury.len() <= 5, message: "jüri en fazla 5 üye (başkan dahil) olabilir")
 
   set document(title: field(title, "Tez"), author: if student == none { () } else { student })
-  show: _base-style
+  show: _base-style.with(font)
   show: _figure-style
   show: theorem-style
 

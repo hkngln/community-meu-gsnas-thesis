@@ -69,9 +69,28 @@ Other options:
 | [Zed](https://zed.dev) | [Typst extension](https://zed.dev/extensions/typst) |
 | Neovim, Helix, Emacs and others | [Tinymist installation docs](https://myriad-dreamin.github.io/tinymist/) |
 
-### 3. Times New Roman
+### 3. Font: Times New Roman
 
-Included with Windows and macOS. On Linux, install the `ttf-mscorefonts-installer` package. "Times New Roman" should appear in the output of `typst fonts`.
+The guidelines require **Times New Roman**. It is included with Windows and macOS; on Linux, install the `ttf-mscorefonts-installer` package. "Times New Roman" should appear in the output of `typst fonts`.
+
+**Fallback:** if Times New Roman is missing, the template uses [Libertinus Serif](https://github.com/alerque/libertinus), which ships with Typst, so the thesis always compiles (also in the typst.app web app). Typst then warns `unknown font family: times new roman`. Install Times New Roman before submitting.
+
+**Alternative:** [TeX Gyre Termes](https://www.gust.org.pl/projects/e-foundry/tex-gyre/termes) is a free Times clone. It is not in the default list because Typst warns about every font in the list that is not installed. If you install it, add it with the `font` setting:
+
+| System | Install TeX Gyre Termes |
+|---|---|
+| macOS | `brew install --cask font-tex-gyre-termes` ([Homebrew](https://formulae.brew.sh/cask/font-tex-gyre-termes)) |
+| Debian / Ubuntu | `sudo apt install fonts-texgyre` ([package](https://packages.debian.org/stable/fonts-texgyre)) |
+| Windows / other | Download from [GUST](https://www.gust.org.pl/projects/e-foundry/tex-gyre/termes) |
+
+```typ
+#show: thesis.with(
+  font: ("Times New Roman", "TeX Gyre Termes", "Libertinus Serif"),
+  // ...
+)
+```
+
+The first font in the list that is installed is used.
 
 ### 4. Install the template
 

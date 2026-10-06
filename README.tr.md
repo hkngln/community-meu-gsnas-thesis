@@ -67,9 +67,28 @@ Diğer seçenekler:
 | [Zed](https://zed.dev) | [Typst eklentisi](https://zed.dev/extensions/typst) |
 | Neovim, Helix, Emacs ve diğerleri | [Tinymist kurulum belgeleri](https://myriad-dreamin.github.io/tinymist/) |
 
-### 3. Times New Roman fontu
+### 3. Yazı tipi: Times New Roman
 
-Windows ve macOS'ta hazır gelir. Linux'ta `ttf-mscorefonts-installer` paketiyle kurulur. `typst fonts` komutunun çıktısında "Times New Roman" görünmelidir.
+Yönerge **Times New Roman** istiyor. Windows ve macOS'ta hazır gelir; Linux'ta `ttf-mscorefonts-installer` paketiyle kurulur. `typst fonts` komutunun çıktısında "Times New Roman" görünmelidir.
+
+**Yedek font:** Times New Roman yoksa şablon, Typst'ün içinde gelen [Libertinus Serif](https://github.com/alerque/libertinus) fontunu kullanır. Böylece tez her zaman derlenir (typst.app web uygulamasında da). Typst bu durumda `unknown font family: times new roman` uyarısı verir. Teslimden önce Times New Roman'ı kurun.
+
+**Alternatif:** [TeX Gyre Termes](https://www.gust.org.pl/projects/e-foundry/tex-gyre/termes), Times'ın ücretsiz bir kopyasıdır. Varsayılan listede değildir, çünkü Typst listedeki kurulu olmayan her font için uyarı verir. Kurarsanız `font` ayarıyla ekleyin:
+
+| Sistem | TeX Gyre Termes kurulumu |
+|---|---|
+| macOS | `brew install --cask font-tex-gyre-termes` ([Homebrew](https://formulae.brew.sh/cask/font-tex-gyre-termes)) |
+| Debian / Ubuntu | `sudo apt install fonts-texgyre` ([paket](https://packages.debian.org/stable/fonts-texgyre)) |
+| Windows / diğer | [GUST](https://www.gust.org.pl/projects/e-foundry/tex-gyre/termes) sitesinden indirin |
+
+```typ
+#show: thesis.with(
+  font: ("Times New Roman", "TeX Gyre Termes", "Libertinus Serif"),
+  // ...
+)
+```
+
+Listede kurulu olan ilk font kullanılır.
 
 ### 4. Şablonu kurun
 
