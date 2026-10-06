@@ -22,7 +22,7 @@ For installation, see the [README](../README.md#installation).
 ## Quick start
 
 ```typ
-#import "@local/community-meu-gsnas-thesis:0.4.0": *
+#import "@local/community-meu-gsnas-thesis:0.5.0": *
 
 #show: thesis.with(
   title: "Tezin Başlığı",
@@ -108,6 +108,7 @@ Used in `main.typ`, after the chapters.
 | Function | Turkish equivalent | Printed heading |
 |---|---|---|
 | `#references(bibliography("references.bib"))` | Kaynaklar (references) | KAYNAKLAR |
+| `#secondary-cite(<label>, year: 2012)[Author, 2007]` | Aktarma atfı (secondary source) | (Author, 2007: Öztürk vd. 2012’den), article 16/3 |
 | `#appendices[...]` | Ekler (appendices) | EKLER. Write appendix sections as `== EK-1: Title` (unnumbered); figures, tables, equations and theorems inside are numbered E.1, E.2… |
 | `#cv(...)` | Özgeçmiş (CV) | ÖZGEÇMİŞ |
 
@@ -127,7 +128,7 @@ Used in `main.typ`, after the chapters.
 All share one counter and are numbered by section (Tanım 2.1.1, Teorem 2.1.2…). To use them in a chapter file, add at the top:
 
 ```typ
-#import "@local/community-meu-gsnas-thesis:0.4.0": definition, theorem, proof
+#import "@local/community-meu-gsnas-thesis:0.5.0": definition, theorem, proof
 ```
 
 | Function | Printed in the PDF |
@@ -190,11 +191,11 @@ Label names (such as `<tbl-example>`) are free-form; the `tbl-`, `fig-` and `eq-
 
 ## Migrating from v0.1.x
 
-In v0.2.0 the package was renamed from `meu-fbe-tez` to `community-meu-gsnas-thesis` and all names became English. The renaming itself did not change the PDF output. To migrate an existing thesis, first install the package under its new name ([README > Installation](../README.md#installation)). Then change the import lines in `main.typ` and the chapter files to `@local/community-meu-gsnas-thesis:0.4.0` and rename the settings according to the table below. You can also keep using the old version: existing theses keep compiling as long as that version's folder stays installed.
+In v0.2.0 the package was renamed from `meu-fbe-tez` to `community-meu-gsnas-thesis` and all names became English. The renaming itself did not change the PDF output. To migrate an existing thesis, first install the package under its new name ([README > Installation](../README.md#installation)). Then change the import lines in `main.typ` and the chapter files to `@local/community-meu-gsnas-thesis:0.5.0` and rename the settings according to the table below. You can also keep using the old version: existing theses keep compiling as long as that version's folder stays installed.
 
 | v0.1.x (Turkish) | v0.2.0 (English) |
 |---|---|
-| `#import "@local/meu-fbe-tez:0.1.1"` | `#import "@local/community-meu-gsnas-thesis:0.4.0"` |
+| `#import "@local/meu-fbe-tez:0.1.1"` | `#import "@local/community-meu-gsnas-thesis:0.5.0"` |
 | `tez` | `thesis` |
 | `baslik` / `baslik-en` | `title` / `title-en` |
 | `tur: "yl"` / `tur: "dr"` | `degree: "master"` / `degree: "phd"` |

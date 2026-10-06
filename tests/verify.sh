@@ -99,14 +99,42 @@ not_contains "$REG" "2.1. EK-1"
 # Turkish thesis type label, 1.25 cm hanging indent.
 contains "$REG" "(Engin ve Özçimen, 2016)"
 contains "$REG" "Engin, A., & Özçimen, D. (2016)"
-contains "$REG" "[Yayımlanmamış doktora tezi]"
+contains_flat "$REG" "[Yayımlanmamış doktora tezi]. University of Virginia."
 # @incollection: book title printed once (APA 7 chapter format); @misc year-only
 # date without a trailing comma.
-contains_flat "$REG" "(ed.), Learning and intelligent optimization (ss. 225-240)"
+contains_flat "$REG" "(Ed.), Lecture notes in computer science: C. 11353. Learning and intelligent optimization (ss. 225–240)"
 not_contains "$REG" "optimization: Learning"
 contains "$REG" "Standardization. (2018)."
 not_contains "$REG" "(2018,)"
 contains_flat "$REG" "İçinde R. Battiti"
+
+# Institute citation style (v0.5.0): directive articles 13/e, 16/2, 16/3 and the
+# Word template's reference examples.
+contains_flat "$REG" "(Aydeniz vd., 2015; Couch ve Metz, 2016; Yılmaz, 2016; Turan, 2018)"
+contains_flat "$REG" "(Singh, 2007: Öztürk vd. 2012’den)"
+contains_flat "$REG" "(Rapor No. NASA/CR-2018-220043). National Aeronautics and Space Administration."
+contains_flat "$REG" "(Yayın No. 27542827) [Doktora tezi, Pepperdine University]. PQDT Open."
+contains_flat "$REG" "PLoS ONE, 13(3), Makale e0193972."
+continued=$(grep -c "Tablo 1.1 (devamı)" <<<"$REG_TEXT" || true)
+[[ "$continued" -ge 1 ]] || fail "long table has no \"Tablo 1.1 (devamı)\" on its later pages"
+not_contains "$REG" "Tablo 1.1. (devamı)"
+contains_flat "$REG" "(Smith, 2010; Jones, 2012; Smith, 2015)"
+contains_flat "$REG" "On the Doctoral dissertation genre"
+
+# Tables (v0.5.0 review): user tables are left intact; no false "(devamı)".
+TABLES="$OUT/tables.pdf"
+compile . tests/tables.typ "$TABLES"
+for expected in "SUBHEADER-X" "LA" "CELL-Y1"; do contains "$TABLES" "$expected"; done
+row0_page=$(python3 - "$TABLES" <<'PY'
+import subprocess, sys
+pages = subprocess.run(["pdftotext", sys.argv[1], "-"], capture_output=True, text=True).stdout.split("\f")
+print(next(i for i, page in enumerate(pages, 1) if "ROW-0" in page))
+PY
+)
+pdftotext -f "$row0_page" -l "$row0_page" "$TABLES" - | grep -q "devamı" \
+  && fail "the first piece of a table is labeled (devamı)"
+pdftotext -f $((row0_page + 1)) -l $((row0_page + 1)) "$TABLES" - | grep -q "Tablo 1.4 (devamı)" \
+  || fail "the second piece of a long table is not labeled \"Tablo 1.4 (devamı)\""
 REF_PAGE=$(heading_page "$REG" "KAYNAKLAR")
 indent_cm=$(pdftotext -f "$REF_PAGE" -l "$REF_PAGE" -bbox "$REG" - | python3 -c '
 import re, sys
@@ -120,9 +148,18 @@ print(f"{(xs[1] - xs[0]) / 72 * 2.54:.2f}" if len(xs) > 1 else "0")')
 
 # English thesis: "&" in citations, "et al." (v0.4.0).
 en_log=$(printf '%s\n' '#import "/lib.typ": *' '#show: thesis.with(language: "en", front-cover: false, back-cover: false, two-sided: false)' \
-  '= INTRODUCTION' '@engin2016' '#references(bibliography("/tests/regressions.bib"))' \
+  '= INTRODUCTION' '@engin2016' 'Report @stuster2018.' '#secondary-cite(<ozturk2012>, year: 2012)[Singh, 2007]' \
+  '#references(bibliography("/tests/regressions.bib"))' \
   | typst compile --root . - "$OUT/english.pdf" 2>&1) || { echo "$en_log"; fail "English thesis did not compile"; }
 contains "$OUT/english.pdf" "(Engin & Özçimen, 2016)"
+contains_flat "$OUT/english.pdf" "(Singh, 2007, as cited in Öztürk et al., 2012)"
+contains_flat "$OUT/english.pdf" "(Report No. NASA/CR-2018-220043)"
+
+# An old main.typ with style: "apa" must stop with a clear message (v0.5.0).
+style_log=$(printf '%s\n' '#import "/lib.typ": *' '#show: thesis.with(front-cover: false, back-cover: false)' \
+  '#references(bibliography("/tests/regressions.bib", style: "apa"))' \
+  | typst compile --root . - "$OUT/old-style.pdf" 2>&1 || true)
+grep -q "style vermeyin" <<<"$style_log" || { echo "$style_log"; fail "no clear error for style: \"apa\""; }
 
 # Wrong argument types must give a clear message, not an internal error.
 # (Read from stdin, so no temporary file is needed inside the project root.)
