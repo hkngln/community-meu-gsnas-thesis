@@ -74,11 +74,13 @@ Doldurulmamış her alan PDF'te **kırmızı** görünür.
 | Ayar (İngilizce) | Türkçe karşılığı | Örnek |
 |---|---|---|
 | `abstract-tr` | Özet (Türkçe) | `include "front/abstract-tr.typ"` |
-| `keywords-tr` | Anahtar kelimeler | `("Kelime1", "Kelime2")` |
+| `keywords-tr` | Anahtar kelimeler (en fazla 5) | `("Kelime1", "Kelime2")` |
 | `abstract-en` | Abstract (İngilizce) | `include "front/abstract-en.typ"` |
-| `keywords-en` | Keywords | `("Keyword1", "Keyword2")` |
+| `keywords-en` | Keywords (en fazla 5) | `("Keyword1", "Keyword2")` |
 | `acknowledgements` | Teşekkür | `include "front/acknowledgements.typ"` |
 | `abbreviations` | Simgeler ve kısaltmalar: `(kısaltma, tanım)` çiftleri | `(("MEÜ", "Mersin Üniversitesi"),)` |
+
+Yönerge Madde 15/2'ye göre en fazla 5 anahtar kelime verilir; ÖZET ve ABSTRACT en fazla 300 sözcük olur. 5'ten fazla anahtar kelimede derleme hata verir; sözcük sayısını şablon denetlemez, kendiniz sayın.
 
 ### Baskı
 
@@ -88,6 +90,7 @@ Doldurulmamış her alan PDF'te **kırmızı** görünür.
 | `two-sided` | Çift taraflı baskı | `true` | Bölümler tek numaralı (sağ) sayfadan başlar; gerekirse araya numarasız boş sayfa eklenir. `false`: tek taraflı, boş sayfa yok. |
 | `front-cover` | Dış ön kapak (EK-5) | `true` | Logolu dış kapak; sayfa numarasına dahil değildir. |
 | `back-cover` | Arka kapak (EK-6) | `true` | YÖK Tez Merkezi'ne yüklenen PDF'te bulunmalıdır. |
+| `yok-copy` | YÖK Tez Merkezi kopyası | `false` | `true`: YÖK Tez Merkezi'ne yüklenecek elektronik kopya (Madde 18/4). ONAY ve ETİK BEYAN sayfaları çıkarılır, `#cv(...)` hiçbir şey basmaz, arka kapak `back-cover` değerinden bağımsız olarak her zaman basılır. Sayfa numaraları ve içindekiler buna göre düzenlenir. Jüriye verilen basılı nüshayı `false` ile derleyin. |
 | `font` | Yazı tipi | `("Times New Roman", "Libertinus Serif")` | Listede kurulu olan ilk font kullanılır. Libertinus Serif Typst'le birlikte gelir ve yedek fonttur. TeX Gyre Termes kurduysanız `"TeX Gyre Termes"` ekleyin ([README](../README.tr.md#3-yazı-tipi-times-new-roman)). Teslimde Times New Roman kullanın. |
 
 ## Değerler
@@ -185,7 +188,9 @@ Dosya adlarını değiştirmek serbesttir; `main.typ` içindeki `#include` satı
 | Eşitliğe atıf | `@eq-kuvvet` | Eşitlik (2.1) |
 | Kaynağa atıf | `@grady2019` | (Grady vd., 2019) |
 | Metin içi atıf | `#cite(<grady2019>, form: "prose")` | Grady vd. (2019) |
-| Dipnot | `#footnote[..]` | \*, †, ‡ (her sayfada yeniden başlar) |
+| Dipnot | `#footnote[..]` | \*, †, ‡ (her sayfada yeniden başlar); 10 punto, italik, tek satır aralığı, metinden satırın dörtte biri uzunluğunda çizgiyle ayrılır (Madde 12) |
+| 40 sözcüğü aşan alıntı | `#quote(block: true)[..]` | Ayrı paragraf, 10 punto, tırnaksız, iki yandan 1,25 cm içeride (Madde 11/2). `#quote(block: true, attribution: [Yazar])` sonuna "— Yazar" ekler |
+| Kısa alıntı | `#quote[..]` | Gövde puntosunda “..” |
 
 Etiket adları (`<tbl-ornek>` gibi) serbesttir; `tbl-`, `fig-`, `eq-` önekleri yalnızca okunaklılık içindir.
 
