@@ -1,4 +1,4 @@
-#import "@local/community-meu-gsnas-thesis:0.5.0": definition, proof, theorem
+#import "@local/community-meu-gsnas-thesis:0.5.1": definition, proof, theorem
 
 = KAYNAK ARAŞTIRMALARI
 
