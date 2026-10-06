@@ -10,54 +10,54 @@ permissions:
   contents: read
 
 jobs:
-  dal-kurali:
-    name: Dal kuralı
+  branch-rule:
+    name: Branch rule
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     steps:
-      - name: Kaynak ve hedef dalı denetle
+      - name: Check source and target branches
         env:
-          KAYNAK: ${{ github.head_ref }}
-          HEDEF: ${{ github.base_ref }}
+          SOURCE: ${{ github.head_ref }}
+          TARGET: ${{ github.base_ref }}
         run: |
-          echo "PR: $KAYNAK -> $HEDEF"
-          if [[ "$HEDEF" == "main" && "$KAYNAK" != "dev" ]]; then
-            echo "::error::main dalına yalnızca dev dalından PR açılabilir."
+          echo "PR: $SOURCE -> $TARGET"
+          if [[ "$TARGET" == "main" && "$SOURCE" != "dev" ]]; then
+            echo "::error::Pull requests into main may only come from dev."
             exit 1
           fi
-          if [[ "$HEDEF" == "dev" && ! "$KAYNAK" =~ ^(feat|fix|docs|refactor|test|ci|chore|perf)/[a-z0-9._-]+$ ]]; then
-            echo "::error::dev dalına gelen PR'ın dal adı <tür>/<kısa-ad> olmalı (ör. feat/ek-numaralama). Bkz. CONTRIBUTING.md"
+          if [[ "$TARGET" == "dev" && ! "$SOURCE" =~ ^(feat|fix|docs|refactor|test|ci|chore|perf)/[a-z0-9._-]+$ ]]; then
+            echo "::error::Branches merged into dev must be named <type>/<short-name> (e.g. feat/appendix-numbering). See CONTRIBUTING.md"
             exit 1
           fi
 
-  surum-kontrolu:
-    name: Sürüm kontrolü
+  version-check:
+    name: Version check
     if: github.event_name == 'pull_request' && github.base_ref == 'main'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
         with:
           fetch-depth: 0
-      - name: typst.toml sürümü yayınlanmamış olmalı
+      - name: The typst.toml version must not be released yet
         run: |
-          SURUM=$(sed -n 's/^version = "\(.*\)"/\1/p' typst.toml)
-          if git rev-parse -q --verify "refs/tags/v$SURUM" >/dev/null; then
-            echo "::error::v$SURUM zaten yayınlanmış. main'e birleştirmeden önce typst.toml sürümünü artırın."
+          VERSION=$(sed -n 's/^version = "\(.*\)"/\1/p' typst.toml)
+          if git rev-parse -q --verify "refs/tags/v$VERSION" >/dev/null; then
+            echo "::error::v$VERSION is already released. Bump the version in typst.toml before merging into main."
             exit 1
           fi
-          echo "Yayınlanacak sürüm: v$SURUM"
+          echo "Version to release: v$VERSION"
 
-  derle:
-    name: Derle ve doğrula
-    # Times New Roman yalnızca macOS runner'da hazır gelir.
+  build:
+    name: Build and verify
+    # Only macOS runners ship Times New Roman.
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v7
-      - uses: ./.github/actions/ortam
+      - uses: ./.github/actions/setup
       - run: bash tests/verify.sh
       - uses: actions/upload-artifact@v7
         if: always()
         with:
-          name: pdf-ciktilari
+          name: pdf-outputs
           path: tests/out/*.pdf
           if-no-files-found: ignore

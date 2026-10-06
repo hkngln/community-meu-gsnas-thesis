@@ -94,7 +94,7 @@ Yayın adımları:
 3. Bu dalı PR ile `dev`'e birleştirin.
 4. **`dev` → `main`** PR'ı açın. CI, sürümün daha önce yayınlanmadığını denetler.
 5. PR'ı **merge commit** ile birleştirin; squash kullanmayın, yoksa `dev` ile `main` ayrışır.
-6. `Sürüm` workflow'u `vX.Y.Z` etiketini ve Release'i otomatik oluşturur.
+6. `Release` workflow'u `vX.Y.Z` etiketini ve Release'i otomatik oluşturur.
 
 ## Kurallarla ilgili değişiklikler
 
