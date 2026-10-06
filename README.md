@@ -183,6 +183,8 @@ The template uses the institute's citation style. It is based on APA 7 and follo
 - The bibliography has a 1.25 cm hanging indent and a blank line between entries.
 - Do not pass `style:` to `bibliography(...)`: the template supplies the style. If an old `main.typ` still has `style: "apa"`, compilation stops with an error that says so; delete that part.
 - In a Turkish thesis `@phdthesis` prints "[Doktora tezi]. University." and `@mastersthesis` "[Yüksek lisans tezi]. University."; a thesis with a `url` or `doi` (published) prints "[Doktora tezi, University]. Database." `@techreport` prints "(Rapor No. …). Institution." For any other type name, add a `type` field to the BibTeX entry, e.g. `type = {Yayımlanmamış doktora tezi}` → "[Yayımlanmamış doktora tezi]".
+- A `@book` in a series (`series` with `number` or `volume`) prints the series with the title, as a chapter does: "Advances in pharmaceutical sciences: No. 7. Nanotechnology based approaches…" (`volume` → "C. 7" / "Vol. 7"). A standard is a `@standard` entry with `organization`, `type` and `number`: `organization = {International Organization for Standardization}, type = {ISO Standard}, number = {45001:2018}` → "International Organization for Standardization. (2018). Title (ISO Standard No. 45001:2018). URL"; without `type` the number prints as "(No. 45001:2018)".
+- Two different authors with the same surname and year are told apart by year suffixes, (Alpha, 2001a; Alpha, 2001b), in the text and in the reference list; APA's initials ("A. Alpha") are not available because Typst's citation engine does not render them. Works of one author cited together keep the author in every citation: (Şahin, 2016a; Şahin, 2016b).
 
 ## Contributing
 
