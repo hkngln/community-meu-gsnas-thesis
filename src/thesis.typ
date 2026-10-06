@@ -51,22 +51,39 @@
   doc
 }
 
+// table.header'ın kapladığı satır sayısı (yoksa ilk satır başlık sayılır).
+#let _header-rows(t) = {
+  let cols = if type(t.columns) == int { t.columns } else { t.columns.len() }
+  let header = t.children.filter(c => c.func() == table.header)
+  if header.len() == 0 { return 1 }
+  let cells = header.first().children.filter(c => c.func() != table.hline)
+  let slots = cells.map(c => if c.func() == table.cell { c.at("colspan", default: 1) } else { 1 }).sum(default: 0)
+  calc.max(1, calc.ceil(slots / cols))
+}
+
 // Şekil, tablo, denklem: bölüm numarasına göre (2.1), tek satır aralıklı.
-#let _figure-style(doc) = {
+#let _figure-style(font, doc) = {
   set figure(numbering: by-chapter, gap: 0.8em)
   set figure.caption(separator: [. ])
   show figure.where(kind: table): set figure.caption(position: top)
   show figure: set block(above: BLANK-LINE, below: BLANK-LINE)
   show figure: set par(leading: SPACING-1, first-line-indent: 0pt)
   show figure.caption: it => context [*#it.supplement #it.counter.display(it.numbering)#it.separator*#it.body]
-  // Docx: yalnızca tablonun üstünde, başlık satırının altında ve en altta çizgi.
-  set table(stroke: (_, y) => if y <= 1 { (top: 0.5pt) })
+  // Docx: tablonun üstünde, başlık satır(lar)ının altında ve en altta çizgi.
+  // Yalnızca figür içindeki tablolara uygulanır. Uzun tablolar sayfadan sayfaya
+  // bölünebilir; başlık satırı tekrarlanır, her parçanın altında çizgi olur.
+  show figure.where(kind: table): set block(breakable: true)
   show figure.where(kind: table): it => {
-    show table: t => box(stroke: (bottom: 0.5pt), t)
+    let header-rows = if it.body.func() == table { _header-rows(it.body) } else { 1 }
+    set table(stroke: (_, y) => if y == 0 or y == header-rows { (top: 0.5pt) })
+    show table: t => context {
+      block(width: measure(t).width, breakable: true, stroke: (bottom: 0.5pt), t)
+    }
     it
   }
 
-  set math.equation(numbering: n => "(" + by-chapter(n) + ")", supplement: [Eşitlik])
+  // Numara matematik fontuyla değil, metin fontuyla basılsın: "(2.1)".
+  set math.equation(numbering: n => text(font: font)[(#by-chapter(n))], supplement: [Eşitlik])
   show math.equation.where(block: true): set block(above: BLANK-LINE, below: BLANK-LINE)
   // @denklem -> "Eşitlik (2.1)" (Typst varsayılanı parantezleri düşürür).
   show ref: it => {
@@ -98,7 +115,12 @@
   counter(page).update(1)
   show heading.where(level: 1): it => {
     _break-to(if two-sided { "odd" } else { none })
-    for kind in (table, image, THEOREM-KIND) { counter(figure.where(kind: kind)).update(0) }
+    // Belgede kullanılan her figür türü (tablo, şekil, kod listesi, teorem,
+    // kullanıcı türleri) her bölümde yeniden 1'den başlar.
+    context {
+      let kinds = (table, image, raw, THEOREM-KIND) + query(figure).map(f => f.kind)
+      for kind in kinds.dedup() { counter(figure.where(kind: kind)).update(0) }
+    }
     counter(math.equation).update(0)
     it
   }
@@ -149,6 +171,24 @@
     type(font) in (str, array),
     message: "font bir yazı tipi adı ya da ad listesi olmalı, verilen: " + repr(font),
   )
+  // Yanlış türde değer verildiğinde Typst'ün iç hatası yerine anlaşılır mesaj.
+  let _person = (name, value) => assert(
+    type(value) == dictionary and "name" in value,
+    message: name + " (name: \"...\", orcid: \"...\") biçiminde olmalı, verilen: " + repr(value),
+  )
+  _person("advisor", advisor)
+  if co-advisor != none { _person("co-advisor", co-advisor) }
+  for (name, value) in (
+    ("jury", jury),
+    ("keywords-tr", keywords-tr),
+    ("keywords-en", keywords-en),
+    ("abbreviations", abbreviations),
+  ) {
+    assert(
+      type(value) == array,
+      message: name + " bir dizi olmalı, ör. (\"a\", \"b\"); verilen: " + repr(value),
+    )
+  }
   assert(degree in DEGREES, message: "degree \"master\" veya \"phd\" olmalı, verilen: " + repr(degree))
   assert(
     decision == none or decision in DECISIONS,
@@ -158,7 +198,7 @@
 
   set document(title: field(title, "Tez"), author: if student == none { () } else { student })
   show: _base-style.with(font)
-  show: _figure-style
+  show: _figure-style.with(font)
   show: theorem-style
 
   // Dış kapak sayfa sayısına girmez; çift taraflı baskıda iç yüzü boş kalır.

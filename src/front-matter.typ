@@ -67,6 +67,8 @@
   front-heading[ETİK BEYAN]
   set par(first-line-indent: 0pt)
   [Mersin Üniversitesi Lisansüstü Eğitim-Öğretim Yönetmeliğinde belirtilen kurallara uygun olarak hazırladığım bu tez çalışmasında,]
+  // Docx: etik beyan maddelerinin işareti "-".
+  set list(marker: [-])
   list(.._ETHICS-TR)
   par(first-line-indent: 0pt)[beyan ederim.]
   v(BLANK-LINE / 2)
@@ -83,9 +85,10 @@
 }
 
 // Özet ve abstract aynı yerleşimi kullanır; yalnızca dil ve etiketler değişir.
-#let _abstract-page(heading-text, thesis-title, body, keywords-label, keywords, advisor-label, advisor-line) = {
+// to-upper: Türkçe sayfa için tr-upper (i -> İ), İngilizce için upper (i -> I).
+#let _abstract-page(heading-text, thesis-title, to-upper, body, keywords-label, keywords, advisor-label, advisor-line) = {
   front-heading(heading-text)
-  centered-bold(tr-upper(thesis-title))
+  centered-bold(to-upper(thesis-title))
   v(BLANK-LINE / 2)
   body
   v(BLANK-LINE / 2)
@@ -98,6 +101,7 @@
 #let abstract-tr(title: none, body: none, keywords: (), advisor-name: none, department: none) = _abstract-page(
   [ÖZET],
   field(title, "TEZİN TÜRKÇE BAŞLIĞI"),
+  tr-upper,
   field(body, "Bu kısımda tezin özeti verilmelidir."),
   "Anahtar Kelimeler",
   keywords,
@@ -109,7 +113,8 @@
   set text(lang: "en")
   _abstract-page(
     [ABSTRACT],
-    field(title, "TITLE OF THE THESIS"),
+    field(title, "TITLE OF THESIS"),
+    upper,
     field(body, "The summary of study should be given in this section."),
     "Keywords",
     keywords,

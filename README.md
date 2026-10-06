@@ -27,7 +27,7 @@ The thesis itself is printed in **Turkish**, as the institute requires: headings
   - 1.25 cm first-line indent.
 - Chapters, references, appendices and the CV start on a new odd-numbered page. Blank filler pages carry no header or page number.
 - Figures, tables and equations are numbered by chapter (**Tablo 2.1.**, **Şekil 2.1.**, (2.1)); in appendices "E.1".
-- APA 7 citations with Turkish "vd." (et al.). Footnotes use \*, †, ‡ and restart on every page.
+- APA 7 citations with Turkish "vd." (et al.); see [Known limitations](#known-limitations). Footnotes use \*, †, ‡ and restart on every page.
 - Every field you have not filled in shows up **in red** in the PDF.
 
 ## Installation
@@ -168,9 +168,16 @@ The most common ones:
 | Citation | `@grady2019` → (Grady vd., 2019); `#cite(<grady2019>, form: "prose")` → Grady vd. (2019) |
 | Footnote | `#footnote[..]` → \*, †, ‡ |
 
-If you have no appendices, delete the `#appendices[..]` line. Lists of tables and figures are omitted when there are no tables or figures.
+If you have no appendices, delete the `#appendices[..]` line. Inside `#appendices`, write appendix sections as `== EK-1: Title`; they are not numbered, and figures, tables, equations and theorems there are numbered E.1, E.2… Lists of tables and figures are omitted when there are no tables or figures.
 
-> **Using v0.1.x?** In v0.2.0 the package was renamed from `meu-fbe-tez` to `community-meu-gsnas-thesis` and all names became English; the PDF output did not change. See the [migration table](docs/user-guide.md#migrating-from-v01x) in the user guide.
+> **Using v0.1.x?** In v0.2.0 the package was renamed from `meu-fbe-tez` to `community-meu-gsnas-thesis` and all names became English; the renaming itself did not change the PDF output. See the [migration table](docs/user-guide.md#migrating-from-v01x) in the user guide.
+
+## Known limitations
+
+These come from Typst's built-in APA style and are planned for v0.4.0:
+- Two-author citations print "&" instead of the Turkish "ve": `(Engin & Özçimen, 2016)` instead of `(Engin ve Özçimen, 2016)`. Until then, write such citations by hand where it matters.
+- Some reference-type labels stay in English, e.g. "[Doctoral dissertation]" instead of "[Yayımlanmamış doktora tezi]".
+- The bibliography's hanging indent is 1.5em (about 0.58 cm) instead of the template's 1.25 cm; Typst 0.15 does not allow changing it.
 
 ## Contributing
 

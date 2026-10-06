@@ -11,15 +11,19 @@
   // Kullanıcı stil/başlık vermeyi unutursa: IEEE "[1]" ve ikinci bir
   // "Kaynakça" başlığı çıkmasın. Açıkça verilen değerler yine geçerlidir.
   set bibliography(style: "apa", title: none)
-  // Kurala göre "her eser arasında birer satır boşluk".
+  // Kurala göre "her eser arasında birer satır boşluk". Not: docx asılı girinti
+  // 1,25 cm ister; Typst 0.15 kaynakça girintisini 1,5em olarak sabit uygular ve
+  // set/show kurallarıyla değiştirilemiyor (ölçüldü). Bilinen sınırlama.
   show bibliography: set par(spacing: BLANK-LINE)
   bib
 }
 
 #let appendices(body) = {
   heading(level: 1, numbering: none)[EKLER]
-  // Ekteki şekil/tablo/eşitlikler "E.1" diye numaralanır.
+  // Ekteki şekil/tablo/eşitlik/teoremler "E.1" diye numaralanır. Ekteki alt
+  // başlıklar (ör. == EK-1: ...) numarasızdır; son bölümün numarasını almazlar.
   APPENDIX-STATE.update(true)
+  set heading(numbering: none)
   body
 }
 
@@ -27,7 +31,8 @@
   columns: (auto,) + (1fr,) * (headers.len() - 1),
   stroke: 0.5pt,
   inset: (x: 0.8em, y: 0.5em),
-  table.header(..headers.map(strong)),
+  // Docx: özgeçmiş tablo başlıkları ortalı.
+  table.header(..headers.map(h => table.cell(align: center, strong(h)))),
   ..rows.flatten(),
 ))
 
