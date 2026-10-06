@@ -61,6 +61,9 @@
   calc.max(1, calc.ceil(slots / cols))
 }
 
+// Tablonun gerçekten başladığı yer (figür başlığı önceki sayfada kalabilir).
+#let _TABLE-START = <meu-table-start>
+
 // Şekil, tablo, denklem: bölüm numarasına göre (2.1), tek satır aralıklı.
 #let _figure-style(font, doc) = {
   set figure(numbering: by-chapter, gap: 0.8em)
@@ -76,12 +79,34 @@
   // Docx: tablonun üstünde, başlık satır(lar)ının altında ve en altta çizgi.
   // Yalnızca figür içindeki tablolara uygulanır. Uzun tablolar sayfadan sayfaya
   // bölünebilir; başlık satırı tekrarlanır, her parçanın altında çizgi olur.
+  // Yönerge Madde 13/e: sayfaya sığmayan tablonun sonraki sayfalarında,
+  // tekrarlanan başlık satırının üstünde "Tablo 3.1 (devamı)" yazar. Tablo,
+  // başlığı her sayfada tekrarlanan tek sütunlu bir grid'e konur; kullanıcının
+  // tablosuna dokunulmaz. Grid başlığı tablonun başladığı sayfada boştur.
   show figure.where(kind: table): set block(breakable: true)
   show figure.where(kind: table): it => {
     let header-rows = if it.body.func() == table { _header-rows(it.body) } else { 1 }
-    set table(stroke: (_, y) => if y == 0 or y == header-rows { (top: 0.5pt) })
+    // Çizgiler başlık satırlarına bağlı: tekrarlanan başlıkla her sayfada çıkar.
+    set table(stroke: (_, y) => {
+      let top = if y == 0 { 0.5pt }
+      let bottom = if y == header-rows - 1 { 0.5pt }
+      if top != none or bottom != none { (top: top, bottom: bottom) }
+    })
+    let fig-loc = it.location()
+    let continued = context {
+      let starts = query(_TABLE-START).filter(m => m.value == fig-loc)
+      if starts.len() == 0 or here().page() <= starts.first().location().page() { return }
+      let number = numbering(it.numbering, ..it.counter.at(fig-loc))
+      // Dar tablolarda da tek satır: yazı tablo genişliğiyle sınırlanmaz.
+      pad(x: -10cm, bottom: 0.8em, align(center)[*#it.supplement #number* (devamı)])
+    }
     show table: t => context {
-      block(width: measure(t).width, breakable: true, stroke: (bottom: 0.5pt), t)
+      let width = measure(t).width
+      grid(
+        columns: width,
+        grid.header(continued),
+        [#metadata(fig-loc)#_TABLE-START] + block(width: width, breakable: true, stroke: (bottom: 0.5pt), t),
+      )
     }
     it
   }

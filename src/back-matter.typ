@@ -5,12 +5,67 @@
 
 // bib: bibliography("references.bib") — yol çağıran dosyaya göre çözülsün
 // diye bibliography öğesi kullanıcı dosyasında oluşturulur.
-// Tezin diline göre APA stili (assets/csl/, CC BY-SA 3.0):
-// tr: metin içi atıflarda iki yazar "ve" ile; en: "&" ile. İkisinde de kaynakça
+// MEÜ FBE kaynak gösterme stili (assets/csl/, CC BY-SA 3.0): APA 7 tabanlı,
+// Tez Yazım Yönergesi (Madde 11, 16) ile uyumlu; tezin diline göre seçilir.
+// tr: metin içi atıflarda "ve" / "vd."; en: "&" / "et al.". İkisinde de kaynakça
 // listesinde "&" kullanılır (docx örnekleriyle aynı).
-#let _APA-STYLES = (tr: "../assets/csl/apa-tr.csl", en: "../assets/csl/apa-en.csl")
+#let _STYLES = (tr: "../assets/csl/meu-fbe-tr.csl", en: "../assets/csl/meu-fbe-en.csl")
+
+// Typst .bib türlerine sabit İngilizce tür adı verir (@phdthesis ->
+// "Doctoral dissertation"); CSL bunları çeviremez. .bib'de `type` alanı
+// verilirse o yazılır, bu tablo yalnızca varsayılan adları değiştirir. Yalnızca
+// köşeli parantez ya da parantez içindeki tür açıklaması değişir; aynı sözcükler
+// bir eserin başlığında geçerse olduğu gibi kalır.
+#let _GENRES = (
+  tr: (
+    "[Doctoral dissertation": "[Doktora tezi",
+    "[Master's thesis": "[Yüksek lisans tezi",
+    "[Master’s thesis": "[Yüksek lisans tezi",
+    "(technical report ": "(Rapor ",
+    "(Technical report ": "(Rapor ",
+    "(Technical Report ": "(Rapor ",
+    "[Technical report": "[Rapor",
+    // biblatex `type = {mathesis}` / `{phdthesis}` anahtar sözcükleri.
+    "[Mathesis": "[Yüksek lisans tezi",
+    "[Phdthesis": "[Doktora tezi",
+  ),
+  en: (
+    "(Technical Report ": "(Report ",
+    "(Technical report ": "(Report ",
+    "[Technical report": "[Report",
+    "[Mathesis": "[Master’s thesis",
+    "[Phdthesis": "[Doctoral dissertation",
+  ),
+)
+// Makale numarası (eLocator) sayfa alanında verilir: "13(3), e0193972." ->
+// "13(3), Article e0193972." Yalnızca cilt/sayıdan hemen sonra gelen e+rakam.
+#let _ARTICLE-LABEL = (tr: "Makale", en: "Article")
+
+#let _localize-entries(lang, it) = {
+  // Rapor/yayın numarası bir sayı aralığı değildir: "NASA/CR-2018-220043"
+  // numarasındaki kısa çizgi uzun çizgiye (–) çevrilmesin. Numara ")" ya da
+  // "; " ile biter.
+  show regex("No\. [^);]*–[^);]*"): m => m.text.replace("–", "-")
+  show regex("[\d)], e\d{4,}\."): m => {
+    let (before, number) = m.text.split(", ")
+    [#before, #_ARTICLE-LABEL.at(lang) #number]
+  }
+  // CSL'nin büyük harf dönüşümü Türkçeyi bilmez: "in" terimi "Içinde" çıkar.
+  show "Içinde": "İçinde"
+  _GENRES.at(lang).pairs().fold(it, (body, (from, to)) => {
+    show from: to
+    body
+  })
+}
 
 #let references(bib) = {
+  // Eski şablonlardaki bibliography(..., style: "apa") enstitü stilini ezer:
+  // atıflarda "ve" yerine "&", tarih sırası yerine alfabetik sıra çıkar.
+  assert(
+    not bib.has("style"),
+    message: "references(): bibliography(...) çağrısına style vermeyin; şablon enstitünün kaynak gösterme stilini kendisi kullanır. "
+      + "Do not pass style to bibliography(...); the template uses the institute's citation style.",
+  )
   heading(level: 1, numbering: none)[KAYNAKLAR]
   // Kurala göre "her eser arasında birer satır boşluk"; docx asılı girinti 1,25 cm.
   // Typst kaynakça kayıtlarını paragraf olarak üretmez (par ayarları uygulanmaz)
@@ -26,13 +81,11 @@
     it
   }
   show bibliography: set par(spacing: BLANK-LINE)
-  // CSL'nin büyük harf dönüşümü Türkçeyi bilmez: "in" terimi "Içinde" çıkar.
-  show bibliography: it => { show "Içinde": "İçinde"; it }
-  // Kullanıcı stil/başlık vermeyi unutursa: IEEE "[1]" ve ikinci bir
-  // "Kaynakça" başlığı çıkmasın. Açıkça verilen değerler yine geçerlidir.
+  // Başlığı şablon basar; bibliography ikinci bir "Kaynakça" başlığı basmasın.
   context {
     let lang = if text.lang == "en" { "en" } else { "tr" }
-    set bibliography(style: _APA-STYLES.at(lang), title: none)
+    show bibliography: _localize-entries.with(lang)
+    set bibliography(style: _STYLES.at(lang), title: none)
     bib
   }
 }

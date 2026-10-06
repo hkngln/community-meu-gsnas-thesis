@@ -8,4 +8,5 @@
 
 #import "src/thesis.typ": thesis
 #import "src/back-matter.typ": appendices, cv, references
+#import "src/citations.typ": secondary-cite
 #import "src/theorems.typ": corollary, definition, example, lemma, note, proof, proposition, remark, theorem, theorem-env

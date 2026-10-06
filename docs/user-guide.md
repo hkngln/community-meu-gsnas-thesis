@@ -108,6 +108,7 @@ Used in `main.typ`, after the chapters.
 | Function | Turkish equivalent | Printed heading |
 |---|---|---|
 | `#references(bibliography("references.bib"))` | Kaynaklar (references) | KAYNAKLAR |
+| `#secondary-cite(<label>, year: 2012)[Author, 2007]` | Aktarma atfı (secondary source) | (Author, 2007: Öztürk vd. 2012’den), article 16/3 |
 | `#appendices[...]` | Ekler (appendices) | EKLER. Write appendix sections as `== EK-1: Title` (unnumbered); figures, tables, equations and theorems inside are numbered E.1, E.2… |
 | `#cv(...)` | Özgeçmiş (CV) | ÖZGEÇMİŞ |
 

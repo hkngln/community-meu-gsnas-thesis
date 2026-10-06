@@ -108,6 +108,7 @@ Bazı ayarlar sabit değerler alır. PDF'e Türkçe karşılıkları basılır.
 | Fonksiyon (İngilizce) | Türkçe karşılığı | Basılan başlık |
 |---|---|---|
 | `#references(bibliography("references.bib"))` | Kaynaklar | KAYNAKLAR |
+| `#secondary-cite(<etiket>, year: 2012)[Yazar, 2007]` | Aktarma atfı | (Yazar, 2007: Öztürk vd. 2012’den), Madde 16/3 |
 | `#appendices[...]` | Ekler | EKLER. Ek bölümlerini `== EK-1: Başlık` biçiminde yazın (numarasız); içlerindeki şekil, tablo, eşitlik ve teoremler E.1, E.2… diye numaralanır. |
 | `#cv(...)` | Özgeçmiş | ÖZGEÇMİŞ |
 

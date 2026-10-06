@@ -53,7 +53,7 @@
 #include "chapters/04-results-discussion.typ"
 #include "chapters/05-conclusions.typ"
 
-// APA stili şablondan gelir (Türkçede iki yazar "ve" ile); style vermeyin.
+// Kaynak gösterme stili şablondan gelir (enstitü yönergesi, APA 7 tabanlı); style vermeyin.
 #references(bibliography("references.bib", full: true))
 
 // Ek yoksa aşağıdaki satırı silin.
