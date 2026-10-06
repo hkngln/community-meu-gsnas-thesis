@@ -20,7 +20,7 @@ Mersin Üniversitesi Fen Bilimleri Enstitüsü yüksek lisans ve doktora tezleri
 
 - Dış ön kapak, iç kapak, onay, etik beyan, özet, abstract, teşekkür, içindekiler, tablolar ve şekiller dizini, simgeler, kaynaklar, ekler, özgeçmiş ve arka kapak.
 - Ölçüler Word şablonuyla aynı:
-  - A4 kâğıt, 2,5 cm kenar boşluğu, Times New Roman 11 pt.
+  - A4 kâğıt, 2,5 cm kenar boşluğu, Times New Roman 11 pt (Times New Roman kurulu değilse Libertinus Serif kullanılır).
   - Satır aralığı Word'ün 1,5'iyle birebir aynı; ön kısım, tablolar ve şekiller tek satır aralıklı.
   - 1,25 cm paragraf girintisi.
 - Ana bölümler, kaynaklar, ekler ve özgeçmiş yeni ve tek numaralı sayfadan başlar. Araya giren boş sayfalarda üst bilgi ve sayfa numarası basılmaz.
@@ -71,7 +71,13 @@ Diğer seçenekler:
 
 Yönerge **Times New Roman** istiyor. Windows ve macOS'ta hazır gelir; Linux'ta `ttf-mscorefonts-installer` paketiyle kurulur. `typst fonts` komutunun çıktısında "Times New Roman" görünmelidir.
 
-**Yedek font:** Times New Roman yoksa şablon, Typst'ün içinde gelen [Libertinus Serif](https://github.com/alerque/libertinus) fontunu kullanır. Böylece tez her zaman derlenir (typst.app web uygulamasında da). Typst bu durumda `unknown font family: times new roman` uyarısı verir. Teslimden önce Times New Roman'ı kurun.
+**Yedek font:** Times New Roman kurulu değilse şablon, Typst'ün içinde gelen [Libertinus Serif](https://github.com/alerque/libertinus) fontunu kullanır; böylece tez yine derlenir. Typst bu durumda şu uyarıyı verir, bu beklenen bir durumdur:
+
+```
+warning: unknown font family: times new roman
+```
+
+Yedek fontta satır aralığı ve kenar boşlukları aynı kalır, ancak harf genişlikleri farklı olduğu için satır kırılımları ve sayfa sayısı değişebilir. **Tezinizi teslim etmeden önce Times New Roman'ı kurun.**
 
 **Alternatif:** [TeX Gyre Termes](https://www.gust.org.pl/projects/e-foundry/tex-gyre/termes), Times'ın ücretsiz bir kopyasıdır. Varsayılan listede değildir, çünkü Typst listedeki kurulu olmayan her font için uyarı verir. Kurarsanız `font` ayarıyla ekleyin:
 

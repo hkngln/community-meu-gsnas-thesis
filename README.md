@@ -22,7 +22,7 @@ The thesis itself is printed in **Turkish**, as the institute requires: headings
 
 - Outer front cover, title page, approval, ethics statement, Turkish and English abstracts, acknowledgements, table of contents, lists of tables and figures, abbreviations, references, appendices, CV and back cover.
 - Measurements identical to the Word template:
-  - A4 paper, 2.5 cm margins, Times New Roman 11 pt.
+  - A4 paper, 2.5 cm margins, Times New Roman 11 pt (falls back to Libertinus Serif if Times New Roman is not installed).
   - Line spacing matches Word's 1.5 exactly; front matter, tables and figures are single-spaced.
   - 1.25 cm first-line indent.
 - Chapters, references, appendices and the CV start on a new odd-numbered page. Blank filler pages carry no header or page number.
@@ -73,7 +73,13 @@ Other options:
 
 The guidelines require **Times New Roman**. It is included with Windows and macOS; on Linux, install the `ttf-mscorefonts-installer` package. "Times New Roman" should appear in the output of `typst fonts`.
 
-**Fallback:** if Times New Roman is missing, the template uses [Libertinus Serif](https://github.com/alerque/libertinus), which ships with Typst, so the thesis always compiles (also in the typst.app web app). Typst then warns `unknown font family: times new roman`. Install Times New Roman before submitting.
+**Fallback:** if Times New Roman is not installed, the template uses [Libertinus Serif](https://github.com/alerque/libertinus), which ships with Typst, so the thesis still compiles. Typst then shows this warning, which is expected:
+
+```
+warning: unknown font family: times new roman
+```
+
+Line spacing and margins stay the same with the fallback font, but letter widths differ, so line breaks and the page count may change. **Install Times New Roman before submitting your thesis.**
 
 **Alternative:** [TeX Gyre Termes](https://www.gust.org.pl/projects/e-foundry/tex-gyre/termes) is a free Times clone. It is not in the default list because Typst warns about every font in the list that is not installed. If you install it, add it with the `font` setting:
 
