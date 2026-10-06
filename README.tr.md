@@ -102,18 +102,18 @@ Paketi Typst'ün yerel paket dizinine klonlayın. Dizin adı sürüm numarasıyl
 
 ```sh
 # macOS
-git clone --branch v0.3.1 https://github.com/hkngln/community-meu-gsnas-thesis \
-  "$HOME/Library/Application Support/typst/packages/local/community-meu-gsnas-thesis/0.3.1"
+git clone --branch v0.4.0 https://github.com/hkngln/community-meu-gsnas-thesis \
+  "$HOME/Library/Application Support/typst/packages/local/community-meu-gsnas-thesis/0.4.0"
 
 # Linux
-git clone --branch v0.3.1 https://github.com/hkngln/community-meu-gsnas-thesis \
-  "$HOME/.local/share/typst/packages/local/community-meu-gsnas-thesis/0.3.1"
+git clone --branch v0.4.0 https://github.com/hkngln/community-meu-gsnas-thesis \
+  "$HOME/.local/share/typst/packages/local/community-meu-gsnas-thesis/0.4.0"
 ```
 
 ```powershell
 # Windows (PowerShell)
-git clone --branch v0.3.1 https://github.com/hkngln/community-meu-gsnas-thesis `
-  "$env:APPDATA\typst\packages\local\community-meu-gsnas-thesis\0.3.1"
+git clone --branch v0.4.0 https://github.com/hkngln/community-meu-gsnas-thesis `
+  "$env:APPDATA\typst\packages\local\community-meu-gsnas-thesis\0.4.0"
 ```
 
 En güncel sürüm numarası [Releases](https://github.com/hkngln/community-meu-gsnas-thesis/releases) sayfasında.
@@ -121,7 +121,7 @@ En güncel sürüm numarası [Releases](https://github.com/hkngln/community-meu-
 ## Yeni tez başlatma
 
 ```sh
-typst init @local/community-meu-gsnas-thesis:0.3.1 tezim
+typst init @local/community-meu-gsnas-thesis:0.4.0 tezim
 cd tezim
 typst watch main.typ
 ```
