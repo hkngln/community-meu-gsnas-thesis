@@ -87,6 +87,7 @@ Doldurulmamış her alan PDF'te **kırmızı** görünür.
 | `two-sided` | Çift taraflı baskı | `true` | Bölümler tek numaralı (sağ) sayfadan başlar; gerekirse araya numarasız boş sayfa eklenir. `false`: tek taraflı, boş sayfa yok. |
 | `front-cover` | Dış ön kapak (EK-5) | `true` | Logolu dış kapak; sayfa numarasına dahil değildir. |
 | `back-cover` | Arka kapak (EK-6) | `true` | YÖK Tez Merkezi'ne yüklenen PDF'te bulunmalıdır. |
+| `font` | Yazı tipi | `("Times New Roman", "Libertinus Serif")` | Listede kurulu olan ilk font kullanılır. Libertinus Serif Typst'le birlikte gelir ve yedek fonttur. TeX Gyre Termes kurduysanız `"TeX Gyre Termes"` ekleyin ([README](../README.tr.md#3-yazı-tipi-times-new-roman)). Teslimde Times New Roman kullanın. |
 
 ## Değerler
 

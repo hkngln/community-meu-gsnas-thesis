@@ -87,6 +87,7 @@ Settings passed to `#show: thesis.with(...)`. All are optional; a missing value 
 | `two-sided` | Çift taraflı baskı | `true` | Chapters start on an odd (right-hand) page; unnumbered blank pages are inserted when needed. `false`: one-sided, no blank pages. |
 | `front-cover` | Dış ön kapak (EK-5) | `true` | Outer cover with the logo; not counted in page numbering. |
 | `back-cover` | Arka kapak (EK-6) | `true` | Must be included in the PDF uploaded to the YÖK Thesis Center. |
+| `font` | Yazı tipi (font) | `("Times New Roman", "Libertinus Serif")` | The first installed font in the list is used. Libertinus Serif ships with Typst and is the fallback. Add `"TeX Gyre Termes"` if you installed it ([README](../README.md#3-font-times-new-roman)). Submit with Times New Roman. |
 
 ## Values
 

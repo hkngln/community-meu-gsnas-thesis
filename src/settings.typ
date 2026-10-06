@@ -1,7 +1,11 @@
 // Mersin Üniversitesi Fen Bilimleri Enstitüsü tez yazım kurallarından gelen
 // sabit ölçüler. Kaynak: Ornek_Tez_Yazim_Sablonu_20250911.docx + LaTeX v1.4.
 
-#let FONT = "Times New Roman"
+// Kurala göre Times New Roman. Yoksa Typst'e gömülü gelen Libertinus Serif
+// kullanılır (Typst "unknown font family: times new roman" uyarısı verir).
+// TeX Gyre Termes (Times kopyası) varsayılan listede değildir: kurulu değilse
+// her derlemede uyarı üretir. Kuranlar thesis(font: ...) ile ekleyebilir.
+#let FONTS = ("Times New Roman", "Libertinus Serif")
 #let FONT-SIZE = 11pt
 #let HEADER-SIZE = 10pt
 #let FOOTNOTE-SIZE = 10pt
