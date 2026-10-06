@@ -94,7 +94,7 @@ Release steps:
 3. Merge this branch into `dev` with a PR.
 4. Open a **`dev` → `main`** PR. CI checks that the version has not been released before.
 5. Merge the PR with a **merge commit**, not squash; otherwise `dev` and `main` diverge.
-6. The `Sürüm` (release) workflow creates the `vX.Y.Z` tag and the Release automatically.
+6. The `Release` workflow creates the `vX.Y.Z` tag and the Release automatically.
 
 ## Changes to the rules
 

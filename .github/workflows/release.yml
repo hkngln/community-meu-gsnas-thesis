@@ -1,7 +1,8 @@
-name: Sürüm
+name: Release
 
-# dev -> main birleşince typst.toml'daki sürüm yayınlanır: vX.Y.Z etiketi +
-# örnek tez PDF'li GitHub Release. Etiket zaten varsa hiçbir şey yapılmaz.
+# When dev is merged into main, the version in typst.toml is released: a vX.Y.Z
+# tag and a GitHub Release with the example thesis PDF. Nothing happens if the
+# tag already exists.
 on:
   push:
     branches: [main]
@@ -10,45 +11,45 @@ permissions:
   contents: write
 
 concurrency:
-  group: surum
+  group: release
   cancel-in-progress: false
 
 jobs:
-  yayinla:
-    # Times New Roman yalnızca macOS runner'da hazır gelir.
+  publish:
+    # Only macOS runners ship Times New Roman.
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
-      - name: Sürümü oku
-        id: surum
+      - name: Read version
+        id: version
         run: |
-          SURUM=$(sed -n 's/^version = "\(.*\)"/\1/p' typst.toml)
-          echo "surum=$SURUM" >> "$GITHUB_OUTPUT"
-          if git rev-parse -q --verify "refs/tags/v$SURUM" >/dev/null; then
-            echo "v$SURUM zaten yayınlanmış, atlanıyor."
-            echo "yeni=false" >> "$GITHUB_OUTPUT"
+          VERSION=$(sed -n 's/^version = "\(.*\)"/\1/p' typst.toml)
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          if git rev-parse -q --verify "refs/tags/v$VERSION" >/dev/null; then
+            echo "v$VERSION is already released, skipping."
+            echo "new=false" >> "$GITHUB_OUTPUT"
           else
-            echo "yeni=true" >> "$GITHUB_OUTPUT"
+            echo "new=true" >> "$GITHUB_OUTPUT"
           fi
 
-      - if: steps.surum.outputs.yeni == 'true'
-        uses: ./.github/actions/ortam
+      - if: steps.version.outputs.new == 'true'
+        uses: ./.github/actions/setup
 
-      - if: steps.surum.outputs.yeni == 'true'
+      - if: steps.version.outputs.new == 'true'
         env:
-          SURUM: ${{ steps.surum.outputs.surum }}
+          VERSION: ${{ steps.version.outputs.version }}
         run: |
           bash tests/verify.sh
-          cp tests/out/template.pdf "community-meu-gsnas-thesis-example-v$SURUM.pdf"
+          cp tests/out/template.pdf "community-meu-gsnas-thesis-example-v$VERSION.pdf"
 
-      - if: steps.surum.outputs.yeni == 'true'
+      - if: steps.version.outputs.new == 'true'
         uses: softprops/action-gh-release@v3
         with:
-          tag_name: v${{ steps.surum.outputs.surum }}
+          tag_name: v${{ steps.version.outputs.version }}
           target_commitish: ${{ github.sha }}
-          name: v${{ steps.surum.outputs.surum }}
+          name: v${{ steps.version.outputs.version }}
           generate_release_notes: true
-          files: community-meu-gsnas-thesis-example-v${{ steps.surum.outputs.surum }}.pdf
+          files: community-meu-gsnas-thesis-example-v${{ steps.version.outputs.version }}.pdf

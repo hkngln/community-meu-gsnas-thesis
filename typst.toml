@@ -1,6 +1,6 @@
 [package]
 name = "community-meu-gsnas-thesis"
-version = "0.2.0"
+version = "0.3.0"
 entrypoint = "lib.typ"
 authors = ["Hakan GÜLEN <https://github.com/hkngln>"]
 license = "MIT AND MIT-0"

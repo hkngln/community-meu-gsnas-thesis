@@ -1,11 +1,12 @@
-// Tek taraflı baskı, dış kapaklar kapalı, stil/başlık verilmeden kaynakça.
+// One-sided printing, no outer covers, bibliography without explicit style or
+// title. Also used by verify.sh for the fallback font test.
 #import "../lib.typ": *
 
 #show: thesis.with(
-  title: "Tek Taraf Testi",
+  title: "One-Sided Test",
   student: "Test ÖĞRENCİ",
-  advisor: (name: "Prof. Dr. Test DANIŞMAN", orcid: none),
-  jury: ("Prof. Dr. Test DANIŞMAN", "Doç. Dr. Üye BİR", "Dr. Öğr. Üyesi Üye İKİ"),
+  advisor: (name: "Prof. Dr. Test ADVISOR", orcid: none),
+  jury: ("Prof. Dr. Test ADVISOR", "Doç. Dr. Member ONE", "Dr. Öğr. Üyesi Member TWO"),
   year: 2026,
   front-cover: false,
   back-cover: false,
@@ -14,10 +15,10 @@
 
 = GİRİŞ
 
-Atıf @grady2019.
+Citation @grady2019.
 
 = SONUÇ
 
-Sonuç.
+Conclusion.
 
 #references(bibliography("../template/references.bib"))

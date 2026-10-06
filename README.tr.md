@@ -20,7 +20,7 @@ Mersin Üniversitesi Fen Bilimleri Enstitüsü yüksek lisans ve doktora tezleri
 
 - Dış ön kapak, iç kapak, onay, etik beyan, özet, abstract, teşekkür, içindekiler, tablolar ve şekiller dizini, simgeler, kaynaklar, ekler, özgeçmiş ve arka kapak.
 - Ölçüler Word şablonuyla aynı:
-  - A4 kâğıt, 2,5 cm kenar boşluğu, Times New Roman 11 pt.
+  - A4 kâğıt, 2,5 cm kenar boşluğu, Times New Roman 11 pt (Times New Roman kurulu değilse Libertinus Serif kullanılır).
   - Satır aralığı Word'ün 1,5'iyle birebir aynı; ön kısım, tablolar ve şekiller tek satır aralıklı.
   - 1,25 cm paragraf girintisi.
 - Ana bölümler, kaynaklar, ekler ve özgeçmiş yeni ve tek numaralı sayfadan başlar. Araya giren boş sayfalarda üst bilgi ve sayfa numarası basılmaz.
@@ -67,9 +67,34 @@ Diğer seçenekler:
 | [Zed](https://zed.dev) | [Typst eklentisi](https://zed.dev/extensions/typst) |
 | Neovim, Helix, Emacs ve diğerleri | [Tinymist kurulum belgeleri](https://myriad-dreamin.github.io/tinymist/) |
 
-### 3. Times New Roman fontu
+### 3. Yazı tipi: Times New Roman
 
-Windows ve macOS'ta hazır gelir. Linux'ta `ttf-mscorefonts-installer` paketiyle kurulur. `typst fonts` komutunun çıktısında "Times New Roman" görünmelidir.
+Yönerge **Times New Roman** istiyor. Windows ve macOS'ta hazır gelir; Linux'ta `ttf-mscorefonts-installer` paketiyle kurulur. `typst fonts` komutunun çıktısında "Times New Roman" görünmelidir.
+
+**Yedek font:** Times New Roman kurulu değilse şablon, Typst'ün içinde gelen [Libertinus Serif](https://github.com/alerque/libertinus) fontunu kullanır; böylece tez yine derlenir. Typst bu durumda şu uyarıyı verir, bu beklenen bir durumdur:
+
+```
+warning: unknown font family: times new roman
+```
+
+Yedek fontta satır aralığı ve kenar boşlukları aynı kalır, ancak harf genişlikleri farklı olduğu için satır kırılımları ve sayfa sayısı değişebilir. **Tezinizi teslim etmeden önce Times New Roman'ı kurun.**
+
+**Alternatif:** [TeX Gyre Termes](https://www.gust.org.pl/projects/e-foundry/tex-gyre/termes), Times'ın ücretsiz bir kopyasıdır. Varsayılan listede değildir, çünkü Typst listedeki kurulu olmayan her font için uyarı verir. Kurarsanız `font` ayarıyla ekleyin:
+
+| Sistem | TeX Gyre Termes kurulumu |
+|---|---|
+| macOS | `brew install --cask font-tex-gyre-termes` ([Homebrew](https://formulae.brew.sh/cask/font-tex-gyre-termes)) |
+| Debian / Ubuntu | `sudo apt install fonts-texgyre` ([paket](https://packages.debian.org/stable/fonts-texgyre)) |
+| Windows / diğer | [GUST](https://www.gust.org.pl/projects/e-foundry/tex-gyre/termes) sitesinden indirin |
+
+```typ
+#show: thesis.with(
+  font: ("Times New Roman", "TeX Gyre Termes", "Libertinus Serif"),
+  // ...
+)
+```
+
+Listede kurulu olan ilk font kullanılır.
 
 ### 4. Şablonu kurun
 
@@ -77,18 +102,18 @@ Paketi Typst'ün yerel paket dizinine klonlayın. Dizin adı sürüm numarasıyl
 
 ```sh
 # macOS
-git clone --branch v0.2.0 https://github.com/hkngln/community-meu-gsnas-thesis \
-  "$HOME/Library/Application Support/typst/packages/local/community-meu-gsnas-thesis/0.2.0"
+git clone --branch v0.3.0 https://github.com/hkngln/community-meu-gsnas-thesis \
+  "$HOME/Library/Application Support/typst/packages/local/community-meu-gsnas-thesis/0.3.0"
 
 # Linux
-git clone --branch v0.2.0 https://github.com/hkngln/community-meu-gsnas-thesis \
-  "$HOME/.local/share/typst/packages/local/community-meu-gsnas-thesis/0.2.0"
+git clone --branch v0.3.0 https://github.com/hkngln/community-meu-gsnas-thesis \
+  "$HOME/.local/share/typst/packages/local/community-meu-gsnas-thesis/0.3.0"
 ```
 
 ```powershell
 # Windows (PowerShell)
-git clone --branch v0.2.0 https://github.com/hkngln/community-meu-gsnas-thesis `
-  "$env:APPDATA\typst\packages\local\community-meu-gsnas-thesis\0.2.0"
+git clone --branch v0.3.0 https://github.com/hkngln/community-meu-gsnas-thesis `
+  "$env:APPDATA\typst\packages\local\community-meu-gsnas-thesis\0.3.0"
 ```
 
 En güncel sürüm numarası [Releases](https://github.com/hkngln/community-meu-gsnas-thesis/releases) sayfasında.
@@ -96,7 +121,7 @@ En güncel sürüm numarası [Releases](https://github.com/hkngln/community-meu-
 ## Yeni tez başlatma
 
 ```sh
-typst init @local/community-meu-gsnas-thesis:0.2.0 tezim
+typst init @local/community-meu-gsnas-thesis:0.3.0 tezim
 cd tezim
 typst watch main.typ
 ```
