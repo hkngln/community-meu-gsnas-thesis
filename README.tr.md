@@ -181,6 +181,8 @@ Ek yoksa `#appendices[..]` satırını silin. `#appendices` içinde ek bölümle
 - Kaynakçada 1,25 cm asılı girinti ve eserler arasında bir satır boşluk vardır.
 - `bibliography(...)` çağrısına `style:` vermeyin; stil şablondan gelir. Eski bir `main.typ` dosyasında `style: "apa"` kaldıysa derleme bunu söyleyen bir hata verir; o kısmı silin.
 - Türkçe tezde `@phdthesis` "[Doktora tezi]. Üniversite.", `@mastersthesis` "[Yüksek lisans tezi]. Üniversite." olarak yazılır; tezin `url` ya da `doi` alanı varsa (yayımlanmış tez) "[Doktora tezi, Üniversite]. Veri tabanı." olur. `@techreport` "(Rapor No. …). Kurum." olarak yazılır. Başka bir tür adı için BibTeX kaydına `type` alanı ekleyin; ör. `type = {Yayımlanmamış doktora tezi}` → "[Yayımlanmamış doktora tezi]".
+- Bir dizi içindeki `@book` (`series` ile `number` ya da `volume`), kitap bölümünde olduğu gibi diziyi başlıkla birlikte yazar: "Advances in pharmaceutical sciences: No. 7. Nanotechnology based approaches…" (`volume` → "C. 7" / "Vol. 7"). Standartlar için `organization`, `type` ve `number` alanlı bir `@standard` kaydı kullanın: `organization = {International Organization for Standardization}, type = {ISO Standard}, number = {45001:2018}` → "International Organization for Standardization. (2018). Başlık (ISO Standard No. 45001:2018). URL"; `type` verilmezse numara "(No. 45001:2018)" olarak yazılır.
+- Aynı soyadlı ve aynı yıllı iki farklı yazar, metinde ve kaynakçada yıl ekiyle ayrılır: (Alpha, 2001a; Alpha, 2001b). APA'nın baş harfli biçimi ("A. Alpha") kullanılamaz; Typst'in atıf motoru bunu yazmıyor. Aynı yazarın birlikte verilen eserlerinde yazar her atıfta yinelenir: (Şahin, 2016a; Şahin, 2016b).
 
 ## Katkı
 

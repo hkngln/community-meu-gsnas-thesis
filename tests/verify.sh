@@ -58,6 +58,8 @@ FIRST_CHAPTER=$(heading_page "$TEMPLATE" "1. GİRİŞ")
 contains "$TEMPLATE" "Tablo 2.1."
 contains "$TEMPLATE" "Eşitlik (2.1)"
 contains "$TEMPLATE" "(Grady vd., 2019)"
+# @misc standard with the number inside the title (template example) stays as it is.
+contains_flat "$TEMPLATE" "International Organization for Standardization. (2018). Occupational health and safety management systems—Requirements with guidance for use (ISO Standard No. 45001:2018)."
 
 # Edge cases.
 EDGE="$OUT/edge-cases.pdf"
@@ -121,6 +123,29 @@ not_contains "$REG" "Tablo 1.1. (devamı)"
 contains_flat "$REG" "(Smith, 2010; Jones, 2012; Smith, 2015)"
 contains_flat "$REG" "On the Doctoral dissertation genre"
 
+# Reference list fixes after v0.5.0.
+# Same author, same year: no CSL collapse. hayagriva 0.10 (Typst 0.15.1) mislabels the
+# cite group of a moved item, so collapse="year" renders "(Smith, 2010; Smith, 2015; 2012)"
+# for the interleaved case above and credits Jones' work to Smith. Each citation keeps its
+# author until Typst's citation engine is fixed.
+contains_flat "$REG" "(Şahin, 2016a; Şahin, 2016b)"
+# Two different authors with the same surname and year: hayagriva's givenname
+# disambiguation marks them as disambiguated but prints neither initials nor suffixes and
+# drops the initials in the reference list ("Alpha. (2001)."). The style uses year
+# suffixes instead. `full: true` (this document) hides the bug; the English document
+# below, with a normal bibliography, is the case that failed.
+contains_flat "$REG" "(Alpha, 2001a; Alpha, 2001b)"
+contains_flat "$REG" "Alpha, A. (2001a). Same surname one."
+contains_flat "$REG" "Alpha, B. (2001b). Same surname two."
+# @book in a series with `number` (Typst: collection-title + issue): series and number with
+# the title, as for chapters, instead of "(Sayı 7)" without the series.
+contains_flat "$REG" "Kesharwani, P. (2020). Advances in pharmaceutical sciences: No. 7. Nanotechnology based approaches for tuberculosis treatment. Academic Press."
+not_contains "$REG" "(Sayı 7)"
+# biblatex @standard (Typst: `document`, organization -> authority, number -> issue).
+contains_flat "$REG" "(International Organization for Standardization, 2015)"
+contains_flat "$REG" "International Organization for Standardization. (2015). Quality management systems—Requirements (ISO Standard No. 9001:2015). https://www.iso.org/standard/62085.html"
+not_contains "$REG" "[ISO Standard]"
+
 # Tables (v0.5.0 review): user tables are left intact; no false "(devamı)".
 TABLES="$OUT/tables.pdf"
 compile . tests/tables.typ "$TABLES"
@@ -149,11 +174,18 @@ print(f"{(xs[1] - xs[0]) / 72 * 2.54:.2f}" if len(xs) > 1 else "0")')
 # English thesis: "&" in citations, "et al." (v0.4.0).
 en_log=$(printf '%s\n' '#import "/lib.typ": *' '#show: thesis.with(language: "en", front-cover: false, back-cover: false, two-sided: false)' \
   '= INTRODUCTION' '@engin2016' 'Report @stuster2018.' '#secondary-cite(<ozturk2012>, year: 2012)[Singh, 2007]' \
+  'Series book @series2020, standard @iso9001, same surname @alphaA2001 @alphaB2001.' \
   '#references(bibliography("/tests/regressions.bib"))' \
   | typst compile --root . - "$OUT/english.pdf" 2>&1) || { echo "$en_log"; fail "English thesis did not compile"; }
 contains "$OUT/english.pdf" "(Engin & Özçimen, 2016)"
 contains_flat "$OUT/english.pdf" "(Singh, 2007, as cited in Öztürk et al., 2012)"
 contains_flat "$OUT/english.pdf" "(Report No. NASA/CR-2018-220043)"
+contains_flat "$OUT/english.pdf" "Advances in pharmaceutical sciences: No. 7. Nanotechnology"
+not_contains "$OUT/english.pdf" "(Issue 7)"
+contains_flat "$OUT/english.pdf" "Quality management systems—Requirements (ISO Standard No. 9001:2015)."
+contains_flat "$OUT/english.pdf" "(Alpha, 2001a; Alpha, 2001b)"
+contains_flat "$OUT/english.pdf" "Alpha, A. (2001a). Same surname one."
+contains_flat "$OUT/english.pdf" "Alpha, B. (2001b). Same surname two."
 
 # An old main.typ with style: "apa" must stop with a clear message (v0.5.0).
 style_log=$(printf '%s\n' '#import "/lib.typ": *' '#show: thesis.with(front-cover: false, back-cover: false)' \

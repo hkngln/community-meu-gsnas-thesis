@@ -30,7 +30,18 @@ Secondary #secondary-cite(<ozturk2012>, year: 2012)[Singh, 2007].
 // Same author on both sides of another by date: every citation keeps its author.
 Interleaved @smith2015 @jones2012 @smith2010.
 
+// Same author, same year: year suffixes, author repeated (no CSL collapse: Typst's
+// citation engine misattributes works when collapsing, see verify.sh).
+Same author @sahin2016a @sahin2016b.
+
+// Two different authors with the same surname and year: unambiguous year suffixes
+// in the text and in the reference list, initials kept in the reference list.
+Same surname @alphaA2001 @alphaB2001.
+
 Report @stuster2018, thesis @miranda2019, article @jerrentrup2018, chapter @chapter2019, standard @standard2018.
+
+// @book in a series with `number`; biblatex @standard with organization, type, number.
+Series book @series2020, numbered standard @iso9001.
 
 #figure(raw("chapter one", lang: "text"), caption: [Listing one])
 
