@@ -24,8 +24,8 @@ Mersin Üniversitesi Fen Bilimleri Enstitüsü yüksek lisans ve doktora tezleri
   - Satır aralığı Word'ün 1,5'iyle birebir aynı; ön kısım, tablolar ve şekiller tek satır aralıklı.
   - 1,25 cm paragraf girintisi.
 - Ana bölümler, kaynaklar, ekler ve özgeçmiş yeni ve tek numaralı sayfadan başlar. Araya giren boş sayfalarda üst bilgi ve sayfa numarası basılmaz.
-- Şekil, tablo ve eşitlikler bölüme göre numaralanır (**Tablo 2.1.**, **Şekil 2.1.**, (2.1)). Eklerde numaralar "E.1" olur.
-- APA 7 atıflar: Türkçe tezde "vd." ve "ve", İngilizce tezde "et al." ve "&"; [Atıflar ve kaynakça](#atıflar-ve-kaynakça) bölümüne bakın. Dipnotlar \*, †, ‡ işaretleriyle her sayfada yeniden başlar.
+- Şekil, tablo ve eşitlikler bölüme göre numaralanır (**Tablo 2.1.**, **Şekil 2.1.**, (2.1)). Eklerde numaralar "E.1" olur. Sayfaya sığmayan tablo sonraki sayfada başlık satırıyla ve "**Tablo 2.1** (devamı)" yazısıyla sürer.
+- Enstitünün kaynak gösterme stili (APA 7 tabanlı, Tez Yazım Yönergesi Madde 11 ve 16): Türkçe tezde "vd." ve "ve", İngilizce tezde "et al." ve "&"; [Atıflar ve kaynakça](#atıflar-ve-kaynakça) bölümüne bakın. Dipnotlar \*, †, ‡ işaretleriyle her sayfada yeniden başlar.
 - Doldurulmamış her alan PDF'te **kırmızı** görünür.
 
 ## Kurulum
@@ -164,6 +164,7 @@ En sık kullanılanlar:
 | Şekil | `#figure(image("../figures/a.png"), caption: [..]) <fig-x>` → **Şekil 2.1.** |
 | Numaralı eşitlik | `$ F = sigma dot A $ <eq-x>` → (2.1); `@eq-x` → Eşitlik (2.1) |
 | Atıf | `@grady2019` → (Grady vd., 2019); `#cite(<grady2019>, form: "prose")` → Grady vd. (2019) |
+| Aktarma (ikincil kaynak) | `#secondary-cite(<ozturk2012>, year: 2012)[Singh, 2007]` → (Singh, 2007: Öztürk vd. 2012’den) |
 | Dipnot | `#footnote[..]` → \*, †, ‡ |
 
 Ek yoksa `#appendices[..]` satırını silin. `#appendices` içinde ek bölümlerini `== EK-1: Başlık` biçiminde yazın; bunlar numarasızdır, içlerindeki şekil, tablo, eşitlik ve teoremler E.1, E.2… diye numaralanır. Hiç tablo ya da şekil yoksa ilgili dizin sayfası basılmaz.
@@ -172,10 +173,14 @@ Ek yoksa `#appendices[..]` satırını silin. `#appendices` içinde ek bölümle
 
 ## Atıflar ve kaynakça
 
+Şablon, enstitünün kaynak gösterme stilini kullanır. Stil APA 7 tabanlıdır; Fen Bilimleri Enstitüsü Tez Yazım Yönergesi (Senato 04.04.2024, 2024/37) Madde 11 ve 16 ile Word şablonundaki örneklere uyar. Yönergenin APA'dan ayrıldığı yerlerde yönerge geçerlidir.
+
 - Tezin dilini en başta `language` ayarıyla seçin: `"tr"` (varsayılan) ya da `"en"`. İki yazarlı metin içi atıflar buna göre "ve" (`(Engin ve Özçimen, 2016)`) ya da "&" (`(Engin & Özçimen, 2016)`) ile yazılır. Kaynakça listesinde, enstitü şablonundaki gibi, iki dilde de "&" kullanılır. Basılı başlıklar ve etiketler Türkçe kalır.
+- Arka arkaya atıflar tarih sırasıyla dizilir, her birinde yazar yazılır ve noktalı virgülle ayrılır (Madde 16/2): `@aydeniz2015 @couch2016` → (Aydeniz vd., 2015; Couch ve Metz, 2016).
+- Başka bir eserden aktarılan kaynak (Madde 16/3): `#secondary-cite(<ozturk2012>, year: 2012)[Singh, 2007]` → (Singh, 2007: Öztürk vd. 2012’den). Kaynaklar bölümüne yalnızca eldeki eser (`ozturk2012`) girer; asıl eser .bib dosyasına eklenmez. Ek ('den, 'dan, 'ten, 'tan) yıla göre seçilir; tarihsiz kaynakta `year: "t.y."` yazın. `year` değerini eldeki eserin kaynakçadaki yılıyla aynı verin (ör. `"2012a"`). İngilizce tezde APA biçimi kullanılır: (Singh, 2007, as cited in Öztürk et al., 2012).
 - Kaynakçada 1,25 cm asılı girinti ve eserler arasında bir satır boşluk vardır.
-- `bibliography(...)` çağrısına `style:` vermeyin; APA stili şablondan gelir.
-- Tez türünü Türkçe yazdırmak için BibTeX kaydına `type` alanı ekleyin; ör. `type = {Yayımlanmamış doktora tezi}` → "[Yayımlanmamış doktora tezi]".
+- `bibliography(...)` çağrısına `style:` vermeyin; stil şablondan gelir. Eski bir `main.typ` dosyasında `style: "apa"` kaldıysa derleme bunu söyleyen bir hata verir; o kısmı silin.
+- Türkçe tezde `@phdthesis` "[Doktora tezi]. Üniversite.", `@mastersthesis` "[Yüksek lisans tezi]. Üniversite." olarak yazılır; tezin `url` ya da `doi` alanı varsa (yayımlanmış tez) "[Doktora tezi, Üniversite]. Veri tabanı." olur. `@techreport` "(Rapor No. …). Kurum." olarak yazılır. Başka bir tür adı için BibTeX kaydına `type` alanı ekleyin; ör. `type = {Yayımlanmamış doktora tezi}` → "[Yayımlanmamış doktora tezi]".
 
 ## Katkı
 
@@ -187,7 +192,7 @@ Dal yapısı, commit kuralları ve sürüm akışı [Katkı Rehberi](CONTRIBUTIN
 |---|---|
 | Şablonun kodu (`lib.typ`, `src/` ve diğerleri) | [MIT](LICENSE) |
 | `template/` klasörü: `typst init` ile tezinize kopyalanan dosyalar (görseller hariç) | [MIT-0](LICENSE-MIT-0) |
-| `assets/csl/` içindeki APA atıf stilleri ([CSL projesinden](https://github.com/citation-style-language/styles) uyarlandı) | [CC BY-SA 3.0](http://creativecommons.org/licenses/by-sa/3.0/) |
+| `assets/csl/` içindeki kaynak gösterme stilleri ([CSL projesinin APA stilinden](https://github.com/citation-style-language/styles) uyarlandı) | [CC BY-SA 3.0](http://creativecommons.org/licenses/by-sa/3.0/) |
 | Logo ve görseller (aşağıya bakın) | Mersin Üniversitesi'ne aittir |
 
 `template/` klasörü MIT-0 lisanslıdır. Bu dosyalardan oluşan tezinizi dilediğiniz gibi değiştirebilir ve dağıtabilirsiniz; atıf yapmanız ya da lisans metnini eklemeniz gerekmez.

@@ -26,8 +26,8 @@ The thesis itself is printed in **Turkish**, as the institute requires: headings
   - Line spacing matches Word's 1.5 exactly; front matter, tables and figures are single-spaced.
   - 1.25 cm first-line indent.
 - Chapters, references, appendices and the CV start on a new odd-numbered page. Blank filler pages carry no header or page number.
-- Figures, tables and equations are numbered by chapter (**Tablo 2.1.**, **Şekil 2.1.**, (2.1)); in appendices "E.1".
-- APA 7 citations: "vd." and "ve" in Turkish theses, "et al." and "&" in English ones; see [Citations and references](#citations-and-references). Footnotes use \*, †, ‡ and restart on every page.
+- Figures, tables and equations are numbered by chapter (**Tablo 2.1.**, **Şekil 2.1.**, (2.1)); in appendices "E.1". A table that does not fit on a page continues on the next one with its header row and "**Tablo 2.1** (devamı)" (continued).
+- The institute's citation style (based on APA 7, following the thesis directive, articles 11 and 16): "vd." and "ve" in Turkish theses, "et al." and "&" in English ones; see [Citations and references](#citations-and-references). Footnotes use \*, †, ‡ and restart on every page.
 - Every field you have not filled in shows up **in red** in the PDF.
 
 ## Installation
@@ -166,6 +166,7 @@ The most common ones:
 | Figure | `#figure(image("../figures/a.png"), caption: [..]) <fig-x>` → **Şekil 2.1.** |
 | Numbered equation | `$ F = sigma dot A $ <eq-x>` → (2.1); `@eq-x` → Eşitlik (2.1) |
 | Citation | `@grady2019` → (Grady vd., 2019); `#cite(<grady2019>, form: "prose")` → Grady vd. (2019) |
+| Secondary source | `#secondary-cite(<ozturk2012>, year: 2012)[Singh, 2007]` → (Singh, 2007: Öztürk vd. 2012’den) |
 | Footnote | `#footnote[..]` → \*, †, ‡ |
 
 If you have no appendices, delete the `#appendices[..]` line. Inside `#appendices`, write appendix sections as `== EK-1: Title`; they are not numbered, and figures, tables, equations and theorems there are numbered E.1, E.2… Lists of tables and figures are omitted when there are no tables or figures.
@@ -174,10 +175,14 @@ If you have no appendices, delete the `#appendices[..]` line. Inside `#appendice
 
 ## Citations and references
 
+The template uses the institute's citation style. It is based on APA 7 and follows articles 11 and 16 of the Graduate School of Natural and Applied Sciences thesis directive (Tez Yazım Yönergesi, Senate 04.04.2024, 2024/37) and the examples in the Word template. Where the directive differs from APA, the directive wins.
+
 - Set the thesis language at the start with `language`: `"tr"` (default) or `"en"`. Two-author in-text citations then use "ve" (`(Engin ve Özçimen, 2016)`) or "&" (`(Engin & Özçimen, 2016)`). The reference list uses "&" in both, as in the institute's template. Printed headings and labels stay Turkish.
+- Several citations together are sorted by date, each keeps its author, and they are separated by semicolons (article 16/2): `@aydeniz2015 @couch2016` → (Aydeniz vd., 2015; Couch ve Metz, 2016).
+- A source cited through another work (article 16/3): `#secondary-cite(<ozturk2012>, year: 2012)[Singh, 2007]` → (Singh, 2007: Öztürk vd. 2012’den). Only the work you read (`ozturk2012`) goes into the reference list; the original is not added to the .bib file. The Turkish suffix ('den, 'dan, 'ten, 'tan) is chosen from the year; for an undated source write `year: "t.y."`. Give `year` exactly as the work's year in the reference list (e.g. `"2012a"`). English theses use the APA form: (Singh, 2007, as cited in Öztürk et al., 2012).
 - The bibliography has a 1.25 cm hanging indent and a blank line between entries.
-- Do not pass `style:` to `bibliography(...)`: the template supplies its APA style.
-- To print a thesis type in Turkish, add a `type` field to the BibTeX entry, e.g. `type = {Yayımlanmamış doktora tezi}` → "[Yayımlanmamış doktora tezi]".
+- Do not pass `style:` to `bibliography(...)`: the template supplies the style. If an old `main.typ` still has `style: "apa"`, compilation stops with an error that says so; delete that part.
+- In a Turkish thesis `@phdthesis` prints "[Doktora tezi]. University." and `@mastersthesis` "[Yüksek lisans tezi]. University."; a thesis with a `url` or `doi` (published) prints "[Doktora tezi, University]. Database." `@techreport` prints "(Rapor No. …). Institution." For any other type name, add a `type` field to the BibTeX entry, e.g. `type = {Yayımlanmamış doktora tezi}` → "[Yayımlanmamış doktora tezi]".
 
 ## Contributing
 
@@ -189,7 +194,7 @@ Branching model, commit conventions and the release flow are described in [CONTR
 |---|---|
 | Template code (`lib.typ`, `src/` and the rest) | [MIT](LICENSE) |
 | `template/` directory: files copied into your thesis by `typst init` (except images) | [MIT-0](LICENSE-MIT-0) |
-| APA citation styles in `assets/csl/` (modified from the [CSL project](https://github.com/citation-style-language/styles)) | [CC BY-SA 3.0](http://creativecommons.org/licenses/by-sa/3.0/) |
+| Citation styles in `assets/csl/` (modified from the [CSL project's APA style](https://github.com/citation-style-language/styles)) | [CC BY-SA 3.0](http://creativecommons.org/licenses/by-sa/3.0/) |
 | Logo and images (see below) | Property of Mersin University |
 
 The `template/` directory is licensed under MIT-0. You may change and distribute the thesis built from these files freely; no attribution or license text is required.
