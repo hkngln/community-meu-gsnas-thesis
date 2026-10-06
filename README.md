@@ -104,18 +104,18 @@ Clone the package into Typst's local package directory. The directory name must 
 
 ```sh
 # macOS
-git clone --branch v0.2.0 https://github.com/hkngln/community-meu-gsnas-thesis \
-  "$HOME/Library/Application Support/typst/packages/local/community-meu-gsnas-thesis/0.2.0"
+git clone --branch v0.3.0 https://github.com/hkngln/community-meu-gsnas-thesis \
+  "$HOME/Library/Application Support/typst/packages/local/community-meu-gsnas-thesis/0.3.0"
 
 # Linux
-git clone --branch v0.2.0 https://github.com/hkngln/community-meu-gsnas-thesis \
-  "$HOME/.local/share/typst/packages/local/community-meu-gsnas-thesis/0.2.0"
+git clone --branch v0.3.0 https://github.com/hkngln/community-meu-gsnas-thesis \
+  "$HOME/.local/share/typst/packages/local/community-meu-gsnas-thesis/0.3.0"
 ```
 
 ```powershell
 # Windows (PowerShell)
-git clone --branch v0.2.0 https://github.com/hkngln/community-meu-gsnas-thesis `
-  "$env:APPDATA\typst\packages\local\community-meu-gsnas-thesis\0.2.0"
+git clone --branch v0.3.0 https://github.com/hkngln/community-meu-gsnas-thesis `
+  "$env:APPDATA\typst\packages\local\community-meu-gsnas-thesis\0.3.0"
 ```
 
 The latest version number is on the [Releases](https://github.com/hkngln/community-meu-gsnas-thesis/releases) page.
@@ -123,7 +123,7 @@ The latest version number is on the [Releases](https://github.com/hkngln/communi
 ## Starting a new thesis
 
 ```sh
-typst init @local/community-meu-gsnas-thesis:0.2.0 my-thesis
+typst init @local/community-meu-gsnas-thesis:0.3.0 my-thesis
 cd my-thesis
 typst watch main.typ
 ```

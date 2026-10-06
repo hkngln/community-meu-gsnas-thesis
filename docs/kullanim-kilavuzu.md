@@ -22,7 +22,7 @@ Kurulum için [README](../README.tr.md#kurulum) dosyasına bakın.
 ## Hızlı başlangıç
 
 ```typ
-#import "@local/community-meu-gsnas-thesis:0.2.0": *
+#import "@local/community-meu-gsnas-thesis:0.3.0": *
 
 #show: thesis.with(
   title: "Tezin Başlığı",
@@ -126,7 +126,7 @@ Bazı ayarlar sabit değerler alır. PDF'e Türkçe karşılıkları basılır.
 Hepsi tek sayaç paylaşır ve alt bölüme göre numaralanır (Tanım 2.1.1, Teorem 2.1.2…). Bir bölüm dosyasında kullanmak için dosyanın başına ekleyin:
 
 ```typ
-#import "@local/community-meu-gsnas-thesis:0.2.0": definition, theorem, proof
+#import "@local/community-meu-gsnas-thesis:0.3.0": definition, theorem, proof
 ```
 
 | Fonksiyon (İngilizce) | PDF'e basılan |
@@ -189,11 +189,11 @@ Etiket adları (`<tbl-ornek>` gibi) serbesttir; `tbl-`, `fig-`, `eq-` önekleri 
 
 ## v0.1.x'ten geçiş
 
-v0.2.0 ile paketin adı `meu-fbe-tez` yerine `community-meu-gsnas-thesis` oldu ve bütün adlar İngilizceye çevrildi. PDF çıktısı değişmedi. Eski bir tezi taşımak için önce paketi yeni adıyla kurun ([README > Kurulum](../README.tr.md#kurulum)). Sonra `main.typ` ve bölüm dosyalarındaki import satırlarını `@local/community-meu-gsnas-thesis:0.2.0` yapın ve adları aşağıdaki tabloya göre değiştirin. Eski sürümü kullanmaya devam etmek de mümkündür; o sürümün klasörü kurulu kaldığı sürece eski tezler derlenmeye devam eder.
+v0.2.0 ile paketin adı `meu-fbe-tez` yerine `community-meu-gsnas-thesis` oldu ve bütün adlar İngilizceye çevrildi. PDF çıktısı değişmedi. Eski bir tezi taşımak için önce paketi yeni adıyla kurun ([README > Kurulum](../README.tr.md#kurulum)). Sonra `main.typ` ve bölüm dosyalarındaki import satırlarını `@local/community-meu-gsnas-thesis:0.3.0` yapın ve adları aşağıdaki tabloya göre değiştirin. Eski sürümü kullanmaya devam etmek de mümkündür; o sürümün klasörü kurulu kaldığı sürece eski tezler derlenmeye devam eder.
 
 | v0.1.x (Türkçe) | v0.2.0 (İngilizce) |
 |---|---|
-| `#import "@local/meu-fbe-tez:0.1.1"` | `#import "@local/community-meu-gsnas-thesis:0.2.0"` |
+| `#import "@local/meu-fbe-tez:0.1.1"` | `#import "@local/community-meu-gsnas-thesis:0.3.0"` |
 | `tez` | `thesis` |
 | `baslik` / `baslik-en` | `title` / `title-en` |
 | `tur: "yl"` / `tur: "dr"` | `degree: "master"` / `degree: "phd"` |
