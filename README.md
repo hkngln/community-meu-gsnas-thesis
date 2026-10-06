@@ -27,7 +27,7 @@ The thesis itself is printed in **Turkish**, as the institute requires: headings
   - 1.25 cm first-line indent.
 - Chapters, references, appendices and the CV start on a new odd-numbered page. Blank filler pages carry no header or page number.
 - Figures, tables and equations are numbered by chapter (**Tablo 2.1.**, **Şekil 2.1.**, (2.1)); in appendices "E.1".
-- APA 7 citations with Turkish "vd." (et al.); see [Known limitations](#known-limitations). Footnotes use \*, †, ‡ and restart on every page.
+- APA 7 citations: "vd." and "ve" in Turkish theses, "et al." and "&" in English ones; see [Citations and references](#citations-and-references). Footnotes use \*, †, ‡ and restart on every page.
 - Every field you have not filled in shows up **in red** in the PDF.
 
 ## Installation
@@ -172,12 +172,12 @@ If you have no appendices, delete the `#appendices[..]` line. Inside `#appendice
 
 > **Using v0.1.x?** In v0.2.0 the package was renamed from `meu-fbe-tez` to `community-meu-gsnas-thesis` and all names became English; the renaming itself did not change the PDF output. See the [migration table](docs/user-guide.md#migrating-from-v01x) in the user guide.
 
-## Known limitations
+## Citations and references
 
-These come from Typst's built-in APA style and are planned for v0.4.0:
-- Two-author citations print "&" instead of the Turkish "ve": `(Engin & Özçimen, 2016)` instead of `(Engin ve Özçimen, 2016)`. Until then, write such citations by hand where it matters.
-- Some reference-type labels stay in English, e.g. "[Doctoral dissertation]" instead of "[Yayımlanmamış doktora tezi]".
-- The bibliography's hanging indent is 1.5em (about 0.58 cm) instead of the template's 1.25 cm; Typst 0.15 does not allow changing it.
+- Set the thesis language at the start with `language`: `"tr"` (default) or `"en"`. Two-author in-text citations then use "ve" (`(Engin ve Özçimen, 2016)`) or "&" (`(Engin & Özçimen, 2016)`). The reference list uses "&" in both, as in the institute's template. Printed headings and labels stay Turkish.
+- The bibliography has a 1.25 cm hanging indent and a blank line between entries.
+- Do not pass `style:` to `bibliography(...)`: the template supplies its APA style.
+- To print a thesis type in Turkish, add a `type` field to the BibTeX entry, e.g. `type = {Yayımlanmamış doktora tezi}` → "[Yayımlanmamış doktora tezi]".
 
 ## Contributing
 
@@ -189,6 +189,7 @@ Branching model, commit conventions and the release flow are described in [CONTR
 |---|---|
 | Template code (`lib.typ`, `src/` and the rest) | [MIT](LICENSE) |
 | `template/` directory: files copied into your thesis by `typst init` (except images) | [MIT-0](LICENSE-MIT-0) |
+| APA citation styles in `assets/csl/` (modified from the [CSL project](https://github.com/citation-style-language/styles)) | [CC BY-SA 3.0](http://creativecommons.org/licenses/by-sa/3.0/) |
 | Logo and images (see below) | Property of Mersin University |
 
 The `template/` directory is licensed under MIT-0. You may change and distribute the thesis built from these files freely; no attribution or license text is required.

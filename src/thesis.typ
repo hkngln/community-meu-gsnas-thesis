@@ -66,6 +66,10 @@
   set figure(numbering: by-chapter, gap: 0.8em)
   set figure.caption(separator: [. ])
   show figure.where(kind: table): set figure.caption(position: top)
+  // Etiketler tez dili İngilizce olsa da Türkçe kalır (enstitü kuralı).
+  show figure.where(kind: table): set figure(supplement: [Tablo])
+  show figure.where(kind: image): set figure(supplement: [Şekil])
+  show figure.where(kind: raw): set figure(supplement: [Liste])
   show figure: set block(above: BLANK-LINE, below: BLANK-LINE)
   show figure: set par(leading: SPACING-1, first-line-indent: 0pt)
   show figure.caption: it => context [*#it.supplement #it.counter.display(it.numbering)#it.separator*#it.body]
@@ -110,8 +114,9 @@
   align(right, counter(page).display())
 }
 
-#let _main-matter(header-text, two-sided, body) = {
+#let _main-matter(header-text, two-sided, language, body) = {
   set page(numbering: "1", header: _header(header-text), footer: _footer)
+  set text(lang: language)
   counter(page).update(1)
   show heading.where(level: 1): it => {
     _break-to(if two-sided { "odd" } else { none })
@@ -162,6 +167,10 @@
   abbreviations: (),
   // Bölümler yeni ve tek numaralı sayfadan başlar (çift taraflı baskı).
   two-sided: true,
+  // Tezin yazıldığı dil: "tr" | "en". Ana metnin heceleme dilini ve atıflarda
+  // iki yazar arasındaki bağlacı belirler (tr: "ve", en: "&"). Basılı başlıklar
+  // ve etiketler (ÖZET, KAYNAKLAR, Tablo, Şekil…) enstitü kuralı gereği Türkçedir.
+  language: "tr",
   // Yazı tipi; listede bulunan ilk font kullanılır. Resmi teslim: Times New Roman.
   // Ör. ("Times New Roman", "TeX Gyre Termes", "Libertinus Serif")
   font: FONTS,
@@ -195,6 +204,7 @@
     message: "decision \"unanimous\" veya \"majority\" olmalı, verilen: " + repr(decision),
   )
   assert(jury.len() <= 5, message: "jüri en fazla 5 üye (başkan dahil) olabilir")
+  assert(language in ("tr", "en"), message: "language \"tr\" veya \"en\" olmalı, verilen: " + repr(language))
 
   set document(title: field(title, "Tez"), author: if student == none { () } else { student })
   show: _base-style.with(font)
@@ -264,6 +274,6 @@
   }
 
   let header-text = [#field(student, "Adı SOYADI"), #DEGREES.at(degree).text Tezi, Fen Bilimleri Enstitüsü, Mersin Üniversitesi, #field(year, "YIL")]
-  _main-matter(header-text, two-sided, body)
+  _main-matter(header-text, two-sided, language, body)
   if back-cover { covers.back-cover() }
 }

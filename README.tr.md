@@ -25,7 +25,7 @@ Mersin Üniversitesi Fen Bilimleri Enstitüsü yüksek lisans ve doktora tezleri
   - 1,25 cm paragraf girintisi.
 - Ana bölümler, kaynaklar, ekler ve özgeçmiş yeni ve tek numaralı sayfadan başlar. Araya giren boş sayfalarda üst bilgi ve sayfa numarası basılmaz.
 - Şekil, tablo ve eşitlikler bölüme göre numaralanır (**Tablo 2.1.**, **Şekil 2.1.**, (2.1)). Eklerde numaralar "E.1" olur.
-- APA 7 atıflar Türkçe "vd." ile çıkar; [bilinen sınırlamalar](#bilinen-sınırlamalar) bölümüne bakın. Dipnotlar \*, †, ‡ işaretleriyle her sayfada yeniden başlar.
+- APA 7 atıflar: Türkçe tezde "vd." ve "ve", İngilizce tezde "et al." ve "&"; [Atıflar ve kaynakça](#atıflar-ve-kaynakça) bölümüne bakın. Dipnotlar \*, †, ‡ işaretleriyle her sayfada yeniden başlar.
 - Doldurulmamış her alan PDF'te **kırmızı** görünür.
 
 ## Kurulum
@@ -170,12 +170,12 @@ Ek yoksa `#appendices[..]` satırını silin. `#appendices` içinde ek bölümle
 
 > **v0.1.x kullanıyorsanız:** v0.2.0'da paketin adı `meu-fbe-tez` yerine `community-meu-gsnas-thesis` oldu ve adlar İngilizceye çevrildi; ad değişikliği PDF çıktısını değiştirmedi. Geçiş tablosu kılavuzun [v0.1.x'ten geçiş](docs/kullanim-kilavuzu.md#v01xten-geçiş) bölümünde.
 
-## Bilinen sınırlamalar
+## Atıflar ve kaynakça
 
-Bunlar Typst'ün yerleşik APA stilinden kaynaklanıyor ve v0.4.0 için planlanıyor:
-- İki yazarlı atıflarda Türkçe "ve" yerine "&" çıkar: `(Engin ve Özçimen, 2016)` yerine `(Engin & Özçimen, 2016)`. O zamana kadar önemli yerlerde bu atıfları elle yazın.
-- Bazı kaynak türü etiketleri İngilizce kalır; ör. "[Yayımlanmamış doktora tezi]" yerine "[Doctoral dissertation]".
-- Kaynakçadaki asılı girinti, şablondaki 1,25 cm yerine 1,5em (yaklaşık 0,58 cm) olur; Typst 0.15 bunun değiştirilmesine izin vermiyor.
+- Tezin dilini en başta `language` ayarıyla seçin: `"tr"` (varsayılan) ya da `"en"`. İki yazarlı metin içi atıflar buna göre "ve" (`(Engin ve Özçimen, 2016)`) ya da "&" (`(Engin & Özçimen, 2016)`) ile yazılır. Kaynakça listesinde, enstitü şablonundaki gibi, iki dilde de "&" kullanılır. Basılı başlıklar ve etiketler Türkçe kalır.
+- Kaynakçada 1,25 cm asılı girinti ve eserler arasında bir satır boşluk vardır.
+- `bibliography(...)` çağrısına `style:` vermeyin; APA stili şablondan gelir.
+- Tez türünü Türkçe yazdırmak için BibTeX kaydına `type` alanı ekleyin; ör. `type = {Yayımlanmamış doktora tezi}` → "[Yayımlanmamış doktora tezi]".
 
 ## Katkı
 
@@ -187,6 +187,7 @@ Dal yapısı, commit kuralları ve sürüm akışı [Katkı Rehberi](CONTRIBUTIN
 |---|---|
 | Şablonun kodu (`lib.typ`, `src/` ve diğerleri) | [MIT](LICENSE) |
 | `template/` klasörü: `typst init` ile tezinize kopyalanan dosyalar (görseller hariç) | [MIT-0](LICENSE-MIT-0) |
+| `assets/csl/` içindeki APA atıf stilleri ([CSL projesinden](https://github.com/citation-style-language/styles) uyarlandı) | [CC BY-SA 3.0](http://creativecommons.org/licenses/by-sa/3.0/) |
 | Logo ve görseller (aşağıya bakın) | Mersin Üniversitesi'ne aittir |
 
 `template/` klasörü MIT-0 lisanslıdır. Bu dosyalardan oluşan tezinizi dilediğiniz gibi değiştirebilir ve dağıtabilirsiniz; atıf yapmanız ya da lisans metnini eklemeniz gerekmez.

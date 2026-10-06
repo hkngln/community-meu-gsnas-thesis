@@ -18,6 +18,9 @@
 
 = GİRİŞ
 
+// Two authors in Turkish: "ve", not "&" (v0.4.0).
+Two authors @engin2016.
+
 #figure(raw("chapter one", lang: "text"), caption: [Listing one])
 
 // Long table: must break across pages without losing rows.
@@ -36,6 +39,8 @@
 #figure(raw("chapter two", lang: "text"), caption: [Listing two])
 
 #theorem[A theorem in chapter two.]
+
+#references(bibliography("regressions.bib", full: true))
 
 #appendices[
   // Appendix heading: must not be numbered under the last chapter.
