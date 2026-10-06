@@ -1,6 +1,6 @@
 // Mersin Üniversitesi Fen Bilimleri Enstitüsü tez şablonu (Typst).
 //
-//   #import "@local/community-meu-gsnas-thesis:0.4.0": *
+//   #import "@local/community-meu-gsnas-thesis:0.5.0": *
 //   #show: thesis.with(title: "...", student: "Adı SOYADI", ...)
 //
 // İngilizce adların Türkçe karşılıkları: docs/kullanim-kilavuzu.md
