@@ -102,18 +102,18 @@ Paketi Typst'ün yerel paket dizinine klonlayın. Dizin adı sürüm numarasıyl
 
 ```sh
 # macOS
-git clone --branch v0.5.1 https://github.com/hkngln/community-meu-gsnas-thesis \
-  "$HOME/Library/Application Support/typst/packages/local/community-meu-gsnas-thesis/0.5.1"
+git clone --branch v0.5.2 https://github.com/hkngln/community-meu-gsnas-thesis \
+  "$HOME/Library/Application Support/typst/packages/local/community-meu-gsnas-thesis/0.5.2"
 
 # Linux
-git clone --branch v0.5.1 https://github.com/hkngln/community-meu-gsnas-thesis \
-  "$HOME/.local/share/typst/packages/local/community-meu-gsnas-thesis/0.5.1"
+git clone --branch v0.5.2 https://github.com/hkngln/community-meu-gsnas-thesis \
+  "$HOME/.local/share/typst/packages/local/community-meu-gsnas-thesis/0.5.2"
 ```
 
 ```powershell
 # Windows (PowerShell)
-git clone --branch v0.5.1 https://github.com/hkngln/community-meu-gsnas-thesis `
-  "$env:APPDATA\typst\packages\local\community-meu-gsnas-thesis\0.5.1"
+git clone --branch v0.5.2 https://github.com/hkngln/community-meu-gsnas-thesis `
+  "$env:APPDATA\typst\packages\local\community-meu-gsnas-thesis\0.5.2"
 ```
 
 En güncel sürüm numarası [Releases](https://github.com/hkngln/community-meu-gsnas-thesis/releases) sayfasında.
@@ -121,7 +121,7 @@ En güncel sürüm numarası [Releases](https://github.com/hkngln/community-meu-
 ## Yeni tez başlatma
 
 ```sh
-typst init @local/community-meu-gsnas-thesis:0.5.1 tezim
+typst init @local/community-meu-gsnas-thesis:0.5.2 tezim
 cd tezim
 typst watch main.typ
 ```
@@ -152,6 +152,7 @@ En sık kullanılanlar:
 | `abstract-tr`, `abstract-en`, `acknowledgements` | Özet, Abstract, Teşekkür |
 | `two-sided` | Çift taraflı baskı (bölümler sağ sayfadan başlar) |
 | `front-cover`, `back-cover` | Dış ön kapak (EK-5), arka kapak (EK-6) |
+| `yok-copy` | YÖK Tez Merkezi'ne yüklenecek kopya: ONAY, ETİK BEYAN ve ÖZGEÇMİŞ sayfaları çıkarılır (Madde 18/4) |
 | `#references`, `#appendices`, `#cv` | Kaynaklar, Ekler, Özgeçmiş |
 | `#definition`, `#theorem`, `#proof`, `#note`… | Tanım, Teorem, Kanıt, Not… |
 
@@ -165,7 +166,8 @@ En sık kullanılanlar:
 | Numaralı eşitlik | `$ F = sigma dot A $ <eq-x>` → (2.1); `@eq-x` → Eşitlik (2.1) |
 | Atıf | `@grady2019` → (Grady vd., 2019); `#cite(<grady2019>, form: "prose")` → Grady vd. (2019) |
 | Aktarma (ikincil kaynak) | `#secondary-cite(<ozturk2012>, year: 2012)[Singh, 2007]` → (Singh, 2007: Öztürk vd. 2012’den) |
-| Dipnot | `#footnote[..]` → \*, †, ‡ |
+| Dipnot | `#footnote[..]` → \*, †, ‡; 10 punto, italik, tek satır aralığı (Madde 12) |
+| 40 sözcüğü aşan alıntı | `#quote(block: true)[..]` → ayrı paragraf, 10 punto, tırnaksız (Madde 11/2); `#quote(block: true, attribution: [Yazar])` sonuna "— Yazar" ekler. Kısa alıntı: `#quote[..]` → gövde puntosunda “..” |
 
 Ek yoksa `#appendices[..]` satırını silin. `#appendices` içinde ek bölümlerini `== EK-1: Başlık` biçiminde yazın; bunlar numarasızdır, içlerindeki şekil, tablo, eşitlik ve teoremler E.1, E.2… diye numaralanır. Hiç tablo ya da şekil yoksa ilgili dizin sayfası basılmaz.
 

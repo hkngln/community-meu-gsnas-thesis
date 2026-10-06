@@ -8,7 +8,14 @@
 #let FONTS = ("Times New Roman", "Libertinus Serif")
 #let FONT-SIZE = 11pt
 #let HEADER-SIZE = 10pt
+// Yönerge Madde 12: dipnotlar 10 punto, italik, tek satır aralığı; metinden
+// 1/4 satır uzunluğunda bir çizgiyle ayrılır.
 #let FOOTNOTE-SIZE = 10pt
+#let FOOTNOTE-RULE-LENGTH = 25%
+// Yönerge Madde 8ç ve 11/2: 40 sözcüğü aşan alıntılar ayrı paragraf, 10 punto.
+#let QUOTE-SIZE = 10pt
+// Yönerge Madde 15/2: en fazla 5 anahtar kelime.
+#let MAX-KEYWORDS = 5
 // Docx w:header="851" (1,5 cm): üst bilgi çizgisi metin alanının ~0,5 cm üstünde.
 #let HEADER-ASCENT = 0.5cm
 #let MARGIN = 2.5cm

@@ -1,10 +1,10 @@
-#import "@local/community-meu-gsnas-thesis:0.5.1": definition, proof, theorem
+#import "@local/community-meu-gsnas-thesis:0.5.2": definition, proof, theorem
 
 = KAYNAK ARAŞTIRMALARI
 
 == İkinci Seviye Başlık
 
-Başkalarının eserlerinden yararlanılırken ilgili eserlere bilimsel normlara uygun olarak atıfta bulunulmuştur#footnote[_Varsa dipnot buraya eklenecek_]. Başkalarının eserlerinden yararlanılırken ilgili eserlere bilimsel normlara uygun olarak atıfta bulunulması önemli bir konudur @freeberg2019 @jerrentrup2018. Gerilme @eq-stress ve kuvvet @eq-force ile verilir:
+Başkalarının eserlerinden yararlanılırken ilgili eserlere bilimsel normlara uygun olarak atıfta bulunulmuştur#footnote[Varsa dipnot buraya eklenecek]. Başkalarının eserlerinden yararlanılırken ilgili eserlere bilimsel normlara uygun olarak atıfta bulunulması önemli bir konudur @freeberg2019 @jerrentrup2018. Gerilme @eq-stress ve kuvvet @eq-force ile verilir:
 
 $ F = sigma dot A $ <eq-force>
 $ sigma = epsilon dot E $ <eq-stress>

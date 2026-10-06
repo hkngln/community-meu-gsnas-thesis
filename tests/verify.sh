@@ -198,7 +198,71 @@ grep -q "style vermeyin" <<<"$style_log" || { echo "$style_log"; fail "no clear 
 bad_log=$(printf '%s\n' '#import "/lib.typ": *' '#show: thesis.with(keywords-tr: "a, b")' 'x' \
   | typst compile --root . - "$OUT/bad-input.pdf" 2>&1 || true)
 grep -q "keywords-tr bir dizi olmalı" <<<"$bad_log" || { echo "$bad_log"; fail "no clear error for a wrong keywords-tr type"; }
+# Directive article 15/2: at most 5 keywords.
+kw_log=$(printf '%s\n' '#import "/lib.typ": *' '#show: thesis.with(keywords-en: ("a", "b", "c", "d", "e", "f"))' 'x' \
+  | typst compile --root . - "$OUT/too-many-keywords.pdf" 2>&1 || true)
+grep -q "keywords-en en fazla 5" <<<"$kw_log" || { echo "$kw_log"; fail "no clear error for more than 5 keywords"; }
 echo "compiled: regressions"
+
+# Directive article 12: footnotes 10 pt, italic, single line spacing, separator a
+# quarter of a line long. Articles 8ç and 11/2: block quotations 10 pt, no
+# quotation marks, own paragraph indented like a paragraph's first line.
+FQ="$OUT/footnotes-quotes.pdf"
+compile . tests/footnotes-quotes.typ "$FQ"
+FQ_PAGE=$(heading_page "$FQ" "1. GİRİŞ")
+# Expected values come from src/settings.typ: Word's single line for Times New
+# Roman at the footnote size, the paragraph indent and the text width.
+settings() { typst eval --root . "import \"/src/settings.typ\": *; $1"; }
+fn_leading=$(settings 'WORD-SINGLE-LINE.em * FOOTNOTE-SIZE.pt()')
+rule_length=$(settings '((21cm - 2 * MARGIN) * FOOTNOTE-RULE-LENGTH).pt()')
+quote_ratio=$(settings 'QUOTE-SIZE / FONT-SIZE')
+quote_indent=$(settings 'PAR-INDENT.pt()')
+margin=$(settings 'MARGIN.pt()')
+pdftoppm -gray -r 300 -f "$FQ_PAGE" -l "$FQ_PAGE" -singlefile "$FQ" "$OUT/footnotes-quotes-page"
+pdftotext -f "$FQ_PAGE" -l "$FQ_PAGE" -bbox "$FQ" "$OUT/footnotes-quotes-page.bbox"
+measured=$(python3 - "$OUT/footnotes-quotes-page.bbox" "$OUT/footnotes-quotes-page.pgm" <<'PY'
+import re, sys
+words = {m.group(5): tuple(float(m.group(i)) for i in range(1, 5)) for m in re.finditer(
+    r'<word xMin="([\d.]+)" yMin="([\d.]+)" xMax="([\d.]+)" yMax="([\d.]+)">([^<]*)</word>', open(sys.argv[1]).read())}
+fn1, fn2, body, quote = (words[w] for w in ("fn-first-line", "fn-second-line", "body-word", "quote-start"))
+# Separator: longest dark horizontal run in the 30 pt above the first footnote line.
+data = open(sys.argv[2], "rb").read()
+header = re.match(rb"P5\s+(\d+)\s+(\d+)\s+255\s", data)
+width, height = int(header.group(1)), int(header.group(2))
+pixels, dpi = data[header.end():], 300
+longest = 0
+for y in range(int((fn1[1] - 30) * dpi / 72), int(fn1[1] * dpi / 72)):
+    row, run = pixels[y * width:(y + 1) * width], 0
+    for value in row:
+        run = run + 1 if value < 160 else 0
+        longest = max(longest, run)
+print(f"{fn2[1] - fn1[1]:.2f} {longest * 72 / dpi:.1f} {(quote[3] - quote[1]) / (body[3] - body[1]):.3f} {quote[0]:.2f}")
+PY
+)
+read -r fn_measured rule_measured ratio_measured quote_x <<<"$measured"
+near() { python3 -c "import sys; sys.exit(0 if abs(float(sys.argv[1]) - float(sys.argv[2])) <= float(sys.argv[3]) else 1)" "$@"; }
+near "$fn_measured" "$fn_leading" 0.3 || fail "footnote baseline distance is $fn_measured pt, expected $fn_leading pt (single spacing)"
+near "$rule_measured" "$rule_length" 3 || fail "footnote separator is $rule_measured pt long, expected $rule_length pt (1/4 line)"
+near "$ratio_measured" "$quote_ratio" 0.02 || fail "block quote / body font size ratio is $ratio_measured, expected $quote_ratio"
+near "$(python3 -c "print($quote_x - $margin)")" "$quote_indent" 0.5 || fail "block quote starts at $quote_x pt, expected margin + $quote_indent pt"
+# Italic: the footnote is the only italic text on that page.
+pdffonts -f "$FQ_PAGE" -l "$FQ_PAGE" "$FQ" | grep -q "Italic" || fail "footnote is not italic (no italic font on page $FQ_PAGE)"
+not_contains "$FQ" "“quote-start"
+contains "$FQ" "“inline-quote"
+contains "$FQ" "— Yazar Adı"
+echo "measured: footnote leading $fn_measured pt, separator $rule_measured pt, quote size ratio $ratio_measured"
+
+# Directive article 18/4: the copy uploaded to the YÖK Thesis Center has no ONAY,
+# ETİK BEYAN or ÖZGEÇMİŞ pages; the back cover (EK-6) stays. Page numbering and
+# the odd-page logic of the front matter must still hold.
+YOK="$OUT/yok-copy.pdf"
+compile . tests/yok-copy.typ "$YOK"
+for unexpected in "ONAY" "ETİK BEYAN" "ÖZGEÇMİŞ" "Adı ve Soyadı" "cv-publication"; do not_contains "$YOK" "$unexpected"; done
+[[ $(pdf_text -f 4 -l 4 "$YOK") == *"ÖZET"*" ii"* ]] || fail "yok-copy: ÖZET is not page ii after the title page"
+YOK_FIRST=$(heading_page "$YOK" "1. GİRİŞ")
+((YOK_FIRST % 2 == 1)) || fail "yok-copy: first chapter starts on an even physical page ($YOK_FIRST)"
+YOK_LAST=$(heading_page "$YOK" "2. SONUÇ")
+[[ $(pdfinfo "$YOK" | sed -n 's/^Pages: *//p') -eq $((YOK_LAST + 1)) ]] || fail "yok-copy: back cover missing or extra pages after the last chapter"
 
 # Fallback font: without Times New Roman, the bundled Libertinus Serif is used.
 # The only expected warning is that Times New Roman was not found.

@@ -22,7 +22,7 @@ Kurulum için [README](../README.tr.md#kurulum) dosyasına bakın.
 ## Hızlı başlangıç
 
 ```typ
-#import "@local/community-meu-gsnas-thesis:0.5.1": *
+#import "@local/community-meu-gsnas-thesis:0.5.2": *
 
 #show: thesis.with(
   title: "Tezin Başlığı",
@@ -74,11 +74,13 @@ Doldurulmamış her alan PDF'te **kırmızı** görünür.
 | Ayar (İngilizce) | Türkçe karşılığı | Örnek |
 |---|---|---|
 | `abstract-tr` | Özet (Türkçe) | `include "front/abstract-tr.typ"` |
-| `keywords-tr` | Anahtar kelimeler | `("Kelime1", "Kelime2")` |
+| `keywords-tr` | Anahtar kelimeler (en fazla 5) | `("Kelime1", "Kelime2")` |
 | `abstract-en` | Abstract (İngilizce) | `include "front/abstract-en.typ"` |
-| `keywords-en` | Keywords | `("Keyword1", "Keyword2")` |
+| `keywords-en` | Keywords (en fazla 5) | `("Keyword1", "Keyword2")` |
 | `acknowledgements` | Teşekkür | `include "front/acknowledgements.typ"` |
 | `abbreviations` | Simgeler ve kısaltmalar: `(kısaltma, tanım)` çiftleri | `(("MEÜ", "Mersin Üniversitesi"),)` |
+
+Yönerge Madde 15/2'ye göre en fazla 5 anahtar kelime verilir; ÖZET ve ABSTRACT en fazla 300 sözcük olur. 5'ten fazla anahtar kelimede derleme hata verir; sözcük sayısını şablon denetlemez, kendiniz sayın.
 
 ### Baskı
 
@@ -88,6 +90,7 @@ Doldurulmamış her alan PDF'te **kırmızı** görünür.
 | `two-sided` | Çift taraflı baskı | `true` | Bölümler tek numaralı (sağ) sayfadan başlar; gerekirse araya numarasız boş sayfa eklenir. `false`: tek taraflı, boş sayfa yok. |
 | `front-cover` | Dış ön kapak (EK-5) | `true` | Logolu dış kapak; sayfa numarasına dahil değildir. |
 | `back-cover` | Arka kapak (EK-6) | `true` | YÖK Tez Merkezi'ne yüklenen PDF'te bulunmalıdır. |
+| `yok-copy` | YÖK Tez Merkezi kopyası | `false` | `true`: YÖK Tez Merkezi'ne yüklenecek elektronik kopya (Madde 18/4). ONAY ve ETİK BEYAN sayfaları çıkarılır, `#cv(...)` hiçbir şey basmaz, arka kapak `back-cover` değerinden bağımsız olarak her zaman basılır. Sayfa numaraları ve içindekiler buna göre düzenlenir. Jüriye verilen basılı nüshayı `false` ile derleyin. |
 | `font` | Yazı tipi | `("Times New Roman", "Libertinus Serif")` | Listede kurulu olan ilk font kullanılır. Libertinus Serif Typst'le birlikte gelir ve yedek fonttur. TeX Gyre Termes kurduysanız `"TeX Gyre Termes"` ekleyin ([README](../README.tr.md#3-yazı-tipi-times-new-roman)). Teslimde Times New Roman kullanın. |
 
 ## Değerler
@@ -128,7 +131,7 @@ Bazı ayarlar sabit değerler alır. PDF'e Türkçe karşılıkları basılır.
 Hepsi tek sayaç paylaşır ve alt bölüme göre numaralanır (Tanım 2.1.1, Teorem 2.1.2…). Bir bölüm dosyasında kullanmak için dosyanın başına ekleyin:
 
 ```typ
-#import "@local/community-meu-gsnas-thesis:0.5.1": definition, theorem, proof
+#import "@local/community-meu-gsnas-thesis:0.5.2": definition, theorem, proof
 ```
 
 | Fonksiyon (İngilizce) | PDF'e basılan |
@@ -185,17 +188,19 @@ Dosya adlarını değiştirmek serbesttir; `main.typ` içindeki `#include` satı
 | Eşitliğe atıf | `@eq-kuvvet` | Eşitlik (2.1) |
 | Kaynağa atıf | `@grady2019` | (Grady vd., 2019) |
 | Metin içi atıf | `#cite(<grady2019>, form: "prose")` | Grady vd. (2019) |
-| Dipnot | `#footnote[..]` | \*, †, ‡ (her sayfada yeniden başlar) |
+| Dipnot | `#footnote[..]` | \*, †, ‡ (her sayfada yeniden başlar); 10 punto, italik, tek satır aralığı, metinden satırın dörtte biri uzunluğunda çizgiyle ayrılır (Madde 12) |
+| 40 sözcüğü aşan alıntı | `#quote(block: true)[..]` | Ayrı paragraf, 10 punto, tırnaksız, iki yandan 1,25 cm içeride (Madde 11/2). `#quote(block: true, attribution: [Yazar])` sonuna "— Yazar" ekler |
+| Kısa alıntı | `#quote[..]` | Gövde puntosunda “..” |
 
 Etiket adları (`<tbl-ornek>` gibi) serbesttir; `tbl-`, `fig-`, `eq-` önekleri yalnızca okunaklılık içindir.
 
 ## v0.1.x'ten geçiş
 
-v0.2.0 ile paketin adı `meu-fbe-tez` yerine `community-meu-gsnas-thesis` oldu ve bütün adlar İngilizceye çevrildi. Ad değişikliği PDF çıktısını değiştirmedi. Eski bir tezi taşımak için önce paketi yeni adıyla kurun ([README > Kurulum](../README.tr.md#kurulum)). Sonra `main.typ` ve bölüm dosyalarındaki import satırlarını `@local/community-meu-gsnas-thesis:0.5.1` yapın ve adları aşağıdaki tabloya göre değiştirin. Eski sürümü kullanmaya devam etmek de mümkündür; o sürümün klasörü kurulu kaldığı sürece eski tezler derlenmeye devam eder.
+v0.2.0 ile paketin adı `meu-fbe-tez` yerine `community-meu-gsnas-thesis` oldu ve bütün adlar İngilizceye çevrildi. Ad değişikliği PDF çıktısını değiştirmedi. Eski bir tezi taşımak için önce paketi yeni adıyla kurun ([README > Kurulum](../README.tr.md#kurulum)). Sonra `main.typ` ve bölüm dosyalarındaki import satırlarını `@local/community-meu-gsnas-thesis:0.5.2` yapın ve adları aşağıdaki tabloya göre değiştirin. Eski sürümü kullanmaya devam etmek de mümkündür; o sürümün klasörü kurulu kaldığı sürece eski tezler derlenmeye devam eder.
 
 | v0.1.x (Türkçe) | v0.2.0 (İngilizce) |
 |---|---|
-| `#import "@local/meu-fbe-tez:0.1.1"` | `#import "@local/community-meu-gsnas-thesis:0.5.1"` |
+| `#import "@local/meu-fbe-tez:0.1.1"` | `#import "@local/community-meu-gsnas-thesis:0.5.2"` |
 | `tez` | `thesis` |
 | `baslik` / `baslik-en` | `title` / `title-en` |
 | `tur: "yl"` / `tur: "dr"` | `degree: "master"` / `degree: "phd"` |
