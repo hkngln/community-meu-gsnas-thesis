@@ -1,88 +1,90 @@
 #!/usr/bin/env bash
-# Şablonu ve testleri derler, uyarıyı hata sayar, PDF metnini doğrular.
-# Gereken: typst, pdftotext (poppler), Times New Roman fontu ve paketin
-# @local/community-meu-gsnas-thesis:<sürüm> olarak kurulu olması (README > Kurulum).
+# Compiles the template and the test documents, treats every warning as a
+# failure and checks the PDF text. The thesis output itself is Turkish, so the
+# expected strings below ("Tablo 2.1.", "GİRİŞ", …) are Turkish on purpose.
+# Requires: typst, pdftotext/pdffonts (poppler), Times New Roman and the package
+# installed as @local/community-meu-gsnas-thesis:<version> (README > Installation).
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
 OUT="${OUT:-tests/out}"
 mkdir -p "$OUT"
-SURUM=$(sed -n 's/^version = "\(.*\)"/\1/p' typst.toml)
+VERSION=$(sed -n 's/^version = "\(.*\)"/\1/p' typst.toml)
 
-hata() { echo "HATA: $*" >&2; exit 1; }
+fail() { echo "FAIL: $*" >&2; exit 1; }
 
-# derle <kök> <girdi> <çıktı>
-derle() {
+# compile <root> <input> <output>
+compile() {
   local log
-  log=$(typst compile --root "$1" "$2" "$3" 2>&1) || { echo "$log"; hata "$2 derlenemedi"; }
-  if grep -q "^warning" <<<"$log"; then echo "$log"; hata "$2 uyarı verdi"; fi
-  echo "derlendi: $2"
+  log=$(typst compile --root "$1" "$2" "$3" 2>&1) || { echo "$log"; fail "$2 did not compile"; }
+  if grep -q "^warning" <<<"$log"; then echo "$log"; fail "$2 produced a warning"; fi
+  echo "compiled: $2"
 }
 
-metin() { pdftotext -layout "$@" - ; }
-# Metin önce değişkene alınır: pipefail altında `pdftotext | grep -q` erken
-# kapanan boru yüzünden (SIGPIPE) eşleşme olsa bile başarısız sayılır.
-icerir() { local m; m=$(metin "$1"); grep -qF -- "$2" <<<"$m" || hata "$1 içinde '$2' bulunamadı"; }
-icermez() { local m; m=$(metin "$1"); if grep -qF -- "$2" <<<"$m"; then hata "$1 içinde '$2' olmamalı"; fi; }
+pdf_text() { pdftotext -layout "$@" - ; }
+# Read the text into a variable first: under pipefail, `pdftotext | grep -q`
+# fails even on a match because grep closes the pipe early (SIGPIPE).
+contains() { local t; t=$(pdf_text "$1"); grep -qF -- "$2" <<<"$t" || fail "'$2' not found in $1"; }
+not_contains() { local t; t=$(pdf_text "$1"); if grep -qF -- "$2" <<<"$t"; then fail "'$2' must not appear in $1"; fi; }
 
-# Bir satırı tam olarak <başlık> olan ilk sayfanın fiziksel numarası.
-baslik_sayfasi() {
-  local sayfalar
-  sayfalar=$(pdfinfo "$1" | sed -n 's/^Pages: *//p')
-  for ((p = 1; p <= sayfalar; p++)); do
-    local m
-    m=$(metin -f "$p" -l "$p" "$1")
-    if grep -qx -- " *$2 *" <<<"$m"; then echo "$p"; return; fi
+# Physical page number of the first page with a line that is exactly <heading>.
+heading_page() {
+  local pages
+  pages=$(pdfinfo "$1" | sed -n 's/^Pages: *//p')
+  for ((p = 1; p <= pages; p++)); do
+    local t
+    t=$(pdf_text -f "$p" -l "$p" "$1")
+    if grep -qx -- " *$2 *" <<<"$t"; then echo "$p"; return; fi
   done
-  hata "$1 içinde '$2' başlığı yok"
+  fail "heading '$2' not found in $1"
 }
 
-# Şablonda, README'de ve lib.typ'de geçen her paket sürümü typst.toml ile aynı olmalı.
-# Ayırıcı ":" (import), "/" (macOS/Linux yolu) veya "\" (Windows yolu) olabilir.
-ESKI=$(grep -rhoE 'community-meu-gsnas-thesis[:/\\][0-9]+\.[0-9]+\.[0-9]+|--branch v[0-9]+\.[0-9]+\.[0-9]+' \
-  template README.md README.tr.md docs lib.typ | grep -vE "[:/\\\\v]$SURUM\$" || true)
-[[ -z "$ESKI" ]] || hata "typst.toml sürümü ($SURUM) ile uyuşmayan referanslar: $ESKI"
+# Every package version in the template, READMEs, docs and lib.typ must match typst.toml.
+# The separator is ":" (import), "/" (macOS/Linux path) or "\" (Windows path).
+STALE=$(grep -rhoE 'community-meu-gsnas-thesis[:/\\][0-9]+\.[0-9]+\.[0-9]+|--branch v[0-9]+\.[0-9]+\.[0-9]+' \
+  template README.md README.tr.md docs lib.typ | grep -vE "[:/\\\\v]$VERSION\$" || true)
+[[ -z "$STALE" ]] || fail "references not matching the typst.toml version ($VERSION): $STALE"
 
-# Şablon: çift taraflı, dış kapaklı.
-SABLON="$OUT/template.pdf"
-derle template template/main.typ "$SABLON"
-icerir "$SABLON" "TEZİN BAŞLIĞI"
-[[ $(metin -f 3 -l 3 "$SABLON") == *"ORCID ID"* ]] || hata "iç kapak 3. sayfada değil"
-[[ $(metin -f 4 -l 4 "$SABLON") == *"ONAY"*" ii"* ]] || hata "ONAY sayfası ii değil"
-GIRIS=$(baslik_sayfasi "$SABLON" "1. GİRİŞ")
-((GIRIS % 2 == 1)) || hata "GİRİŞ fiziksel çift sayfada ($GIRIS)"
-icerir "$SABLON" "Tablo 2.1."
-icerir "$SABLON" "Eşitlik (2.1)"
-icerir "$SABLON" "(Grady vd., 2019)"
+# Template: two-sided, with outer covers.
+TEMPLATE="$OUT/template.pdf"
+compile template template/main.typ "$TEMPLATE"
+contains "$TEMPLATE" "TEZİN BAŞLIĞI"
+[[ $(pdf_text -f 3 -l 3 "$TEMPLATE") == *"ORCID ID"* ]] || fail "title page is not on page 3"
+[[ $(pdf_text -f 4 -l 4 "$TEMPLATE") == *"ONAY"*" ii"* ]] || fail "approval page (ONAY) is not page ii"
+FIRST_CHAPTER=$(heading_page "$TEMPLATE" "1. GİRİŞ")
+((FIRST_CHAPTER % 2 == 1)) || fail "first chapter starts on an even physical page ($FIRST_CHAPTER)"
+contains "$TEMPLATE" "Tablo 2.1."
+contains "$TEMPLATE" "Eşitlik (2.1)"
+contains "$TEMPLATE" "(Grady vd., 2019)"
 
-# Kenar durumları.
-KENAR="$OUT/edge-cases.pdf"
-derle . tests/edge-cases.typ "$KENAR"
-for beklenen in "DOKTORA TEZİ" "2. DANIŞMAN" "Şekil 1.1." "Şekil E.1." "Tablo E.1." "(E.1)" \
-  "Tanım 1.1" "Teorem 1.1.1" "Şekil 1. Ön kısım şekli"; do
-  icerir "$KENAR" "$beklenen"
+# Edge cases.
+EDGE="$OUT/edge-cases.pdf"
+compile . tests/edge-cases.typ "$EDGE"
+for expected in "DOKTORA TEZİ" "2. DANIŞMAN" "Şekil 1.1." "Şekil E.1." "Tablo E.1." "(E.1)" \
+  "Tanım 1.1" "Teorem 1.1.1" "Şekil 1. Front matter figure"; do
+  contains "$EDGE" "$expected"
 done
-icermez "$KENAR" "1.0.1"
-icermez "$KENAR" "Şekil 0."
+not_contains "$EDGE" "1.0.1"
+not_contains "$EDGE" "Şekil 0."
 
-# Tek taraf + varsayılan kaynakça.
-TEK="$OUT/one-sided.pdf"
-derle . tests/one-sided.typ "$TEK"
-icerir "$TEK" "(Grady vd., 2019)"
-icermez "$TEK" "[1]"
-icermez "$TEK" "Kaynakça"
-[[ $(baslik_sayfasi "$TEK" "2. SONUÇ") -eq $(($(baslik_sayfasi "$TEK" "1. GİRİŞ") + 1)) ]] \
-  || hata "tek taraflı modda bölümler arasında boş sayfa var"
+# One-sided printing + bibliography with default settings.
+ONE_SIDED="$OUT/one-sided.pdf"
+compile . tests/one-sided.typ "$ONE_SIDED"
+contains "$ONE_SIDED" "(Grady vd., 2019)"
+not_contains "$ONE_SIDED" "[1]"
+not_contains "$ONE_SIDED" "Kaynakça"
+[[ $(heading_page "$ONE_SIDED" "2. SONUÇ") -eq $(($(heading_page "$ONE_SIDED" "1. GİRİŞ") + 1)) ]] \
+  || fail "one-sided mode inserted a blank page between chapters"
 
-# Yedek font: Times New Roman yokken gömülü Libertinus Serif kullanılmalı.
-# Beklenen tek uyarı Times New Roman'ın bulunamadığıdır.
-YEDEK="$OUT/fallback-font.pdf"
-log=$(typst compile --ignore-system-fonts --root . tests/one-sided.typ "$YEDEK" 2>&1) \
-  || { echo "$log"; hata "yedek fontla derlenemedi"; }
-beklenmeyen=$(grep "^warning" <<<"$log" | grep -v "unknown font family: times new roman" || true)
-[[ -z "$beklenmeyen" ]] || { echo "$log"; hata "yedek fontla beklenmeyen uyarı"; }
-fontlar=$(pdffonts "$YEDEK")
-grep -q "LibertinusSerif" <<<"$fontlar" || hata "yedek font (Libertinus Serif) kullanılmadı"
-echo "derlendi: yedek font (Libertinus Serif)"
+# Fallback font: without Times New Roman, the bundled Libertinus Serif is used.
+# The only expected warning is that Times New Roman was not found.
+FALLBACK="$OUT/fallback-font.pdf"
+log=$(typst compile --ignore-system-fonts --root . tests/one-sided.typ "$FALLBACK" 2>&1) \
+  || { echo "$log"; fail "did not compile with the fallback font"; }
+unexpected=$(grep "^warning" <<<"$log" | grep -v "unknown font family: times new roman" || true)
+[[ -z "$unexpected" ]] || { echo "$log"; fail "unexpected warning with the fallback font"; }
+fonts=$(pdffonts "$FALLBACK")
+grep -q "LibertinusSerif" <<<"$fonts" || fail "fallback font (Libertinus Serif) was not used"
+echo "compiled: fallback font (Libertinus Serif)"
 
-echo "Tüm kontroller geçti (sürüm $SURUM)."
+echo "All checks passed (version $VERSION)."

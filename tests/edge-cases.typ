@@ -1,39 +1,41 @@
-// Sınır durumları: başlıksız şekil, ekte şekil/tablo/eşitlik, boş jüri,
-// "==" öncesi teorem, ikinci danışman, doktora tezi, ön kısımda şekil.
+// Edge cases: figure without caption, figures/tables/equations in the
+// appendix, empty jury, theorem before the first "==", co-advisor, PhD thesis,
+// figure in the front matter. Chapter headings and the PDF output are Turkish.
 #import "../lib.typ": *
 
 #show: thesis.with(
-  title: "Kenar Durum Testi",
+  title: "Edge Case Test",
   degree: "phd",
+  // Turkish letters on purpose: checks the Turkish-aware uppercase on covers.
   student: "Test ÖĞRENCİ",
-  advisor: (name: "Prof. Dr. Test DANIŞMAN", orcid: none),
-  co-advisor: (name: "Doç. Dr. İkinci DANIŞMAN", orcid: none),
+  advisor: (name: "Prof. Dr. Test ADVISOR", orcid: none),
+  co-advisor: (name: "Doç. Dr. İkinci ADVISOR", orcid: none),
   jury: (),
   year: 2026,
-  acknowledgements: [Teşekkür. #figure(rect(width: 2cm, height: 1cm), caption: [Ön kısım şekli])],
+  acknowledgements: [Acknowledgements. #figure(rect(width: 2cm, height: 1cm), caption: [Front matter figure])],
 )
 
 = GİRİŞ
 
-#definition[Alt bölümden önce gelen tanım.] <tnm-giris>
+#definition[A definition before the first subsection.] <def-intro>
 
-Atıf: @tnm-giris.
+Reference: @def-intro.
 
 #figure(rect(width: 3cm, height: 1cm), caption: none)
 
-#figure(rect(width: 3cm, height: 1cm), caption: [Ana şekil]) <sekil-ana>
+#figure(rect(width: 3cm, height: 1cm), caption: [Main figure]) <fig-main>
 
-$ a = b $ <esitlik-ana>
+$ a = b $ <eq-main>
 
-@sekil-ana, @esitlik-ana
+@fig-main, @eq-main
 
-== Alt Bölüm
+== Subsection
 
-#theorem[Alt bölümdeki teorem.]
+#theorem[A theorem inside a subsection.]
 
 #appendices[
-  #figure(rect(width: 3cm, height: 1cm), caption: [Ek şekil]) <sekil-ek>
-  #figure(table(columns: 2, [a], [b]), caption: [Ek tablo])
-  $ c = d $ <esitlik-ek>
-  @sekil-ek, @esitlik-ek
+  #figure(rect(width: 3cm, height: 1cm), caption: [Appendix figure]) <fig-appendix>
+  #figure(table(columns: 2, [a], [b]), caption: [Appendix table])
+  $ c = d $ <eq-appendix>
+  @fig-appendix, @eq-appendix
 ]

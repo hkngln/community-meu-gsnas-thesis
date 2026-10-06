@@ -1,0 +1,33 @@
+name: Build environment
+description: Installs Typst and poppler and links the package as @local. Requires a macOS runner.
+
+# macOS ships Times New Roman. On Linux, ttf-mscorefonts-installer downloads the
+# font from SourceForge at install time and silently fails in CI.
+runs:
+  using: composite
+  steps:
+    - name: Check Times New Roman
+      shell: bash
+      run: |
+        if [[ "$RUNNER_OS" != "macOS" ]]; then
+          echo "::error::This action requires a macOS runner (Times New Roman)."
+          exit 1
+        fi
+        ls "/System/Library/Fonts/Supplemental/Times New Roman.ttf"
+
+    - name: poppler (pdftotext)
+      shell: bash
+      run: brew install --quiet poppler
+
+    - uses: typst-community/setup-typst@v5
+      with:
+        typst-version: 0.15.1
+
+    - name: Link the package as @local/community-meu-gsnas-thesis
+      shell: bash
+      run: |
+        VERSION=$(sed -n 's/^version = "\(.*\)"/\1/p' typst.toml)
+        TARGET="$HOME/Library/Application Support/typst/packages/local/community-meu-gsnas-thesis"
+        mkdir -p "$TARGET"
+        ln -sfn "$GITHUB_WORKSPACE" "$TARGET/$VERSION"
+        grep -q "Times New Roman" <<<"$(typst fonts)" || { echo "::error::Typst cannot find Times New Roman"; exit 1; }
