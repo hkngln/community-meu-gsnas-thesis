@@ -1,4 +1,4 @@
-#import "@local/community-meu-gsnas-thesis:0.3.0": *
+#import "@local/community-meu-gsnas-thesis:0.3.1": *
 
 // Kırmızı görünen her şey doldurulmamış alandır.
 // Ayarların Türkçe karşılıkları: docs/kullanim-kilavuzu.md (English: docs/user-guide.md).

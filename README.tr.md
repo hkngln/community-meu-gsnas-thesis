@@ -25,7 +25,7 @@ Mersin Üniversitesi Fen Bilimleri Enstitüsü yüksek lisans ve doktora tezleri
   - 1,25 cm paragraf girintisi.
 - Ana bölümler, kaynaklar, ekler ve özgeçmiş yeni ve tek numaralı sayfadan başlar. Araya giren boş sayfalarda üst bilgi ve sayfa numarası basılmaz.
 - Şekil, tablo ve eşitlikler bölüme göre numaralanır (**Tablo 2.1.**, **Şekil 2.1.**, (2.1)). Eklerde numaralar "E.1" olur.
-- APA 7 atıflar Türkçe "vd." ile çıkar. Dipnotlar \*, †, ‡ işaretleriyle her sayfada yeniden başlar.
+- APA 7 atıflar Türkçe "vd." ile çıkar; [bilinen sınırlamalar](#bilinen-sınırlamalar) bölümüne bakın. Dipnotlar \*, †, ‡ işaretleriyle her sayfada yeniden başlar.
 - Doldurulmamış her alan PDF'te **kırmızı** görünür.
 
 ## Kurulum
@@ -102,18 +102,18 @@ Paketi Typst'ün yerel paket dizinine klonlayın. Dizin adı sürüm numarasıyl
 
 ```sh
 # macOS
-git clone --branch v0.3.0 https://github.com/hkngln/community-meu-gsnas-thesis \
-  "$HOME/Library/Application Support/typst/packages/local/community-meu-gsnas-thesis/0.3.0"
+git clone --branch v0.3.1 https://github.com/hkngln/community-meu-gsnas-thesis \
+  "$HOME/Library/Application Support/typst/packages/local/community-meu-gsnas-thesis/0.3.1"
 
 # Linux
-git clone --branch v0.3.0 https://github.com/hkngln/community-meu-gsnas-thesis \
-  "$HOME/.local/share/typst/packages/local/community-meu-gsnas-thesis/0.3.0"
+git clone --branch v0.3.1 https://github.com/hkngln/community-meu-gsnas-thesis \
+  "$HOME/.local/share/typst/packages/local/community-meu-gsnas-thesis/0.3.1"
 ```
 
 ```powershell
 # Windows (PowerShell)
-git clone --branch v0.3.0 https://github.com/hkngln/community-meu-gsnas-thesis `
-  "$env:APPDATA\typst\packages\local\community-meu-gsnas-thesis\0.3.0"
+git clone --branch v0.3.1 https://github.com/hkngln/community-meu-gsnas-thesis `
+  "$env:APPDATA\typst\packages\local\community-meu-gsnas-thesis\0.3.1"
 ```
 
 En güncel sürüm numarası [Releases](https://github.com/hkngln/community-meu-gsnas-thesis/releases) sayfasında.
@@ -121,7 +121,7 @@ En güncel sürüm numarası [Releases](https://github.com/hkngln/community-meu-
 ## Yeni tez başlatma
 
 ```sh
-typst init @local/community-meu-gsnas-thesis:0.3.0 tezim
+typst init @local/community-meu-gsnas-thesis:0.3.1 tezim
 cd tezim
 typst watch main.typ
 ```
@@ -166,9 +166,16 @@ En sık kullanılanlar:
 | Atıf | `@grady2019` → (Grady vd., 2019); `#cite(<grady2019>, form: "prose")` → Grady vd. (2019) |
 | Dipnot | `#footnote[..]` → \*, †, ‡ |
 
-Ek yoksa `#appendices[..]` satırını silin. Hiç tablo ya da şekil yoksa ilgili dizin sayfası basılmaz.
+Ek yoksa `#appendices[..]` satırını silin. `#appendices` içinde ek bölümlerini `== EK-1: Başlık` biçiminde yazın; bunlar numarasızdır, içlerindeki şekil, tablo, eşitlik ve teoremler E.1, E.2… diye numaralanır. Hiç tablo ya da şekil yoksa ilgili dizin sayfası basılmaz.
 
-> **v0.1.x kullanıyorsanız:** v0.2.0'da paketin adı `meu-fbe-tez` yerine `community-meu-gsnas-thesis` oldu ve adlar İngilizceye çevrildi; PDF çıktısı değişmedi. Geçiş tablosu kılavuzun [v0.1.x'ten geçiş](docs/kullanim-kilavuzu.md#v01xten-geçiş) bölümünde.
+> **v0.1.x kullanıyorsanız:** v0.2.0'da paketin adı `meu-fbe-tez` yerine `community-meu-gsnas-thesis` oldu ve adlar İngilizceye çevrildi; ad değişikliği PDF çıktısını değiştirmedi. Geçiş tablosu kılavuzun [v0.1.x'ten geçiş](docs/kullanim-kilavuzu.md#v01xten-geçiş) bölümünde.
+
+## Bilinen sınırlamalar
+
+Bunlar Typst'ün yerleşik APA stilinden kaynaklanıyor ve v0.4.0 için planlanıyor:
+- İki yazarlı atıflarda Türkçe "ve" yerine "&" çıkar: `(Engin ve Özçimen, 2016)` yerine `(Engin & Özçimen, 2016)`. O zamana kadar önemli yerlerde bu atıfları elle yazın.
+- Bazı kaynak türü etiketleri İngilizce kalır; ör. "[Yayımlanmamış doktora tezi]" yerine "[Doctoral dissertation]".
+- Kaynakçadaki asılı girinti, şablondaki 1,25 cm yerine 1,5em (yaklaşık 0,58 cm) olur; Typst 0.15 bunun değiştirilmesine izin vermiyor.
 
 ## Katkı
 

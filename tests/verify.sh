@@ -61,7 +61,7 @@ contains "$TEMPLATE" "(Grady vd., 2019)"
 EDGE="$OUT/edge-cases.pdf"
 compile . tests/edge-cases.typ "$EDGE"
 for expected in "DOKTORA TEZİ" "2. DANIŞMAN" "Şekil 1.1." "Şekil E.1." "Tablo E.1." "(E.1)" \
-  "Tanım 1.1" "Teorem 1.1.1" "Şekil 1. Front matter figure"; do
+  "Tanım 1.1." "Teorem 1.1.1." "Şekil 1. Front matter figure"; do
   contains "$EDGE" "$expected"
 done
 not_contains "$EDGE" "1.0.1"
@@ -75,6 +75,30 @@ not_contains "$ONE_SIDED" "[1]"
 not_contains "$ONE_SIDED" "Kaynakça"
 [[ $(heading_page "$ONE_SIDED" "2. SONUÇ") -eq $(($(heading_page "$ONE_SIDED" "1. GİRİŞ") + 1)) ]] \
   || fail "one-sided mode inserted a blank page between chapters"
+
+# Regressions from the adversarial review (v0.3.0).
+REG="$OUT/regressions.pdf"
+compile . tests/regressions.typ "$REG"
+REG_TEXT=$(pdf_text "$REG")
+rows=$(grep -cE "^ *row-[0-9]+ " <<<"$REG_TEXT" || true)
+[[ "$rows" -eq 70 ]] || fail "long table lost rows across pages: $rows/70 rows in the PDF"
+contains "$REG" "YAPAY ZEKÂ İLE GÖRÜNTÜ İŞLEME"
+not_contains "$REG" "GÖRÜNTÜ IŞLEME"
+contains "$REG" "IMAGE PROCESSING WITH ARTIFICIAL INTELLIGENCE"
+not_contains "$REG" "PROCESSİNG"
+contains "$REG" "Liste 2.1."
+not_contains "$REG" "Liste 2.2."
+contains "$REG" "Teorem 2.1."
+contains "$REG" "Teorem E.1."
+[[ $(heading_page "$REG" "EK-1 Appendix heading") -gt 0 ]] || fail "appendix heading missing"
+not_contains "$REG" "2.1. EK-1"
+
+# Wrong argument types must give a clear message, not an internal error.
+# (Read from stdin, so no temporary file is needed inside the project root.)
+bad_log=$(printf '%s\n' '#import "/lib.typ": *' '#show: thesis.with(keywords-tr: "a, b")' 'x' \
+  | typst compile --root . - "$OUT/bad-input.pdf" 2>&1 || true)
+grep -q "keywords-tr bir dizi olmalı" <<<"$bad_log" || { echo "$bad_log"; fail "no clear error for a wrong keywords-tr type"; }
+echo "compiled: regressions"
 
 # Fallback font: without Times New Roman, the bundled Libertinus Serif is used.
 # The only expected warning is that Times New Roman was not found.
